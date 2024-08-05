@@ -6,4 +6,5 @@ public interface RelationalModel {
 
 	List<?> getManyBy(long id);
 	
+	long countBy(long id);
 }

@@ -10,14 +10,14 @@ public class CustomConnectorFactory {
 	private static final String USER = "root";
 	
 	public static DatabaseConnector getConnectorWithAdmin() {
-		return () ->DriverManager.getConnection(URL, USER, "admin");
+		return () -> DriverManager.getConnection(URL, USER, "admin");
 	}
 
 	public static DatabaseConnector getConnectorWithoutPassword() {
-		return () ->DriverManager.getConnection(URL, USER, "");
+		return () -> DriverManager.getConnection(URL, USER, "");
 	}
 
 	public static DatabaseConnector getConnectorWithRoot() {
-		return () ->DriverManager.getConnection(URL, USER, "root");
+		return () -> DriverManager.getConnection(URL, USER, "root");
 	}
 }

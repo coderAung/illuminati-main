@@ -9,12 +9,12 @@ public abstract class ModelFactory {
 
 	private static String location = "edu.ucsy.social.model.impl.%sModel";
 
-	public static Model<?> getModel(Class<?> e) {
+	public static Model<?> getModel(Class<?> e, DatabaseConnector connector) {
 
 		try {
 			var c = Class.forName(location.formatted(e));
 			var constructor = c.getDeclaredConstructor(DatabaseConnector.class);
-			var model = constructor.newInstance(ConnectorFactory.getConnector());
+			var model = constructor.newInstance(connector);
 
 			return (Model<?>) model;
 
@@ -35,5 +35,9 @@ public abstract class ModelFactory {
 		}
 
 		return null;
+	}
+	
+	public static Model<?> getModel(Class<?> e) {
+		return getModel(e, ConnectorFactory.getConnector());
 	}
 }
