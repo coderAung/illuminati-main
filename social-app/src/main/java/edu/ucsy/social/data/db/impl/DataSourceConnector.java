@@ -1,15 +1,23 @@
 package edu.ucsy.social.data.db.impl;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
 
 import edu.ucsy.social.data.db.DatabaseConnector;
 
 public class DataSourceConnector implements DatabaseConnector {
 
-	@Override
-    public Connection getConnection() {
+	private DataSource dataSource;
+	
+	public DataSourceConnector(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
-        return null;
-    }
+	@Override
+	public Connection getConnection() throws SQLException {
+		return dataSource.getConnection();
+	}
 
 }
