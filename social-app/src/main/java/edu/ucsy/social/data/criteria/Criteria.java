@@ -23,7 +23,6 @@ public class Criteria {
 		GE(">="), LE("<="),
 		LIKE("like");
 		
-		
 		private String name;
 		
 		private Type(String name) {
@@ -57,7 +56,7 @@ public class Criteria {
 	}
 	
 	public String generateStatement(String sql) {
-		return String.format("%s%s%s", sql, WHERE,sb.toString());
+		return String.format("%s%s%s", sql, WHERE, sb.toString());
 	}
 	
 	public List<Object> getValues() {
