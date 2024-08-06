@@ -9,4 +9,8 @@ public record Friend(
 	public Friend(long userId, long friendId) {
 		this(0, userId, friendId, null);
 	}
+	
+	public Friend perfectClone(long id, String friendName) {
+		return new Friend(id, userId, friendId, friendName);
+	}
 }

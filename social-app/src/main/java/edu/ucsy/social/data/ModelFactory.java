@@ -7,7 +7,7 @@ import edu.ucsy.social.data.db.DatabaseConnector;
 
 public abstract class ModelFactory {
 
-	private static String location = "edu.ucsy.social.model.impl.%sModel";
+	private static String location = "edu.ucsy.social.model.%sModel";
 
 	public static Model<?> getModel(Class<?> e, DatabaseConnector connector) {
 

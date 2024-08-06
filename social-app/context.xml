@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+	<Resource
+	name="social"
+	type="javax.sql.DataSource"
+	auth="container"
+	driverClassName="com.mysql.cj.jdbc.Driver"
+	url="jdbc:mysql://localhost:3306/social_db"
+	username="root"
+	password="admin"
+	/>
+</Context>

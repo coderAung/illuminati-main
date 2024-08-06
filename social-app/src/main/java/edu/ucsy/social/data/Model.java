@@ -2,8 +2,6 @@ package edu.ucsy.social.data;
 
 import java.util.List;
 
-import edu.ucsy.social.data.relation.RelationalModel;
-
 public interface Model<T> {
 
 	T save(T t);
@@ -22,11 +20,10 @@ public interface Model<T> {
 	
 	long count();
     
-	default RelationalModel getRelationalModel() {
-		if(this instanceof RelationalModel model) {
+	default Relational getRelational() {
+		if(this instanceof Relational model) {
 			return model;
 		}
 		return null;
 	}
-
 }

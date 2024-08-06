@@ -3,7 +3,7 @@ package edu.ucsy.social.model.entity;
 import java.time.LocalDateTime;
 
 public record User(
-		long id, 
+		long id,
 		String email, 
 		String name, 
 		String password, 

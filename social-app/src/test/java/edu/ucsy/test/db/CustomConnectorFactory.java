@@ -20,4 +20,8 @@ public class CustomConnectorFactory {
 	public static DatabaseConnector getConnectorWithRoot() {
 		return () -> DriverManager.getConnection(URL, USER, "root");
 	}
+	
+	public static DatabaseConnector getConnectorWithPassword(String password) {
+		return () -> DriverManager.getConnection(URL, USER, password);
+	}
 }
