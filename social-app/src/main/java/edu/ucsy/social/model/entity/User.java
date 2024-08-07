@@ -17,5 +17,9 @@ public record User(
 	public User perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		return new User(id, email, name, password, createdAt, updatedAt);
 	}
+	
+	public User updatedClone(LocalDateTime updatedAt) {
+		return new User(id, email, name, password, createdAt, updatedAt);
+	}
 
 }

@@ -9,14 +9,15 @@ public abstract class ModelFactory {
 
 	private static String location = "edu.ucsy.social.model.%sModel";
 
-	public static Model<?> getModel(Class<?> e, DatabaseConnector connector) {
+	@SuppressWarnings("unchecked")
+	public static <T> Model<T> getModel(Class<T> e, DatabaseConnector connector) {
 
 		try {
-			var c = Class.forName(location.formatted(e));
+			var c = Class.forName(location.formatted(e.getSimpleName()));
 			var constructor = c.getDeclaredConstructor(DatabaseConnector.class);
 			var model = constructor.newInstance(connector);
 
-			return (Model<?>) model;
+			return (Model<T>) model;
 
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
