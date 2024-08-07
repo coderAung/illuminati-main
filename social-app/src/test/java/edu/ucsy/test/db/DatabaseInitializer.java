@@ -4,42 +4,88 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import edu.ucsy.social.data.db.DatabaseConnector;
+import edu.ucsy.social.model.entity.User;
 
 public class DatabaseInitializer {
 
 	DatabaseConnector connector;
 	private static final String TRUNCATE = "truncate %s";
-	private static StringBuilder sb = new StringBuilder();
 	
 	public DatabaseInitializer(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 	
 	public void truncate(String table) {
-		var sql = TRUNCATE.formatted(table);
+		var sql1 = "set foreign_key_checks = 0";
+		var sql2 = TRUNCATE.formatted(table);
 		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
-			stmt.executeUpdate();
+				var stmt1 = conn.prepareStatement(sql1);
+				var stmt2 = conn.prepareStatement(sql2)) {
 			
+			stmt1.execute();
+			stmt2.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void loadUser() {
-		try(var lines = Files.lines(Path.of("ex-source/load-user.txt"));) {
-			lines.forEach(System.out::println);
-			for(var l : lines.toList()) {
-				sb.append(l);
+		truncate("users");
+		var users = getUsers();
+
+		users.forEach(u -> {
+			System.out.println("----------");
+			System.out.printf("%s %s %s%n".formatted(u.email(), u.name(), u.password()));
+		});
+		var sql = """
+				insert into users (email, name, password, created_at, updated_at)
+				 values (?, ?, ?, ?, ?)
+				""";
+
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)) {
+			
+			for(var user : users) {
+				stmt.setString(1, user.email());
+				stmt.setString(2, user.name());
+				stmt.setString(3, user.password());
+				var createdAt = Timestamp.valueOf(LocalDateTime.now());
+				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
+				stmt.setTimestamp(4, createdAt);
+				stmt.setTimestamp(5, updatedAt);
+				
+				stmt.addBatch();
 			}
 			
-			var sql = sb.toString();
-			sb.setLength(0);
-			System.out.println(sql);
+			stmt.executeBatch();
+
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private List<User> getUsers() {
+
+		try(var lines = Files.lines(Path.of("sample/users.txt"))) {
+		
+			var users = lines.map(line -> line.split("\t"))
+				.map(this::userFrom).toList();
+			
+			return users;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return null;
+	}
+	
+	public User userFrom(String [] array) {
+		return new User(array[0], array[1], array[2]);
 	}
 }

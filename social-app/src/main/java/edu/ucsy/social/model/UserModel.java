@@ -21,7 +21,7 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public User save(User t) {
 		var sql = """
-				insert into users (email, name, passwod, created_at, updated_at)
+				insert into users (email, name, password, created_at, updated_at)
 				 values (?, ?, ?, ?, ?)
 				""";
 		
