@@ -19,7 +19,7 @@ public class UserModel extends AbstractModel<User> {
 	}
 
 	@Override
-	public User save(User t) {
+	public User save(User u) {
 		var sql = """
 				insert into users (email, name, password, created_at, updated_at)
 				 values (?, ?, ?, ?, ?)
@@ -28,9 +28,9 @@ public class UserModel extends AbstractModel<User> {
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			
-			stmt.setString(1, t.email());
-			stmt.setString(2, t.name());
-			stmt.setString(3, t.password());
+			stmt.setString(1, u.email());
+			stmt.setString(2, u.name());
+			stmt.setString(3, u.password());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 			stmt.setTimestamp(4, createdAt);
@@ -43,7 +43,7 @@ public class UserModel extends AbstractModel<User> {
 			
 			var keys = stmt.getGeneratedKeys();
 			if(keys.next()) {
-				var user = t.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime());
+				var user = u.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime());
 				return user;
 			}
 			
@@ -114,13 +114,45 @@ public class UserModel extends AbstractModel<User> {
 	}
 
 	@Override
-	public User update(User t) {
-		// TODO Auto-generated method stub
-		return null;
+	public User update(User u) {
+		var sql = "select * from users where id = ?";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+			
+			stmt.setLong(1, u.id());
+			
+			var rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+
+				// email update
+				if(!u.email().equals(rs.getString("email"))) {
+					rs.updateString("email", u.email());
+				}
+				// name update
+				if(!u.name().equals(rs.getString("name"))) {
+					rs.updateString("name", u.name());
+				}
+				// password update
+				if(!u.password().equals(rs.getString("password"))) {
+					rs.updateString("password", u.password());
+				}
+				
+				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
+				rs.updateTimestamp("updated_at", updatedAt);
+
+				rs.updateRow();
+				return u.updatedClone(updatedAt.toLocalDateTime());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;	
 	}
 
 	@Override
-	public User fullUpdate(User t) {
+	public User fullUpdate(User u) {
 		var sql = """
 				update users set (email, name, password, updated_at)
 				values (?, ?, ?, ?)
@@ -129,21 +161,21 @@ public class UserModel extends AbstractModel<User> {
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
-			stmt.setString(1, t.email());
-			stmt.setString(2, t.name());
-			stmt.setString(3, t.password());
+			stmt.setString(1, u.email());
+			stmt.setString(2, u.name());
+			stmt.setString(3, u.password());
 			
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 			stmt.setTimestamp(4, updatedAt);
 			
-			stmt.setLong(5, t.id());
+			stmt.setLong(5, u.id());
 			
 			var row = stmt.executeUpdate();
 			if(0 == row) {
 				return null;
 			}
 			
-			return t.updatedClone(updatedAt.toLocalDateTime());
+			return u.updatedClone(updatedAt.toLocalDateTime());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -167,12 +199,6 @@ public class UserModel extends AbstractModel<User> {
 			e.printStackTrace();
 		}
 		return false;
-	}
-
-	@Override
-	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	private User userFrom(ResultSet rs) throws SQLException {

@@ -2,7 +2,6 @@ package edu.ucsy.social.data;
 
 import java.lang.reflect.InvocationTargetException;
 
-import edu.ucsy.social.data.db.ConnectorFactory;
 import edu.ucsy.social.data.db.DatabaseConnector;
 
 public abstract class ModelFactory {
@@ -38,7 +37,4 @@ public abstract class ModelFactory {
 		return null;
 	}
 	
-	public static Model<?> getModel(Class<?> e) {
-		return getModel(e, ConnectorFactory.getConnector());
-	}
 }

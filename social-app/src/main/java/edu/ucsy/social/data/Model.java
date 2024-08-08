@@ -17,8 +17,6 @@ public interface Model<T> {
 	T fullUpdate(T t);
 	
 	boolean delete(long id);
-	
-	long count();
     
 	default Relational getRelational() {
 		if(this instanceof Relational model) {
