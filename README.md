@@ -8,7 +8,7 @@ Model
    ဥပမာ - UserModel
 3. AbrstractModel ဆိုတဲ့ class ကို extends လုပ်ပြီး Type parameter အနေနဲ့ manage လုပ်မဲ့ Entity class ရဲ့ Type
    ကို ထည့်ပေးရပါမယ်။
-   (ဥပမာ - public class UserModel extends AbstractModel<User> {}
+   ဥပမာ - public class UserModel extends AbstractModel<User> {}
 4. Relational operation တွေပါ‌ ရေးချင်တဲ့အခါမှာတော့ Relational ဆိုတဲ့ interface ကိုပါ implements
    လုပ်ရမှာဖြစ်ပါတယ်။
    ဥပမာ - public class UserModel extends AbstractModel<User> implements Relational {}
