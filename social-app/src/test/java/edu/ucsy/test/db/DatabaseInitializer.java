@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.ucsy.social.data.db.DatabaseConnector;
+import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
 
 public class DatabaseInitializer {
@@ -87,5 +88,49 @@ public class DatabaseInitializer {
 	
 	public User userFrom(String [] array) {
 		return new User(array[0], array[1], array[2]);
+	}
+	
+	public void loadPostImage() {
+		truncate("post_images");
+		var sql1 = "set foreign_key_checks = 0";
+		var sql2 = "insert into post_images (name, post_id) values (?, ?)";
+		
+		var postImages = getPostImages();
+		
+		try(var conn = connector.getConnection();
+				var stmt1 = conn.createStatement();
+				var stmt2 = conn.prepareStatement(sql2)) {
+			
+			stmt1.execute(sql1);
+			
+			for(var pi : postImages) {
+				stmt2.setString(1, pi.name());
+				stmt2.setLong(2, pi.postId());
+				stmt2.addBatch();
+			}
+			
+			stmt2.executeBatch();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private List<PostImage> getPostImages() {
+		try(var lines = Files.lines(Path.of("sample/post-images.txt"))) {
+			var list = lines.map(line -> line.split("\t"))
+							.map(array -> postImageFrom(array))
+							.toList();
+			return list;
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private PostImage postImageFrom(String[] array) {
+		var postImage = new PostImage(array[0], Long.parseLong(array[1]));
+		return postImage;
 	}
 }
