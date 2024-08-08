@@ -3,7 +3,7 @@ We will develop main project on this repo
 
 Model
 အခု project မှာ Model တစ်ခုတည်ဆောက်ချင်ရင် အောက်ပါအချက်တွေလိုက်နာရပါမယ်
-1. တည်ဆောက်ချင်တဲ့ model ရဲ့ နာမည်ကိုသတ်မှတ်ထားတဲ့အချက်အတိုင်းလိုက်နာပြီးပေးရပါမယ်။ Model နဲ့နာမည်ဟာသူ manage
+1. တည်ဆောက်ချင်တဲ့ model ရဲ့ နာမည်ကိုသတ်မှတ်ထားတဲ့အချက်အတိုင်းလိုက်နာပြီးပေးရပါမယ်။ Model ရဲ့နာမည်ဟာသူ manage
    လုပ်မဲ့ entity class နဲ့ Model နဲ့ကို CamelCase သုံးပြီးရေးပေးရပါမယ်။
    ဥပမာ - UserModel
 3. AbrstractModel ဆိုတဲ့ class ကို extends လုပ်ပြီး Type parameter အနေနဲ့ manage လုပ်မဲ့ Entity class ရဲ့ Type
