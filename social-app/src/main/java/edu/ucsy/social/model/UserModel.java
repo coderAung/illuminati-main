@@ -17,7 +17,7 @@ import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
 
-public class UserModel extends AbstractModel<User> implements Relational {
+public class UserModel extends AbstractModel<User> {
 
 	public UserModel(DatabaseConnector connector) {
 		super(connector);
@@ -215,69 +215,6 @@ public class UserModel extends AbstractModel<User> implements Relational {
 				rs.getTimestamp(5).toLocalDateTime(),
 				rs.getTimestamp(6).toLocalDateTime());
 		return user;
-	}
-
-	@Override
-	public <T> List<T> getMany(Class<T> e, long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> T getOne(Class<T> e, long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> long count(Class<T> e, long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public <T> Map<Integer, List<T>> getMany(Class<T> e, Set<Integer> idSet) {
-		
-		if(e.equals(PostImage.class)) {
-			var imgMap = getManyPostImages(e, idSet);
-			return imgMap;
-		}
-
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private <T> Map<Integer, List<T>> getManyPostImages(Class<T> e, Set<Integer> idSet) {
-		
-		var imgMap = new HashMap<Integer, List<T>>();
-
-		var sql = """
-				select pi.id as id, pi.name as image 
-				from post_images as pi
-				where pi.post_id = ?
-					""";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
-			
-			for(var id : idSet) {
-				stmt.setLong(1, id);
-				var rs = stmt.executeQuery();
-				
-				var imageList = new ArrayList<T>();
-				while(rs.next()) {
-					var postImage = new PostImage(rs.getLong("id"), rs.getString("image"), id);
-					imageList.add((T) postImage);
-				}
-
-				imgMap.put(id, imageList);
-			}
-			
-			return imgMap;
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return null;
 	}
 
 }
