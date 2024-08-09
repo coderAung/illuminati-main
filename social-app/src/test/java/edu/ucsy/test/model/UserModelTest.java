@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
+import edu.ucsy.social.model.UserModel;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.test.db.CustomConnectorFactory;
 import edu.ucsy.test.db.DatabaseInitializer;
