@@ -6,15 +6,10 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.Relational;
 import edu.ucsy.social.data.db.DatabaseConnector;
-import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
 
 public class UserModel extends AbstractModel<User> {
