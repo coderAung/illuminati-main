@@ -19,4 +19,8 @@ public record Post(
 	public Post perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt, String userName) {
 		return new Post(id, content, postImages, createdAt, updatedAt, userId, userName);
 	}
+	
+	public Post updatedClone(LocalDateTime updatedAt) {
+		return new Post(id, content, postImages, createdAt, updatedAt, userId, userName);
+	}
 }
