@@ -1,5 +1,6 @@
 package edu.ucsy.social.model;
 
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,6 @@ public class PostModel extends AbstractModel<Post> {
 		
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS)) {
-						
 			stmt.setString(1, p.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
@@ -40,11 +40,11 @@ public class PostModel extends AbstractModel<Post> {
 			stmt.setLong(4, p.userId());
 
 			var row = stmt.executeUpdate();
-			
 			if(null != postImages) {
 				postImages = savePostImages(conn, postImages);
 			}
 			
+
 			if(row == 0) {
 				return null;
 			}
@@ -56,12 +56,14 @@ public class PostModel extends AbstractModel<Post> {
 						postImages,
 						createdAt.toLocalDateTime(), 
 						updatedAt.toLocalDateTime());
+
 				return posts;
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 
@@ -96,6 +98,7 @@ public class PostModel extends AbstractModel<Post> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 
