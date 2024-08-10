@@ -1,5 +1,6 @@
 package edu.ucsy.social.data;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 public interface Model<T> {
@@ -8,7 +9,7 @@ public interface Model<T> {
 	
 	T findOne(long id);
 	
-	T findOne(long id, String ...cols);
+	ResultSet findOne(long id, String ...cols);
 	
 	List<T> getAll();
 	
