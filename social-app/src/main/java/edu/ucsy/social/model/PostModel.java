@@ -182,4 +182,10 @@ public class PostModel extends AbstractModel<Post> {
 		return post;
 	}
 
+	@Override
+	public Post findOne(long id, String... cols) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
