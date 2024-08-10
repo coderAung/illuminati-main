@@ -44,14 +44,26 @@ public class CommentModel extends  AbstractModel <Comment>{
 			
 			var keys = stmt.getGeneratedKeys();
 			if(keys.next()) {
-				var comment = c.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime(),keys.getString(1));
-				return comment ;
+				var comment = c.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime());
+				return comment;
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private Comment commentFrom(ResultSet rs) throws SQLException {
+		var comment = new Comment(
+				rs.getLong(1),
+				rs.getString(2), 
+				rs.getTimestamp(3).toLocalDateTime(),
+				rs.getTimestamp(4).toLocalDateTime(),
+				rs.getLong(5),
+				rs.getString(6),
+				rs.getLong(7));
+		return comment;
 	}
 
 	@Override
@@ -129,6 +141,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 				// content update
 				if(!c.content().equals(rs.getString("content"))) {
 					rs.updateString("content", c.content());
+					
 				}
 
 				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
@@ -147,7 +160,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 	@Override
 	public Comment fullUpdate(Comment c) {
 		var sql = """
-				update comments set (content, updated_at , user_id , post_id)
+				update comments set (content, updated_at, user_id, post_id)
 				values (?, ?, ?, ?)
 				where id = ?
 				""";
@@ -157,9 +170,9 @@ public class CommentModel extends  AbstractModel <Comment>{
 			stmt.setString(1, c.content());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 			stmt.setTimestamp(2, updatedAt);
-			stmt.setLong(3,c.userId());
+			stmt.setLong(3, c.userId());
 			stmt.setLong(4, c.postId());
-			stmt.setLong(5,c.id());
+			stmt.setLong(5, c.id());
 			
 
 			
@@ -194,16 +207,12 @@ public class CommentModel extends  AbstractModel <Comment>{
 		return false;
 	}
 	
-	private Comment commentFrom(ResultSet rs) throws SQLException {
-		var comment = new Comment(
-				rs.getLong(1),
-				rs.getString(2), 
-				rs.getTimestamp(3).toLocalDateTime(),
-				rs.getTimestamp(4).toLocalDateTime(),
-				rs.getLong(5),
-				rs.getString(6),
-				rs.getLong(7));
-		return comment;
+	
+
+	@Override
+	public Comment findOne(long id, String... cols) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

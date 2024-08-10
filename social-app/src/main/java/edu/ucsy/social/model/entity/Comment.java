@@ -15,7 +15,7 @@ public record Comment(
 		this(0, content, null, null, userId, null, postId);
 	}
 	
-	public Comment perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt, String userName) {
+	public Comment perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		return new Comment(id, content, createdAt, updatedAt, userId, userName, postId);
 	}
 	
@@ -23,3 +23,4 @@ public record Comment(
 		return new Comment(id, content, createdAt, updatedAt, userId, userName, postId);
 	}
 }
+ 
