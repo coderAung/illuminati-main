@@ -212,4 +212,10 @@ public class UserModel extends AbstractModel<User> {
 		return user;
 	}
 
+	@Override
+	public User findOne(long id, String... cols) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
