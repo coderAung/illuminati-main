@@ -8,6 +8,8 @@ public interface Model<T> {
 	
 	T findOne(long id);
 	
+	T findOne(long id, String ...cols);
+	
 	List<T> getAll();
 	
 	List<T> get(long limit);
