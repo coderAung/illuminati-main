@@ -23,5 +23,4 @@ public record Post(
 	public Post updatedClone(LocalDateTime updatedAt) {
 		return new Post(id, content, postImages, createdAt, updatedAt, userId, userName);
 	}
-	
 }
