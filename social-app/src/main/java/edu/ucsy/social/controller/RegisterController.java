@@ -7,12 +7,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet({"/index"})
+@WebServlet(
+		urlPatterns = { "/register" }, 
+		loadOnStartup = 1)
 public class RegisterController extends Controller {
 
 	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		view(req,resp,"register");
+		view(req, resp, "register");
 	}
 }
