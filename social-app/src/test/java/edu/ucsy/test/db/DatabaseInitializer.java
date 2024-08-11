@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.ucsy.social.data.db.DatabaseConnector;
+import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
 
@@ -133,4 +134,49 @@ public class DatabaseInitializer {
 		var postImage = new PostImage(array[0], Long.parseLong(array[1]));
 		return postImage;
 	}
+	
+	
+	public void loadPost() {
+		truncate("posts");
+		var posts = getPosts();
+		var sql = """
+				insert into posts 
+				(content, user_id, created_at) 
+				values (?, ?, ?)
+				""";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)) {
+			var createdAt = Timestamp.valueOf(LocalDateTime.now());
+			for(var p : posts) {
+				stmt.setString(1, p.content());
+				stmt.setLong(2, p.userId());
+				stmt.setTimestamp(3, createdAt);
+				stmt.addBatch();
+			}
+			
+			stmt.executeBatch();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<Post> getPosts() {
+		try(var lines = Files.lines(Path.of("sample/posts.txt"))) {
+			var list = lines.map(line -> line.split("\t"))
+							.map(array -> postFrom(array))
+							.toList();
+			return list;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private Post postFrom(String[] array) {
+		var post = new Post(array[0], null, Long.parseLong(array[1]));
+		
+		return post;
+	}
+	
 }
