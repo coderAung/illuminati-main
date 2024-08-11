@@ -1,6 +1,12 @@
 package edu.ucsy.test.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
@@ -20,6 +26,79 @@ public class PostModelTest {
 		// enter specific password to get connector
 		connector = CustomConnectorFactory.getConnectorWithPassword("");
 		di = new DatabaseInitializer(connector);
+		di.truncate("posts");
+		
 		postModel = ModelFactory.getModel(Post.class, connector);
 	}
+	
+	@ParameterizedTest
+	@CsvFileSource(
+			files = {"test-source/posts.txt"},
+			delimiter = '\t')
+	void test_save(long id, String content, long userId, String userName) {
+		var post = new Post(content, null, userId);
+		post = postModel.save(post);
+		
+		assertNotNull(post);
+		assertEquals(id, post.id());
+		assertEquals(content, post.content());
+		assertEquals(userId, post.userId());
+		assertEquals(userName, post.userName());
+		
+		assertNull(post.postImages());
+	}
+	
+	@ParameterizedTest
+	@CsvFileSource(
+			files = {"test-source/posts.txt"},
+			delimiter = '\t')
+	void test_find_one(long id, String content, long userId, String userName) {
+		var post = postModel.findOne(id);
+
+		assertNotNull(post);
+		assertEquals(id, post.id());
+		assertEquals(content, post.content());
+		assertEquals(userId, post.userId());
+		assertEquals(userName, post.userName());
+		
+		assertNull(post.postImages());
+	}
+	
+	@ParameterizedTest
+	@CsvFileSource(
+			files = {"test-source/posts.txt"},
+			delimiter = '\t')
+	void test_getAll(long id, String content, long userId, String userName) {
+		var posts = postModel.getAll();
+		assertNotNull(posts);
+		
+		for(var post : posts) {
+			assertNotNull(post);
+			assertEquals(id, post.id());
+			assertEquals(content, post.content());
+			assertEquals(userId, post.userId());
+			assertEquals(userName, post.userName());
+			
+			assertNull(post.postImages());		
+		}
+		
+		assertEquals(10, posts.size());
+	}
+	
+	@ParameterizedTest
+	@CsvFileSource(
+			files = {"test-source/content-update-posts.txt"},
+			delimiter = '\t')
+	void test_update(long id, String content, long userId, String userName) {
+		var post = new Post(id, content, null, null, null, userId, userName);
+		post = postModel.update(post);
+		
+		assertNotNull(post);
+		assertEquals(id, post.id());
+		assertEquals(content, post.content());
+		assertEquals(userId, post.userId());
+		assertEquals(userName, post.userName());
+		assertNull(post.postImages());		
+	}
+		
 }
