@@ -1,6 +1,5 @@
 package edu.ucsy.social.model;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -235,6 +234,7 @@ public class PostModel extends AbstractModel<Post> {
 	public ResultSet findOne(long id, String... cols) {
 		// TODO Auto-generated method stub
 		return null;
+
 	}
 
 }
