@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -15,6 +18,7 @@ import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.test.db.CustomConnectorFactory;
 import edu.ucsy.test.db.DatabaseInitializer;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class PostModelTest {
 
 	private static DatabaseConnector connector;
@@ -31,6 +35,7 @@ public class PostModelTest {
 		postModel = ModelFactory.getModel(Post.class, connector);
 	}
 	
+	@Order(1)
 	@ParameterizedTest
 	@CsvFileSource(
 			files = {"test-source/posts.txt"},
@@ -48,6 +53,7 @@ public class PostModelTest {
 		assertNull(post.postImages());
 	}
 	
+	@Order(2)
 	@ParameterizedTest
 	@CsvFileSource(
 			files = {"test-source/posts.txt"},
@@ -63,7 +69,8 @@ public class PostModelTest {
 		
 		assertNull(post.postImages());
 	}
-	
+
+	@Order(3)
 	@ParameterizedTest
 	@CsvFileSource(
 			files = {"test-source/posts.txt"},
@@ -85,6 +92,7 @@ public class PostModelTest {
 		assertEquals(10, posts.size());
 	}
 	
+	@Order(4)
 	@ParameterizedTest
 	@CsvFileSource(
 			files = {"test-source/content-update-posts.txt"},
