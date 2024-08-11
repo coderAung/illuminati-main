@@ -168,7 +168,6 @@ public class PostModel extends AbstractModel<Post> {
 		return false;
 	}
 
-
 	private Post postFrom(ResultSet rs) throws SQLException {
 		
 		var postImages = new ArrayList<PostImage>();
@@ -182,7 +181,6 @@ public class PostModel extends AbstractModel<Post> {
 				rs.getString(7));	
 		return post;
 	}
-
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
