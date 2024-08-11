@@ -9,7 +9,7 @@ id bigint primary key auto_increment,
 email varchar(255) not null unique,
 name varchar(255),
 password varchar(255),
-created_at timestamp null,
+created_at timestamp default(current_timestamp),
 updated_at timestamp default(current_timestamp)
 );
 
@@ -53,7 +53,7 @@ foreign key (friend_id) references users (id)
 create table posts(
 id bigint primary key auto_increment,
 content longtext,
-created_at timestamp not null,
+created_at timestamp default(current_timestamp),
 updated_at timestamp default(current_timestamp),
 user_id bigint not null,
 foreign key (user_id) references users (id)
@@ -69,7 +69,7 @@ foreign key (post_id) references posts (id)
 create table comments(
 id bigint primary key auto_increment,
 content longtext,
-created_at timestamp not null,
+created_at timestamp default(current_timestamp),
 updated_at timestamp default(current_timestamp),
 user_id bigint not null,
 post_id bigint not null,
