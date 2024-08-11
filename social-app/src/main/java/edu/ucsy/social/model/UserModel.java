@@ -239,6 +239,7 @@ public class UserModel extends AbstractModel<User> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
+
 		return null;
 	}
 
