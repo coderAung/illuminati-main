@@ -38,7 +38,7 @@ public class CommentModelTest {
 			delimiter = '\t')
 	void test_save(long id, String content, long userId, long postId, String userName) {
 //		System.out.printf("%s %s %s %s %s%n", id, content, userId, postId, userName);
-		var comment = new Comment(content, userId, postId);
+		var comment = new Comment(content, userId, userName, postId);
 		comment = commentModel.save(comment);
 		
 		assertNotNull(comment);
