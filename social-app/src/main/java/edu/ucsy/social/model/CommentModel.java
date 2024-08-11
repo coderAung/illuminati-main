@@ -55,15 +55,8 @@ public class CommentModel extends  AbstractModel <Comment>{
 	}
 	
 	private Comment commentFrom(ResultSet rs) throws SQLException {
-		var comment = new Comment(
-				rs.getLong(1),
-				rs.getString(2), 
-				rs.getTimestamp(3).toLocalDateTime(),
-				rs.getTimestamp(4).toLocalDateTime(),
-				rs.getLong(5),
-				rs.getString(6),
-				rs.getLong(7));
-		return comment;
+		
+		return null;
 	}
 
 	@Override
