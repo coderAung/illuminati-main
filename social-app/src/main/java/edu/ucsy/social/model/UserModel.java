@@ -62,7 +62,6 @@ public class UserModel extends AbstractModel<User> {
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
 				return userFrom(rs);
-				
 			}
 			
 		} catch (SQLException e) {
