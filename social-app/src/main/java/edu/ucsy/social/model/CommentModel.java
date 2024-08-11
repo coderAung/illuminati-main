@@ -10,31 +10,32 @@ import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
-import edu.ucsy.social.model.entity.Post;
-import edu.ucsy.social.model.entity.PostImage;
+import edu.ucsy.social.model.entity.Comment;
 
-public class PostModel extends AbstractModel<Post> {
+public class CommentModel extends  AbstractModel <Comment>{
 
-	public PostModel(DatabaseConnector connector) {
+	public CommentModel(DatabaseConnector connector) {
 		super(connector);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public Post save(Post p) {
+	public Comment save(Comment c) {
 		var sql = """
-				insert into posts (id, content, created_at, updated_at, user-id)
+				insert into comments (content, created_at , updated_at , user_id , post_id)
 				 values (?, ?, ?, ?, ?)
 				""";
 		
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			
-			stmt.setString(1, p.content());
+			stmt.setString(1, c.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 			stmt.setTimestamp(2, createdAt);
 			stmt.setTimestamp(3, updatedAt);
-			stmt.setLong(4, p.userId());
+			stmt.setLong(4, c.userId());
+			stmt.setLong(5, c.postId());
 
 			var row = stmt.executeUpdate();
 			if(row == 0) {
@@ -43,8 +44,8 @@ public class PostModel extends AbstractModel<Post> {
 			
 			var keys = stmt.getGeneratedKeys();
 			if(keys.next()) {
-				var posts = p.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime(),keys.getString(1));
-				return posts;
+				var comment = c.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime());
+				return comment;
 			}
 			
 		} catch (SQLException e) {
@@ -52,16 +53,28 @@ public class PostModel extends AbstractModel<Post> {
 		}
 		return null;
 	}
+	
+	private Comment commentFrom(ResultSet rs) throws SQLException {
+		var comment = new Comment(
+				rs.getLong(1),
+				rs.getString(2), 
+				rs.getTimestamp(3).toLocalDateTime(),
+				rs.getTimestamp(4).toLocalDateTime(),
+				rs.getLong(5),
+				rs.getString(6),
+				rs.getLong(7));
+		return comment;
+	}
 
 	@Override
-	public Post findOne(long id) {
-		var sql = "select * from posts where id = ?";
+	public Comment findOne(long id) {
+		var sql = "select * from comments where id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
-				return postFrom(rs);
+				return commentFrom(rs);
 				
 			}
 			
@@ -72,19 +85,19 @@ public class PostModel extends AbstractModel<Post> {
 	}
 
 	@Override
-	public List<Post> getAll() {
-		var sql = "select * from posts";
+	public List<Comment> getAll() {
+		var sql = "select * from comments";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
 			var rs = stmt.executeQuery();
-			var posts = new ArrayList<Post>();
+			var comments = new ArrayList<Comment>();
 			
 			while (rs.next()) {
-				var post = postFrom(rs);
-				posts.add(post);
+				var comment = commentFrom(rs);
+				comments.add(comment);
 			}
-			return posts;
+			return comments;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,19 +106,19 @@ public class PostModel extends AbstractModel<Post> {
 	}
 
 	@Override
-	public List<Post> get(long limit) {
-		var sql = "select * from posts limit ?";
+	public List<Comment> get(long limit) {
+		var sql = "select * from comments limit ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
-			var posts = new ArrayList<Post>();
+			var comments = new ArrayList<Comment>();
 			while(rs.next()) {
-				var user = postFrom(rs);
-				posts.add(user);
+				var comment = commentFrom(rs);
+				comments.add(comment);
 			}
-			return posts;
+			return comments;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,45 +127,71 @@ public class PostModel extends AbstractModel<Post> {
 	}
 
 	@Override
-	public Post update(Post p) {
-		var sql = "select * from posts where id = ?";
+	public Comment update(Comment c) {
+		var sql = "select * from comments where id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
-			stmt.setLong(1, p.id());
+			stmt.setLong(1, c.id());
 			
 			var rs = stmt.executeQuery();
 			
 			if(rs.next()) {
 
 				// content update
-				if(!p.content().equals(rs.getString("post"))) {
-					rs.updateString("post", p.content());
+				if(!c.content().equals(rs.getString("content"))) {
+					rs.updateString("content", c.content());
+					
 				}
-				
 
 				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 				rs.updateTimestamp("updated_at", updatedAt);
 
 				rs.updateRow();
-				return p.updatedClone(updatedAt.toLocalDateTime());
+				return c.updatedClone(updatedAt.toLocalDateTime());
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;	
+		return null;
 	}
 
 	@Override
-	public Post fullUpdate(Post t) {
-		// TODO Auto-generated method stub
+	public Comment fullUpdate(Comment c) {
+		var sql = """
+				update comments set (content, updated_at, user_id, post_id)
+				values (?, ?, ?, ?)
+				where id = ?
+				""";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)) {
+			
+			stmt.setString(1, c.content());
+			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
+			stmt.setTimestamp(2, updatedAt);
+			stmt.setLong(3, c.userId());
+			stmt.setLong(4, c.postId());
+			stmt.setLong(5, c.id());
+			
+
+			
+			var row = stmt.executeUpdate();
+			if(0 == row) {
+				return null;
+			}
+			
+			return c.updatedClone(updatedAt.toLocalDateTime());
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public boolean delete(long id) {
-		var sql = "delete from posts where id = ?";
+		var sql = "delete from comments where id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
@@ -167,20 +206,8 @@ public class PostModel extends AbstractModel<Post> {
 		}
 		return false;
 	}
-
-	private Post postFrom(ResultSet rs) throws SQLException {
-		
-		var postImages = new ArrayList<PostImage>();
-		var post = new Post(
-				rs.getLong(1),
-				rs.getString(2), 
-				postImages,
-				rs.getTimestamp(4).toLocalDateTime(),
-				rs.getTimestamp(5).toLocalDateTime(),
-				rs.getLong(6),
-				rs.getString(7));	
-		return post;
-	}
+	
+	
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
