@@ -214,7 +214,33 @@ public class UserModel extends AbstractModel<User> {
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
-		// TODO Auto-generated method stub
+
+		var sql = "select %s from users where id ?";
+		
+		var sb = new StringBuilder();
+		for(int i = 0; i < cols.length; i ++) {
+			if(i == cols.length - 1) {
+				sb.append("%s".formatted(cols[i]));
+			} else {
+				sb.append("%s, ".formatted(cols[i]));
+			}
+		}
+		
+		sql = sql.formatted(sb.toString());
+		
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)) {
+			
+			stmt.setLong(1, id);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+
 		return null;
 	}
 
