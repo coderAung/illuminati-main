@@ -213,7 +213,7 @@ public class UserModel extends AbstractModel<User> {
 	}
 
 	@Override
-	public User findOne(long id, String... cols) {
+	public ResultSet findOne(long id, String... cols) {
 		// TODO Auto-generated method stub
 		return null;
 	}

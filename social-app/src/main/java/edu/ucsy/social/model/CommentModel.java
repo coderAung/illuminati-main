@@ -210,7 +210,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 	
 
 	@Override
-	public Comment findOne(long id, String... cols) {
+	public ResultSet findOne(long id, String... cols) {
 		// TODO Auto-generated method stub
 		return null;
 	}
