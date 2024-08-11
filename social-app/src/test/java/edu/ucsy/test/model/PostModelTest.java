@@ -28,7 +28,7 @@ public class PostModelTest {
 	@BeforeAll
 	static void init() {
 		// enter specific password to get connector
-		connector = CustomConnectorFactory.getConnectorWithPassword("");
+		connector = CustomConnectorFactory.getConnectorWithPassword("admin");
 		di = new DatabaseInitializer(connector);
 		di.truncate("posts");
 		
