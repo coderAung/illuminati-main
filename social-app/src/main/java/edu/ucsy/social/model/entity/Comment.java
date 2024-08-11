@@ -16,6 +16,8 @@ public record Comment(
 	}
 	
 	public Comment perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
 		return new Comment(id, content, createdAt, updatedAt, userId, userName, postId);
 	}
 }
+ 
