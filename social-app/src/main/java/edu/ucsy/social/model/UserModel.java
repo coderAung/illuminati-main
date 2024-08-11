@@ -62,7 +62,6 @@ public class UserModel extends AbstractModel<User> {
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
 				return userFrom(rs);
-				
 			}
 			
 		} catch (SQLException e) {
@@ -214,7 +213,6 @@ public class UserModel extends AbstractModel<User> {
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
-
 		var sql = "select %s from users where id ?";
 		
 		var sb = new StringBuilder();
@@ -240,7 +238,6 @@ public class UserModel extends AbstractModel<User> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
-
 		return null;
 	}
 
