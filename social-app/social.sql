@@ -30,6 +30,7 @@ create table profile_images(
 id bigint primary key auto_increment,
 name varchar(255) not null unique,
 user_id bigint not null,
+status enum('ACTIVE', 'INACTIVE'),
 foreign key (user_id) references users (id)
 );
 
@@ -106,5 +107,3 @@ saved_at timestamp default(current_timestamp),
 foreign key (user_id) references users (id),
 foreign key (post_id) references posts (id)
 );
-
-
