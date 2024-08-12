@@ -19,5 +19,9 @@ public record Comment(
 
 		return new Comment(id, content, createdAt, updatedAt, userId, userName, postId);
 	}
+	
+	public Comment updatedClone(LocalDateTime updatedAt) {
+		return new Comment(id, content, createdAt, updatedAt, userId, userName, postId);
+	}
 }
  
