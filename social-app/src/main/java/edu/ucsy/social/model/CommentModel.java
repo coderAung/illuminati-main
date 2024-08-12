@@ -56,19 +56,20 @@ public class CommentModel extends  AbstractModel <Comment>{
 	
 	private Comment commentFrom(ResultSet rs) throws SQLException {
 		var comment = new Comment(
-				rs.getLong(1),
-				rs.getString(2), 
-				rs.getTimestamp(3).toLocalDateTime(),
-				rs.getTimestamp(4).toLocalDateTime(),
-				rs.getLong(5),
-				rs.getString(6),
-				rs.getLong(7));
+				rs.getLong("id"),
+				rs.getString("content"), 
+				rs.getTimestamp("created_at").toLocalDateTime(),
+				rs.getTimestamp("updated_at").toLocalDateTime(),
+				rs.getLong("user_id"),
+				rs.getString("user_name"),
+				rs.getLong("post_id")
+				);
 		return comment;
 	}
 
 	@Override
 	public Comment findOne(long id) {
-		var sql = "select * from comments where id = ?";
+		var sql = "select c.* , u.name as user_name from comments as c join users as u on c.user_id = u.id where c.id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
@@ -86,7 +87,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 
 	@Override
 	public List<Comment> getAll() {
-		var sql = "select * from comments";
+		var sql = "select p.id,p.content as post , c.content as comment, u.name as user_name from posts as p join comments as c on p.id = c.post_id join users as u on u.id = p.user_id";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
@@ -95,7 +96,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 			
 			while (rs.next()) {
 				var comment = commentFrom(rs);
-				comments.add(comment);
+				comments.add(comment); 
 			}
 			return comments;
 			

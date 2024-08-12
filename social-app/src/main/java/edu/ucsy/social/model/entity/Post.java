@@ -24,3 +24,4 @@ public record Post(
 		return new Post(id, content, postImages, createdAt, updatedAt, userId, userName);
 	}
 }
+

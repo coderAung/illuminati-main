@@ -100,7 +100,7 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public Post findOne(long id) {
-		var sql = "select * from posts where id = ?";
+		var sql = "select p.*, u.name as user_name from posts as p join users as u on u.id = p.user_id where p.id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
@@ -118,7 +118,7 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public List<Post> getAll() {
-		var sql = "select * from posts";
+		var sql = "select p.* , u.name as user_name from posts as p join users as u on u.id = p.user_id";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
@@ -171,8 +171,8 @@ public class PostModel extends AbstractModel<Post> {
 			if(rs.next()) {
 
 				// content update
-				if(!p.content().equals(rs.getString("post"))) {
-					rs.updateString("post", p.content());
+				if(!p.content().equals(rs.getString("content"))) {
+					rs.updateString("content", p.content());
 				}
 				
 
@@ -215,15 +215,15 @@ public class PostModel extends AbstractModel<Post> {
 
 	private Post postFrom(ResultSet rs) throws SQLException {
 		
-		var postImages = new ArrayList<PostImage>();
+		
 		var post = new Post(
-				rs.getLong(1),
-				rs.getString(2), 
-				postImages,
-				rs.getTimestamp(4).toLocalDateTime(),
-				rs.getTimestamp(5).toLocalDateTime(),
-				rs.getLong(6),
-				rs.getString(7));	
+				rs.getLong("id"),
+				rs.getString("content"), 
+				null,
+				rs.getTimestamp("created_at").toLocalDateTime(),
+				rs.getTimestamp("updated_at").toLocalDateTime(),
+				rs.getLong("user_id"),
+				rs.getString("user_name"));	
 		return post;
 	}
 

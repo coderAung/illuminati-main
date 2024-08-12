@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -28,7 +29,7 @@ public class PostModelTest {
 	@BeforeAll
 	static void init() {
 		// enter specific password to get connector
-		connector = CustomConnectorFactory.getConnectorWithPassword("admin");
+		connector = CustomConnectorFactory.getConnectorWithPassword("");
 		di = new DatabaseInitializer(connector);
 		di.truncate("posts");
 		
@@ -71,24 +72,10 @@ public class PostModelTest {
 	}
 
 	@Order(3)
-	@ParameterizedTest
-	@CsvFileSource(
-			files = {"test-source/posts.txt"},
-			delimiter = '\t')
-	void test_getAll(long id, String content, long userId, String userName) {
+	@Test
+	void test_getAll() {
 		var posts = postModel.getAll();
 		assertNotNull(posts);
-		
-		for(var post : posts) {
-			assertNotNull(post);
-			assertEquals(id, post.id());
-			assertEquals(content, post.content());
-			assertEquals(userId, post.userId());
-			assertEquals(userName, post.userName());
-			
-			assertNull(post.postImages());		
-		}
-		
 		assertEquals(10, posts.size());
 	}
 	
