@@ -28,7 +28,7 @@ public class PostModelTest {
 	@BeforeAll
 	static void init() {
 		// enter specific password to get connector
-		connector = CustomConnectorFactory.getConnectorWithPassword("");
+		connector = CustomConnectorFactory.getConnectorWithPassword("admin");
 		di = new DatabaseInitializer(connector);
 		di.truncate("posts");
 		
@@ -41,7 +41,7 @@ public class PostModelTest {
 			files = {"test-source/posts.txt"},
 			delimiter = '\t')
 	void test_save(long id, String content, long userId, String userName) {
-		var post = new Post(content, null, userId);
+		var post = new Post(content, null, userId, userName);
 		post = postModel.save(post);
 		
 		assertNotNull(post);
