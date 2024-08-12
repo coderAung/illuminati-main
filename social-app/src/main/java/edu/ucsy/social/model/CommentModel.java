@@ -10,31 +10,32 @@ import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
-import edu.ucsy.social.model.entity.User;
+import edu.ucsy.social.model.entity.Comment;
 
-public class UserModel extends AbstractModel<User> {
+public class CommentModel extends  AbstractModel <Comment>{
 
-	public UserModel(DatabaseConnector connector) {
+	public CommentModel(DatabaseConnector connector) {
 		super(connector);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public User save(User u) {
+	public Comment save(Comment c) {
 		var sql = """
-				insert into users (email, name, password, created_at, updated_at)
+				insert into comments (content, created_at , updated_at , user_id , post_id)
 				 values (?, ?, ?, ?, ?)
 				""";
 		
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			
-			stmt.setString(1, u.email());
-			stmt.setString(2, u.name());
-			stmt.setString(3, u.password());
+			stmt.setString(1, c.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
-			stmt.setTimestamp(4, createdAt);
-			stmt.setTimestamp(5, updatedAt);
+			stmt.setTimestamp(2, createdAt);
+			stmt.setTimestamp(3, updatedAt);
+			stmt.setLong(4, c.userId());
+			stmt.setLong(5, c.postId());
 
 			var row = stmt.executeUpdate();
 			if(row == 0) {
@@ -43,8 +44,8 @@ public class UserModel extends AbstractModel<User> {
 			
 			var keys = stmt.getGeneratedKeys();
 			if(keys.next()) {
-				var user = u.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime());
-				return user;
+				var comment = c.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime());
+				return comment;
 			}
 			
 		} catch (SQLException e) {
@@ -52,16 +53,29 @@ public class UserModel extends AbstractModel<User> {
 		}
 		return null;
 	}
+	
+	private Comment commentFrom(ResultSet rs) throws SQLException {
+		var comment = new Comment(
+				rs.getLong(1),
+				rs.getString(2), 
+				rs.getTimestamp(3).toLocalDateTime(),
+				rs.getTimestamp(4).toLocalDateTime(),
+				rs.getLong(5),
+				rs.getString(6),
+				rs.getLong(7));
+		return comment;
+	}
 
 	@Override
-	public User findOne(long id) {
-		var sql = "select * from users where id = ?";
+	public Comment findOne(long id) {
+		var sql = "select * from comments where id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
-				return userFrom(rs);
+				return commentFrom(rs);
+				
 			}
 			
 		} catch (SQLException e) {
@@ -71,19 +85,19 @@ public class UserModel extends AbstractModel<User> {
 	}
 
 	@Override
-	public List<User> getAll() {
-		var sql = "select * from users";
+	public List<Comment> getAll() {
+		var sql = "select * from comments";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
 			var rs = stmt.executeQuery();
-			var users = new ArrayList<User>();
+			var comments = new ArrayList<Comment>();
 			
 			while (rs.next()) {
-				var user = userFrom(rs);
-				users.add(user);
+				var comment = commentFrom(rs);
+				comments.add(comment);
 			}
-			return users;
+			return comments;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -92,19 +106,19 @@ public class UserModel extends AbstractModel<User> {
 	}
 
 	@Override
-	public List<User> get(long limit) {
-		var sql = "select * from users limit ?";
+	public List<Comment> get(long limit) {
+		var sql = "select * from comments limit ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
-			var users = new ArrayList<User>();
+			var comments = new ArrayList<Comment>();
 			while(rs.next()) {
-				var user = userFrom(rs);
-				users.add(user);
+				var comment = commentFrom(rs);
+				comments.add(comment);
 			}
-			return users;
+			return comments;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -113,68 +127,61 @@ public class UserModel extends AbstractModel<User> {
 	}
 
 	@Override
-	public User update(User u) {
-		var sql = "select * from users where id = ?";
+	public Comment update(Comment c) {
+		var sql = "select * from comments where id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
-			stmt.setLong(1, u.id());
+			stmt.setLong(1, c.id());
 			
 			var rs = stmt.executeQuery();
 			
 			if(rs.next()) {
 
-				// email update
-				if(!u.email().equals(rs.getString("email"))) {
-					rs.updateString("email", u.email());
+				// content update
+				if(!c.content().equals(rs.getString("content"))) {
+					rs.updateString("content", c.content());
+					
 				}
-				// name update
-				if(!u.name().equals(rs.getString("name"))) {
-					rs.updateString("name", u.name());
-				}
-				// password update
-				if(!u.password().equals(rs.getString("password"))) {
-					rs.updateString("password", u.password());
-				}
-				
+
 				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 				rs.updateTimestamp("updated_at", updatedAt);
 
 				rs.updateRow();
-				return u.updatedClone(updatedAt.toLocalDateTime());
+				return c.updatedClone(updatedAt.toLocalDateTime());
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;	
+		return null;
 	}
 
 	@Override
-	public User fullUpdate(User u) {
+	public Comment fullUpdate(Comment c) {
 		var sql = """
-				update users set (email, name, password, updated_at)
+				update comments set (content, updated_at, user_id, post_id)
 				values (?, ?, ?, ?)
 				where id = ?
 				""";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			
-			stmt.setString(1, u.email());
-			stmt.setString(2, u.name());
-			stmt.setString(3, u.password());
-			
+			stmt.setString(1, c.content());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
-			stmt.setTimestamp(4, updatedAt);
+			stmt.setTimestamp(2, updatedAt);
+			stmt.setLong(3, c.userId());
+			stmt.setLong(4, c.postId());
+			stmt.setLong(5, c.id());
 			
-			stmt.setLong(5, u.id());
+
 			
 			var row = stmt.executeUpdate();
 			if(0 == row) {
 				return null;
 			}
 			
-			return u.updatedClone(updatedAt.toLocalDateTime());
+			return c.updatedClone(updatedAt.toLocalDateTime());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -184,7 +191,7 @@ public class UserModel extends AbstractModel<User> {
 
 	@Override
 	public boolean delete(long id) {
-		var sql = "delete from users where id = ?";
+		var sql = "delete from comments where id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
@@ -199,45 +206,12 @@ public class UserModel extends AbstractModel<User> {
 		}
 		return false;
 	}
-
-	private User userFrom(ResultSet rs) throws SQLException {
-		var user = new User(
-				rs.getLong(1),
-				rs.getString(2), 
-				rs.getString(3),
-				rs.getString(4),
-				rs.getTimestamp(5).toLocalDateTime(),
-				rs.getTimestamp(6).toLocalDateTime());
-		return user;
-	}
+	
+	
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
-		var sql = "select %s from users where id ?";
-		
-		var sb = new StringBuilder();
-		for(int i = 0; i < cols.length; i ++) {
-			if(i == cols.length - 1) {
-				sb.append("%s".formatted(cols[i]));
-			} else {
-				sb.append("%s, ".formatted(cols[i]));
-			}
-		}
-		
-		sql = sql.formatted(sb.toString());
-		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
-			
-			stmt.setLong(1, id);
-			var rs = stmt.executeQuery();
-			if(rs.next()) {
-				return rs;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
+		// TODO Auto-generated method stub
 		return null;
 	}
 

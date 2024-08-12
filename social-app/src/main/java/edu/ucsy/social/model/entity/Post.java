@@ -12,8 +12,8 @@ public record Post(
 		long userId,
 		String userName) {
 
-	public Post(String content, List<PostImage> postImages, long userId) {
-		this(0, content, postImages, null, null, userId, null);
+	public Post(String content, List<PostImage> postImages, long userId, String userName) {
+		this(0, content, postImages, null, null, userId, userName);
 	}
 	
 	public Post perfectClone(long id, List<PostImage> postImages, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -23,5 +23,4 @@ public record Post(
 	public Post updatedClone(LocalDateTime updatedAt) {
 		return new Post(id, content, postImages, createdAt, updatedAt, userId, userName);
 	}
-
 }
