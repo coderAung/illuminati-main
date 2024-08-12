@@ -14,6 +14,7 @@ import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Comment;
+import edu.ucsy.test.db.CustomConnectorFactory;
 import edu.ucsy.test.db.DatabaseInitializer;
 
 @TestMethodOrder(OrderAnnotation.class)
@@ -26,8 +27,9 @@ public class CommentModelTest {
 	@BeforeAll
 	static void init() {
 		// initiate connector from CustomConnectorFactory here
-		
+		connector = CustomConnectorFactory.getConnectorWithPassword("admin");
 		di = new DatabaseInitializer(connector);
+		di.truncate("comments");
 		commentModel = ModelFactory.getModel(Comment.class, connector);
 	}
 	
@@ -38,9 +40,28 @@ public class CommentModelTest {
 			delimiter = '\t')
 	void test_save(long id, String content, long userId, long postId, String userName) {
 //		System.out.printf("%s %s %s %s %s%n", id, content, userId, postId, userName);
-		var comment = new Comment(content, userId, postId);
+		var comment = new Comment(content, userId, userName, postId);
 		comment = commentModel.save(comment);
 		
+		assertNotNull(comment);
+		assertEquals(id, comment.id());
+		assertEquals(content, comment.content());
+		assertEquals(userId, comment.userId());
+		assertEquals(postId, comment.postId());
+		assertEquals(userName, comment.userName());
+		
+		assertNotNull(comment.createdAt());
+		assertNotNull(comment.updatedAt());
+	}
+	
+	@Order(2)
+	@ParameterizedTest
+	@CsvFileSource(
+			files = {"test-source/comments.txt"},
+			delimiter = '\t')
+	void test_findOne(long id, String content, long userId, long postId, String userName) {
+		var comment = commentModel.findOne(id);
+
 		assertNotNull(comment);
 		assertEquals(id, comment.id());
 		assertEquals(content, comment.content());

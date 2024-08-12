@@ -22,14 +22,14 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public Post save(Post p) {
-		var sql = """
-				insert into posts (id, content, created_at, updated_at, user-id)
-				 values (?, ?, ?, ?, ?)
-				""";
+		var postImages = p.postImages();
+		var sql1 = """
+					insert into posts (content, created_at, updated_at, user_id)
+					values (?, ?, ?, ?)
+				""";		
 		
 		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			
+				var stmt = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, p.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
@@ -38,15 +38,59 @@ public class PostModel extends AbstractModel<Post> {
 			stmt.setLong(4, p.userId());
 
 			var row = stmt.executeUpdate();
+			if(null != postImages) {
+				postImages = savePostImages(conn, postImages);
+			}
+			
 			if(row == 0) {
 				return null;
 			}
 			
 			var keys = stmt.getGeneratedKeys();
 			if(keys.next()) {
-				var posts = p.perfectClone(keys.getLong(1), createdAt.toLocalDateTime(), updatedAt.toLocalDateTime(),keys.getString(1));
+				var posts = p.perfectClone(
+						keys.getLong(1),
+						postImages,
+						createdAt.toLocalDateTime(), 
+						updatedAt.toLocalDateTime());
+
 				return posts;
 			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private List<PostImage> savePostImages(Connection conn, List<PostImage> postImages) {
+		var sql = "insert into post_images (name, post_id) values (?, ?)";
+		try(var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			
+			for(var pi : postImages) {
+				stmt.setString(1, pi.name());
+				stmt.setLong(2, pi.postId());
+				
+				stmt.addBatch();
+			}
+			
+			var rows = stmt.executeBatch();
+			if(rows.length == 0) {
+				return null;
+			}
+			
+			var savedPostImages = new ArrayList<PostImage>();
+			
+			var keys = stmt.getGeneratedKeys();
+			var index = 0;
+			
+			while(keys.next()) {
+				var pi = postImages.get(index).perfectClone(keys.getLong(1));
+				savedPostImages.add(pi);
+				++ index;
+			}
+			return savedPostImages;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

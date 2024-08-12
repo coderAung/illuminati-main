@@ -16,8 +16,8 @@ public record Post(
 		this(0, content, postImages, null, null, userId, userName);
 	}
 	
-	public Post perfectClone(long id, LocalDateTime localDateTime, LocalDateTime createdAt, String string) {
-		return new Post(id, content, localDateTime, createdAt, string, userId, userName);
+	public Post perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt, String string) {
+		return new Post(id, content, null, createdAt, updatedAt, userId, userName);
 	}
 	
 	public Post updatedClone(LocalDateTime updatedAt) {
