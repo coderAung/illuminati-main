@@ -16,7 +16,6 @@ public record Post(
 		this(0, content, postImages, null, null, userId, userName);
 	}
 	
-	public Post perfectClone(long id, List<PostImage> postImages, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		return new Post(id, content, postImages, createdAt, updatedAt, userId, userName);
 	}
 	
