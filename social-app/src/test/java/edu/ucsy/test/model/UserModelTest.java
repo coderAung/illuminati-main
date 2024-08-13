@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.model.entity.User;
+import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.test.db.CustomConnectorFactory;
 import edu.ucsy.test.db.DatabaseInitializer;
 
@@ -36,8 +37,8 @@ public class UserModelTest {
 	@CsvFileSource(
 			files = {"test-source/users.txt"},
 			delimiter = '\t')
-	void test_save(long id, String email, String name, String password) {
-		var user = new User(email, name, password);
+	void test_save(long id, String email, String name, String password, Role role) {
+		var user = new User(email, name, password, role);
 		var savedUser = model.save(user);
 		
 		assertNotNull(savedUser);
@@ -45,6 +46,7 @@ public class UserModelTest {
 		assertEquals(email, savedUser.email());
 		assertEquals(name, savedUser.name());
 		assertEquals(password, savedUser.password());
+		assertEquals(role, savedUser.role());
 	}
 	
 	@Order(3)
@@ -53,7 +55,7 @@ public class UserModelTest {
 			files = {"test-source/name-update-user.txt"},
 			delimiter = '\t')
 	void test_update_name(long id, String email, String name, String password) {
-		var user = new User(id, email, name, password, null, null);
+		var user = new User(id, email, name, password, Role.MEMBER, null, null);
 		var updatedUser = model.update(user);
 		
 		assertNotNull(updatedUser);
@@ -65,12 +67,13 @@ public class UserModelTest {
 	@CsvFileSource(
 			files = {"test-source/users.txt"},
 			delimiter = '\t')
-	void test_find_one(long id, String email, String name, String password) {
+	void test_find_one(long id, String email, String name, String password, Role role) {
 		var user = model.findOne(id);
 		assertNotNull(user);
 		assertEquals(id, user.id());
 		assertEquals(email, user.email());
 		assertEquals(name, user.name());
 		assertEquals(password, user.password());
+		assertEquals(role, user.role());
 	}
 }
