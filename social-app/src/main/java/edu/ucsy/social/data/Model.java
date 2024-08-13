@@ -27,7 +27,15 @@ public interface Model<T> {
 		if(this instanceof Relational model) {
 			return (R) model;
 		}
-
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	default BatchModel<T> getBatchModel() {
+		
+		if(this instanceof BatchModel model) {
+			return model;
+		}
 		return null;
 	}
 }

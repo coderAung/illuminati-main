@@ -174,7 +174,7 @@ public class DatabaseInitializer {
 	}
 
 	private Post postFrom(String[] array) {
-		var post = new Post(array[0], null, Long.parseLong(array[1]), array[2]);
+		var post = new Post(array[0], Long.parseLong(array[1]), array[2]);
 		
 		return post;
 	}
