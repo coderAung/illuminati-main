@@ -5,11 +5,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.mysql.cj.x.protobuf.MysqlxPrepare.Execute;
 
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.CoverImage;
+import edu.ucsy.social.model.entity.type.ImageStatus;
 
 public class CoverImageModel extends AbstractModel <CoverImage>{
 
@@ -51,7 +55,30 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 
 	@Override
 	public CoverImage findOne(long id) {
+		var sql= "select * from cover_images where id = ?";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+			stmt.setLong(1,id);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return CoverImageFrom(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
+	}
+
+	private CoverImage CoverImageFrom(ResultSet rs) throws SQLException{
+		
+		var coverImage = new CoverImage(
+				rs.getLong("id"),
+				rs.getString("name"),
+				rs.getLong("user_id"),
+				ImageStatus.valueOf(rs.getString("status")),
+				rs.getTimestamp("uploaded_at").toLocalDateTime()
+				);
+		return coverImage;
 	}
 
 	@Override
@@ -61,26 +88,78 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 
 	@Override
 	public List<CoverImage> getAll() {
+		var sql = "select * from cover_images";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)){
+			var rs = stmt.executeQuery();
+			var coverImages = new ArrayList<CoverImage>();
+			while(rs.next()) {
+				var coverImage = CoverImageFrom(rs);
+				coverImages.add(coverImage);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public List<CoverImage> get(long limit) {
+		var sql = "select * from cover_images limit ?";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)){
+			stmt.setLong(1, limit);
+			var rs = stmt.executeQuery();
+			var coverImages = new ArrayList<CoverImage>();
+			while(rs.next()) {
+				var coverImage = CoverImageFrom(rs);
+				coverImages.add(coverImage);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
-	public CoverImage update(CoverImage t) {
+	public CoverImage update(CoverImage ci) {
+		var sql ="select * from cover_images where id = ?";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+			stmt.setLong(1, ci.id());
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				
+				if(ci.name().equals(rs.getString("name"))) {
+					rs.updateString("name", ci.name());
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
-	public CoverImage fullUpdate(CoverImage t) {
-		return null;
+	public CoverImage fullUpdate(CoverImage ci) {
+		var updatedCoverImage = update(ci);
+		return updatedCoverImage;
 	}
 
 	@Override
 	public boolean delete(long id) {
+		var sql = "delete from cover_images where id = ?";
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+			stmt.setLong(1, id);
+			var row = stmt.executeUpdate();
+			if(row == 0 ) {
+				return false;
+			}
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
