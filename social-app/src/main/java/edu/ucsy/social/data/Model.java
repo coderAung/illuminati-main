@@ -21,8 +21,19 @@ public interface Model<T> {
 	
 	boolean delete(long id);
     
-	default Relational getRelational() {
+	@SuppressWarnings("unchecked")
+	default <R extends Relational> R getRelational(Class<R> r) {
+
 		if(this instanceof Relational model) {
+			return (R) model;
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	default BatchModel<T> getBatchModel() {
+		
+		if(this instanceof BatchModel model) {
 			return model;
 		}
 		return null;

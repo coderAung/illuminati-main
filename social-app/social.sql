@@ -31,9 +31,18 @@ id bigint primary key auto_increment,
 name varchar(255) not null unique,
 user_id bigint not null,
 status enum('ACTIVE', 'INACTIVE'),
+uploaded_at timestamp default(current_timestamp),
 foreign key (user_id) references users (id)
 );
 
+create table cover_images(
+id bigint primary key auto_increment,
+name varchar(255) not null unique,
+user_id bigint not null,
+status enum('ACTIVE', 'INACTIVE'),
+uploaded_at timestamp default(current_timestamp),
+foreign key (user_id) references users (id)
+);
 
 -- special query for friends table
 

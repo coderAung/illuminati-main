@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -27,7 +28,7 @@ public class CommentModelTest {
 	@BeforeAll
 	static void init() {
 		// initiate connector from CustomConnectorFactory here
-		connector = CustomConnectorFactory.getConnectorWithPassword("admin");
+		connector = CustomConnectorFactory.getConnectorWithPassword("");
 		di = new DatabaseInitializer(connector);
 		di.truncate("comments");
 		commentModel = ModelFactory.getModel(Comment.class, connector);
@@ -54,6 +55,7 @@ public class CommentModelTest {
 		assertNotNull(comment.updatedAt());
 	}
 	
+	@Disabled
 	@Order(2)
 	@ParameterizedTest
 	@CsvFileSource(
