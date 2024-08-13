@@ -9,7 +9,7 @@ public class LoaderTest {
 
 	@Test
 	void test() {
-		var di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithPassword(""));
+		var di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithPassword("root"));
 		di.loadUser();
 		di.loadPost();
 		di.loadPostImage();
