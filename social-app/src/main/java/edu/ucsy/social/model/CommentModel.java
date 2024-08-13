@@ -16,7 +16,6 @@ public class CommentModel extends  AbstractModel <Comment>{
 
 	public CommentModel(DatabaseConnector connector) {
 		super(connector);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
