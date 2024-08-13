@@ -11,6 +11,7 @@ import java.util.List;
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.User;
+import edu.ucsy.social.utils.StringTool;
 
 public class UserModel extends AbstractModel<User> {
 
@@ -153,8 +154,8 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public User fullUpdate(User u) {
 		var sql = """
-				update users set (email, name, password, updated_at)
-				values (?, ?, ?, ?)
+				update users 
+				set email = ?, name = ?, password = ?, updated_at = ?
 				where id = ?
 				""";
 		try(var conn = connector.getConnection();
@@ -189,7 +190,7 @@ public class UserModel extends AbstractModel<User> {
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
-			if(row == 0) {
+			if(0 == row) {
 				return false;
 			}
 			return true;
@@ -213,18 +214,9 @@ public class UserModel extends AbstractModel<User> {
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
-		var sql = "select %s from users where id ?";
-		
-		var sb = new StringBuilder();
-		for(int i = 0; i < cols.length; i ++) {
-			if(i == cols.length - 1) {
-				sb.append("%s".formatted(cols[i]));
-			} else {
-				sb.append("%s, ".formatted(cols[i]));
-			}
-		}
-		
-		sql = sql.formatted(sb.toString());
+		var sql = "select %s from users where id = ?";
+		var columns = StringTool.joinWithComma(cols);		
+		sql = sql.formatted(columns);
 		
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {

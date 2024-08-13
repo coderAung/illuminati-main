@@ -1,6 +1,5 @@
 package edu.ucsy.social.model;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,7 +11,7 @@ import java.util.List;
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Post;
-import edu.ucsy.social.model.entity.PostImage;
+import edu.ucsy.social.utils.StringTool;
 
 public class PostModel extends AbstractModel<Post> {
 
@@ -22,7 +21,6 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public Post save(Post p) {
-		var postImages = p.postImages();
 		var sql1 = """
 					insert into posts (content, created_at, updated_at, user_id)
 					values (?, ?, ?, ?)
@@ -38,10 +36,6 @@ public class PostModel extends AbstractModel<Post> {
 			stmt.setLong(4, p.userId());
 
 			var row = stmt.executeUpdate();
-			if(null != postImages) {
-				postImages = savePostImages(conn, postImages);
-			}
-			
 			if(row == 0) {
 				return null;
 			}
@@ -50,7 +44,6 @@ public class PostModel extends AbstractModel<Post> {
 			if(keys.next()) {
 				var posts = p.perfectClone(
 						keys.getLong(1),
-						postImages,
 						createdAt.toLocalDateTime(), 
 						updatedAt.toLocalDateTime());
 
@@ -64,40 +57,6 @@ public class PostModel extends AbstractModel<Post> {
 		return null;
 	}
 
-	private List<PostImage> savePostImages(Connection conn, List<PostImage> postImages) {
-		var sql = "insert into post_images (name, post_id) values (?, ?)";
-		try(var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			
-			for(var pi : postImages) {
-				stmt.setString(1, pi.name());
-				stmt.setLong(2, pi.postId());
-				
-				stmt.addBatch();
-			}
-			
-			var rows = stmt.executeBatch();
-			if(rows.length == 0) {
-				return null;
-			}
-			
-			var savedPostImages = new ArrayList<PostImage>();
-			
-			var keys = stmt.getGeneratedKeys();
-			var index = 0;
-			
-			while(keys.next()) {
-				var pi = postImages.get(index).perfectClone(keys.getLong(1));
-				savedPostImages.add(pi);
-				++ index;
-			}
-			return savedPostImages;
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@Override
 	public Post findOne(long id) {
 		var sql = "select p.*, u.name as user_name from posts as p join users as u on u.id = p.user_id where p.id = ?";
@@ -107,7 +66,6 @@ public class PostModel extends AbstractModel<Post> {
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
 				return postFrom(rs);
-				
 			}
 			
 		} catch (SQLException e) {
@@ -175,7 +133,6 @@ public class PostModel extends AbstractModel<Post> {
 					rs.updateString("content", p.content());
 				}
 				
-
 				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 				rs.updateTimestamp("updated_at", updatedAt);
 
@@ -191,8 +148,8 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public Post fullUpdate(Post t) {
-		// TODO Auto-generated method stub
-		return null;
+		var updatedPost = update(t);
+		return updatedPost;
 	}
 
 	@Override
@@ -219,7 +176,6 @@ public class PostModel extends AbstractModel<Post> {
 		var post = new Post(
 				rs.getLong("id"),
 				rs.getString("content"), 
-				null,
 				rs.getTimestamp("created_at").toLocalDateTime(),
 				rs.getTimestamp("updated_at").toLocalDateTime(),
 				rs.getLong("user_id"),
@@ -229,9 +185,21 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
-		// TODO Auto-generated method stub
+		var sql = "select %s from posts where id = ?";
+		var columns = StringTool.joinWithComma(cols);
+		
+		sql = sql.formatted(columns);
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
-
 	}
 
 }
