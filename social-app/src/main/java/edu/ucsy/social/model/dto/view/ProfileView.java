@@ -9,12 +9,32 @@ public class ProfileView implements Serializable {
 	private String name;
 	private String email;
 	private String profileImage;
+	private String coverImage;
 
-	public ProfileView(String name, String email, String profileImage) {
+	public ProfileView(String name, String email) {
+		super();
+		this.name = name;
+		this.email = email;
+	}
+
+	public ProfileView(String name, String email, String profileImage, String coverImage) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.profileImage = profileImage;
+		this.coverImage = coverImage;
+	}
+
+	public String getCoverImage() {
+		return coverImage;
+	}
+
+	public void setCoverImage(String coverImage) {
+		this.coverImage = coverImage;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getName() {

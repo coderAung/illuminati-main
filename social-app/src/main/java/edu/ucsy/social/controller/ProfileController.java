@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
-import edu.ucsy.social.model.dto.LoginUser;
+import edu.ucsy.social.service.FriendService;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.service.UserService;
@@ -33,11 +33,13 @@ public class ProfileController extends Controller {
 	private DataSource dataSource;
 	private UserService userService;
 	private PostService postService;
+	private FriendService friendService;
 	
 	@Override
 	public void init() throws ServletException {
 		userService = ServiceFactory.getService(UserService.class, dataSource);
 		postService = ServiceFactory.getService(PostService.class, dataSource);
+		friendService = ServiceFactory.getService(FriendService.class, dataSource);
 	}
 	
 	
@@ -75,6 +77,13 @@ public class ProfileController extends Controller {
 	}
 
 	private void forwardToFriendPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// get id from login user
+		var userid = getLoginUser(req).getId();
+		// get friend views of login user
+		var friendViews = friendService.getFriendView(userid, 30);
+		// set friend views request scope
+		req.setAttribute("friendViews", friendViews);
+		
 		view(req, resp, "friends");
 	}
 
