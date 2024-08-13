@@ -2,6 +2,13 @@ package edu.ucsy.social.controller;
 
 import java.io.IOException;
 
+import javax.sql.DataSource;
+
+import edu.ucsy.social.model.dto.LoginUser;
+import edu.ucsy.social.service.PostService;
+import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.service.UserService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +28,18 @@ public class ProfileController extends Controller {
 	private static final String PROFILE_FRIENDS = "/profile/friends";
 	private static final String PROFILE_DETAIL = "/profile/detail";
 	private static final String PROFILE_EDIT = "/profile/edit";
+	
+	@Resource(name = "social")
+	private DataSource dataSource;
+	private UserService userService;
+	private PostService postService;
+	
+	@Override
+	public void init() throws ServletException {
+		userService = ServiceFactory.getService(UserService.class, dataSource);
+		postService = ServiceFactory.getService(PostService.class, dataSource);
+	}
+	
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,6 +79,21 @@ public class ProfileController extends Controller {
 	}
 
 	private void forwardToProfilePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// get id from login user
+		var loginUser = getLoginUser(req);
+		var userid = loginUser.getId();
+		
+		// get profile card view
+		var profileView = userService.getProfileView(userid);
+		
+		// set profile card view to request scope
+		req.setAttribute("profileView", profileView);
+		
+		// get 30 post views
+		var postViews = postService.getPostViews(userid, 30);
+		// set post views to request scope
+		req.setAttribute("postViews", postViews);
+		
 		view(req, resp, "profile");
 	}
 
