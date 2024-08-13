@@ -9,6 +9,7 @@ id bigint primary key auto_increment,
 email varchar(255) not null unique,
 name varchar(255),
 password varchar(255),
+role enum('ADMIN', 'MEMBER') default(1),
 created_at timestamp default(current_timestamp),
 updated_at timestamp default(current_timestamp)
 );
