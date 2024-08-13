@@ -10,6 +10,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
+import edu.ucsy.social.data.OneToMany;
+import edu.ucsy.social.data.OneToManyAsMap;
+import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.test.db.CustomConnectorFactory;
@@ -33,7 +36,7 @@ public class UserModelPostImageTest {
 	@ParameterizedTest
 	@CsvSource({"1,2,3"})
 	void test_getManyImage(int id1, int id2, int id3) {
-		var rm = model.getRelational();
+		var rm = model.getRelational(OneToManyAsMap.class);
 		var imgMap = rm.getMany(PostImage.class, Set.of(id1, id2, id3));
 		
 		assertNotNull(imgMap);
@@ -41,6 +44,8 @@ public class UserModelPostImageTest {
 		System.out.println(imgMap.get(id1));
 		System.out.println(imgMap.get(id2));
 		System.out.println(imgMap.get(id3));
+		
+		model.getRelational(OneToMany.class).getMany(Post.class, 1);
 	}
 
 }

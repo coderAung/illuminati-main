@@ -21,10 +21,13 @@ public interface Model<T> {
 	
 	boolean delete(long id);
     
-	default Relational getRelational() {
+	@SuppressWarnings("unchecked")
+	default <R extends Relational> R getRelational(Class<R> r) {
+
 		if(this instanceof Relational model) {
-			return model;
+			return (R) model;
 		}
+
 		return null;
 	}
 }
