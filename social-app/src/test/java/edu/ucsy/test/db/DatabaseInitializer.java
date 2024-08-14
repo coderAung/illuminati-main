@@ -12,6 +12,8 @@ import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
+import edu.ucsy.social.model.entity.User.Role;
+import edu.ucsy.social.model.entity.User.Status;
 
 public class DatabaseInitializer {
 
@@ -45,8 +47,8 @@ public class DatabaseInitializer {
 			System.out.printf("%s %s %s%n".formatted(u.email(), u.name(), u.password()));
 		});
 		var sql = """
-				insert into users (email, name, password, created_at, updated_at)
-				 values (?, ?, ?, ?, ?)
+				insert into users (email, name, password, role, created_at, updated_at)
+				 values (?, ?, ?, ?, ?, ?)
 				""";
 
 		try(var conn = connector.getConnection();
@@ -56,10 +58,11 @@ public class DatabaseInitializer {
 				stmt.setString(1, user.email());
 				stmt.setString(2, user.name());
 				stmt.setString(3, user.password());
+				stmt.setInt(4, user.role().ordinal() + 1);
 				var createdAt = Timestamp.valueOf(LocalDateTime.now());
 				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
-				stmt.setTimestamp(4, createdAt);
-				stmt.setTimestamp(5, updatedAt);
+				stmt.setTimestamp(5, createdAt);
+				stmt.setTimestamp(6, updatedAt);
 				
 				stmt.addBatch();
 			}
@@ -88,7 +91,7 @@ public class DatabaseInitializer {
 	}
 	
 	public User userFrom(String [] array) {
-		return new User(array[0], array[1], array[2]);
+		return new User(array[0], array[1], array[2], Role.valueOf(array[3]), Status.valueOf(array[4]));
 	}
 	
 	public void loadPostImage() {
