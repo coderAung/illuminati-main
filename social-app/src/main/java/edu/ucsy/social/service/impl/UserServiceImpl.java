@@ -70,4 +70,18 @@ public class UserServiceImpl implements UserService {
 		return profileDetailView;
 	}
 
+	@Override
+	public boolean changePassword(String newPassword, int userId) {
+		var user = userModel.findOne(userId);
+		if(null == user) {
+			return false;
+		}
+		user = new User(user.email(), user.name(), newPassword);
+		var result = userModel.update(user);
+		if(null != result) {
+			return true;
+		}
+		return false;
+	}
+
 }

@@ -8,4 +8,6 @@ public interface UserService {
 	ProfileView getProfileView(int id);
 
 	ProfileDetailView getProfileDetailView(int userId);
+
+	boolean changePassword(String newPassword, int userId);
 }
