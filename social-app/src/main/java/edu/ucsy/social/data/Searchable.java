@@ -15,4 +15,11 @@ public interface Searchable<T> {
 	List<T> search(Criteria c);
 	
 	List<T> search(Criteria c, long limit);
+
+	List<T> searchLatest(long limit);
+	
+	List<T> searchLatest(Criteria c);
+
+	List<T> searchLatest(Criteria c, long limit);
+
 }
