@@ -7,5 +7,5 @@ public interface UserService {
 
 	ProfileView getProfileView(int id);
 
-	ProfileDetailView getProfileDetailView(int userid);
+	ProfileDetailView getProfileDetailView(int userId);
 }

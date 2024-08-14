@@ -51,14 +51,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ProfileDetailView getProfileDetailView(int userid) {
-		var user = userModel.findOne(userid);
+	public ProfileDetailView getProfileDetailView(int userId) {
+		var user = userModel.findOne(userId);
 		if(null == user) {
 			return null;
 		}
-		var profileDetailView = new ProfileDetailView(userid, user.email(), user.name());
+		var profileDetailView = new ProfileDetailView(userId, user.email(), user.name());
 		
-		var userDetail = userModel.getRelational(OneToOne.class).getOne(UserDetail.class, userid);
+		var userDetail = userModel.getRelational(OneToOne.class).getOne(UserDetail.class, userId);
 		if(null != userDetail) {
 			profileDetailView.setBirthDate(userDetail.birthDate());
 			profileDetailView.setAddress(userDetail.address());

@@ -42,7 +42,6 @@ public class ProfileController extends Controller {
 		friendService = ServiceFactory.getService(FriendService.class, dataSource);
 	}
 	
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		var path = req.getServletPath();
@@ -68,9 +67,9 @@ public class ProfileController extends Controller {
 
 	private void forwardToProfileEditPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get user id from loginUser
-		var userid = getLoginUser(req).getId();
+		var userId = getLoginUser(req).getId();
 		// get profile detail view from database
-		var profileDetailView = userService.getProfileDetailView(userid);
+		var profileDetailView = userService.getProfileDetailView(userId);
 		// set profile detail view to request scope
 		req.setAttribute("profileDetailView", profileDetailView);
 		
@@ -79,9 +78,9 @@ public class ProfileController extends Controller {
 
 	private void forwardToProfileDetailPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get user id from loginUser
-		var userid = getLoginUser(req).getId();
+		var userId = getLoginUser(req).getId();
 		// get profile detail view from database
-		var profileDetailView = userService.getProfileDetailView(userid);
+		var profileDetailView = userService.getProfileDetailView(userId);
 		// set profile detail view to request scope
 		req.setAttribute("profileDetailView", profileDetailView);
 
@@ -90,9 +89,9 @@ public class ProfileController extends Controller {
 
 	private void forwardToFriendPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get id from login user
-		var userid = getLoginUser(req).getId();
+		var userId = getLoginUser(req).getId();
 		// get friend views of login user
-		var friendViews = friendService.getFriendView(userid, 30);
+		var friendViews = friendService.getFriendView(userId, 30);
 		// set friend views request scope
 		req.setAttribute("friendViews", friendViews);
 		
@@ -102,20 +101,20 @@ public class ProfileController extends Controller {
 	private void forwardToProfilePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get id from login user
 		var loginUser = getLoginUser(req);
-		var userid = loginUser.getId();
+		var userId = loginUser.getId();
 		
 		// get profile card view
-		var profileView = userService.getProfileView(userid);
+		var profileView = userService.getProfileView(userId);
 		// set profile card view to request scope
 		req.setAttribute("profileView", profileView);
 		
 		// get 5 friend views
-		var friendViews =  friendService.getFriendView(userid, 5);
+		var friendViews =  friendService.getFriendView(userId, 5);
 		// set 5 friend cards to request scope
 		req.setAttribute("friendView", friendViews);
 
 		// get 30 post views
-		var postViews = postService.getPostViews(userid, 30);
+		var postViews = postService.getPostViews(userId, 30);
 		// set post views to request scope
 		req.setAttribute("postViews", postViews);
 		

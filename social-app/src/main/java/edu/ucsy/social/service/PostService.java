@@ -10,4 +10,6 @@ public interface PostService {
 
 	List<PostView> getRandomPostViews(int i);
 
+	Object getPostDetailView(int postId);
+
 }

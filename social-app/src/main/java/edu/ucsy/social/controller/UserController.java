@@ -17,7 +17,21 @@ public class UserController extends Controller {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		switch (path) {
+		case USER_CREATE:
+			forwardToRegisterPage(req, resp);
+			break;
+		case USER_DELETE:
+			
+			break;
+		default:
+			break;
+		}
+	}
 
+	private void forwardToRegisterPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		view(req, resp, "register");
 	}
 
 }
