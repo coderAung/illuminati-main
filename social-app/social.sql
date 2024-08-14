@@ -19,6 +19,11 @@ create table user_details(
 user_id bigint primary key auto_increment,
 birth_date date null,
 address varchar(255) null,
+bio longtext null,
+phone_number varchar(255) null,
+gender enum('Male', 'Female', 'Others') null,
+relationship enum('Single', 'Married', 'Divorced', 'InARelaionship', 'IsComplicated'),
+occupaton enum('Student', 'Actor', 'Singer', 'Dancer', 'Influencer', 'DigialCreator')
 foreign key (user_id) references users (id)
 );
 
