@@ -16,6 +16,10 @@ public class WelcomeController extends Controller {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<<<<<<< HEAD
 		view(req, resp, "index");
+=======
+		view(req, resp, "welcome");
+>>>>>>> kst-dev
 	}
 }
