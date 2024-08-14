@@ -2,9 +2,6 @@ package edu.ucsy.social.controller;
 
 import java.io.IOException;
 
-import javax.sql.DataSource;
-
-import edu.ucsy.social.service.PostService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +22,6 @@ public class PostController extends Controller {
 	private static final String POST_CREATE = "/post/create";
 	private static final String POST_EDIT = "/post/edit";
 	private static final String POST_DELETE = "/post/delete";
-
-	private DataSource dataSource;
-	private PostService postService;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
