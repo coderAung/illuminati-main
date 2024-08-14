@@ -13,6 +13,7 @@ import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
+import edu.ucsy.social.model.entity.User.Status;
 
 public class DatabaseInitializer {
 
@@ -90,7 +91,7 @@ public class DatabaseInitializer {
 	}
 	
 	public User userFrom(String [] array) {
-		return new User(array[0], array[1], array[2], Role.valueOf(array[3]));
+		return new User(array[0], array[1], array[2], Role.valueOf(array[3]), Status.valueOf(array[4]));
 	}
 	
 	public void loadPostImage() {

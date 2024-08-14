@@ -12,6 +12,7 @@ import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
+import edu.ucsy.social.model.entity.User.Status;
 import edu.ucsy.social.utils.StringTool;
 
 public class UserModel extends AbstractModel<User> {
@@ -139,6 +140,15 @@ public class UserModel extends AbstractModel<User> {
 				if(!u.password().equals(rs.getString("password"))) {
 					rs.updateString("password", u.password());
 				}
+				// role update
+				if(!u.role().equals(Role.valueOf(rs.getString("role")))) {
+					rs.updateInt("role", u.role().ordinal() + 1);
+				}
+				
+				// status update
+				if(!u.status().equals(Status.valueOf(rs.getString("status")))) {
+					rs.updateInt("status", u.status().ordinal() + 1);
+				}
 				
 				var updatedAt = Timestamp.valueOf(LocalDateTime.now());
 				rs.updateTimestamp("updated_at", updatedAt);
@@ -157,7 +167,8 @@ public class UserModel extends AbstractModel<User> {
 	public User fullUpdate(User u) {
 		var sql = """
 				update users 
-				set email = ?, name = ?, password = ?, updated_at = ?
+				set email = ?, name = ?, password = ?,
+					role = ?, status = ?, updated_at = ?
 				where id = ?
 				""";
 		try(var conn = connector.getConnection();
@@ -166,11 +177,13 @@ public class UserModel extends AbstractModel<User> {
 			stmt.setString(1, u.email());
 			stmt.setString(2, u.name());
 			stmt.setString(3, u.password());
-			
+			stmt.setInt(4, u.role().ordinal() + 1);
+			stmt.setInt(5, u.status().ordinal() + 1);
+
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
-			stmt.setTimestamp(4, updatedAt);
+			stmt.setTimestamp(6, updatedAt);
 			
-			stmt.setLong(5, u.id());
+			stmt.setLong(7, u.id());
 			
 			var row = stmt.executeUpdate();
 			if(0 == row) {
@@ -210,6 +223,7 @@ public class UserModel extends AbstractModel<User> {
 				rs.getString("name"),
 				rs.getString("password"),
 				Role.valueOf(rs.getString("role")),
+				Status.valueOf(rs.getString("status")),
 				rs.getTimestamp("created_at").toLocalDateTime(),
 				rs.getTimestamp("updated_at").toLocalDateTime());
 		return user;

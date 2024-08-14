@@ -8,26 +8,31 @@ public record User(
 		String name, 
 		String password,
 		Role role,
+		Status status,
 		LocalDateTime createdAt,
 		LocalDateTime updatedAt) {
 
 	public User(String email, String name, String password) {
-		this(0, email, name, password, Role.MEMBER, null, null);
+		this(0, email, name, password, Role.MEMBER, Status.ACTIVE, null, null);
 	}
 	
-	public User(String email, String name, String password, Role role) {
-		this(0, email, name, password, role, null, null);
+	public User(String email, String name, String password, Role role, Status status) {
+		this(0, email, name, password, role, status, null, null);
 	}
 
 	public User perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
-		return new User(id, email, name, password, role, createdAt, updatedAt);
+		return new User(id, email, name, password, role, status, createdAt, updatedAt);
 	}
 	
 	public User updatedClone(LocalDateTime updatedAt) {
-		return new User(id, email, name, password, role, createdAt, updatedAt);
+		return new User(id, email, name, password, role, status, createdAt, updatedAt);
 	}
 
 	public enum Role {
 		ADMIN, MEMBER
+	}
+	
+	public enum Status {
+		ACTIVE, SUSPENDED
 	}
 }
