@@ -2,6 +2,10 @@ package edu.ucsy.social.model.dto.view;
 
 import java.time.LocalDate;
 
+import edu.ucsy.social.model.entity.UserDetail.Gender;
+import edu.ucsy.social.model.entity.UserDetail.Occupation;
+import edu.ucsy.social.model.entity.UserDetail.Relationship;
+
 public class ProfileDetailView {
 
 	private int id;
@@ -9,14 +13,13 @@ public class ProfileDetailView {
 	private String name;
 	private LocalDate birthDate;
 	private String address;
+	private String bio;
+	private String phoneNumber;
+	private Gender gender;
+	private Relationship relationship;
+	private Occupation occupation;
 
-	public ProfileDetailView(int id, String email, String name, LocalDate birthDate, String address) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.name = name;
-		this.birthDate = birthDate;
-		this.address = address;
+	public ProfileDetailView() {
 	}
 
 	public ProfileDetailView(int id, String email, String name) {
@@ -64,6 +67,46 @@ public class ProfileDetailView {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public Relationship getRelationship() {
+		return relationship;
+	}
+
+	public void setRelationship(Relationship relationship) {
+		this.relationship = relationship;
+	}
+
+	public Occupation getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(Occupation occupation) {
+		this.occupation = occupation;
 	}
 
 }

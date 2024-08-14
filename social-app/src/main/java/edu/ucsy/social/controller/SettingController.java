@@ -36,7 +36,6 @@ public class SettingController extends Controller {
 		view(req, resp, "change-password");
 	}
 	
-
 	private void forwardToSettingPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		view(req, resp, "setting");
 	}

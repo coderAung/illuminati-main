@@ -106,21 +106,46 @@ public class ProfileController extends Controller {
 		
 		// get profile card view
 		var profileView = userService.getProfileView(userid);
-		
 		// set profile card view to request scope
 		req.setAttribute("profileView", profileView);
-		
-		// get 30 post views
-		var postViews = postService.getPostViews(userid, 30);
-		// set post views to request scope
-		req.setAttribute("postViews", postViews);
 		
 		// get 5 friend views
 		var friendViews =  friendService.getFriendView(userid, 5);
 		// set 5 friend cards to request scope
 		req.setAttribute("friendView", friendViews);
+
+		// get 30 post views
+		var postViews = postService.getPostViews(userid, 30);
+		// set post views to request scope
+		req.setAttribute("postViews", postViews);
 		
 		view(req, resp, "profile");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		
+		switch (path) {
+		case PROFILE_EDIT:
+			editProfile(req, resp);
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	private void editProfile(HttpServletRequest req, HttpServletResponse resp) {
+		// get user id from login user
+		
+		// get data from request | data come from front end by edit form
+		
+		// create a edit form dto object
+		
+		// ask user service to edit using the above form
+		
+		// after updating | editing profile go back to profile detail page with alert message
 	}
 
 }

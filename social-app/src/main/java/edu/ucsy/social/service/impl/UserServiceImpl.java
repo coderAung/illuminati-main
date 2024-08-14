@@ -62,6 +62,10 @@ public class UserServiceImpl implements UserService {
 		if(null != userDetail) {
 			profileDetailView.setBirthDate(userDetail.birthDate());
 			profileDetailView.setAddress(userDetail.address());
+			profileDetailView.setBio(userDetail.bio());
+			profileDetailView.setGender(userDetail.gender());
+			profileDetailView.setRelationship(userDetail.relationship());
+			profileDetailView.setOccupation(userDetail.occupation());
 		}
 		return profileDetailView;
 	}
