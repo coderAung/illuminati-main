@@ -14,6 +14,7 @@ import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
+import edu.ucsy.social.model.entity.User.Status;
 import edu.ucsy.test.db.CustomConnectorFactory;
 import edu.ucsy.test.db.DatabaseInitializer;
 
@@ -37,8 +38,8 @@ public class UserModelTest {
 	@CsvFileSource(
 			files = {"test-source/users.txt"},
 			delimiter = '\t')
-	void test_save(long id, String email, String name, String password, Role role) {
-		var user = new User(email, name, password, role);
+	void test_save(long id, String email, String name, String password, Role role, Status status) {
+		var user = new User(email, name, password, role, status);
 		var savedUser = model.save(user);
 		
 		assertNotNull(savedUser);
@@ -47,6 +48,7 @@ public class UserModelTest {
 		assertEquals(name, savedUser.name());
 		assertEquals(password, savedUser.password());
 		assertEquals(role, savedUser.role());
+		assertEquals(status, savedUser.status());
 	}
 	
 	@Order(3)
@@ -55,7 +57,7 @@ public class UserModelTest {
 			files = {"test-source/name-update-user.txt"},
 			delimiter = '\t')
 	void test_update_name(long id, String email, String name, String password) {
-		var user = new User(id, email, name, password, Role.MEMBER, null, null);
+		var user = new User(id, email, name, password, Role.MEMBER, Status.ACTIVE, null, null);
 		var updatedUser = model.update(user);
 		
 		assertNotNull(updatedUser);
