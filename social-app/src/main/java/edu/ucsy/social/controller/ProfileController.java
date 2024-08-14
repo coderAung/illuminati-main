@@ -67,11 +67,23 @@ public class ProfileController extends Controller {
 	}
 
 	private void forwardToProfileEditPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// get user id from loginUser
+		var userid = getLoginUser(req).getId();
+		// get profile detail view from database
+		var profileDetailView = userService.getProfileDetailView(userid);
+		// set profile detail view to request scope
+		req.setAttribute("profileDetailView", profileDetailView);
 		
 		view(req, resp, "profile-edit");
 	}
 
 	private void forwardToProfileDetailPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// get user id from loginUser
+		var userid = getLoginUser(req).getId();
+		// get profile detail view from database
+		var profileDetailView = userService.getProfileDetailView(userid);
+		// set profile detail view to request scope
+		req.setAttribute("profileDetailView", profileDetailView);
 
 		view(req, resp, "profile-detail");
 	}
@@ -102,6 +114,11 @@ public class ProfileController extends Controller {
 		var postViews = postService.getPostViews(userid, 30);
 		// set post views to request scope
 		req.setAttribute("postViews", postViews);
+		
+		// get 5 friend views
+		var friendViews =  friendService.getFriendView(userid, 5);
+		// set 5 friend cards to request scope
+		req.setAttribute("friendView", friendViews);
 		
 		view(req, resp, "profile");
 	}

@@ -6,6 +6,7 @@ import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.data.db.ConnectorFactory;
+import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
 import edu.ucsy.social.model.entity.CoverImage;
 import edu.ucsy.social.model.entity.ProfileImage;
@@ -46,6 +47,16 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return profileView;
+	}
+
+	@Override
+	public ProfileDetailView getProfileDetailView(int userid) {
+		var user = userModel.findOne(userid);
+		if(null == user) {
+			return null;
+		}
+		var profileDetailView = new ProfileDetailView(userid, user.email(), user.name());
+		return null;
 	}
 
 }

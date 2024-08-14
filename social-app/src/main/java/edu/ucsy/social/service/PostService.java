@@ -8,4 +8,6 @@ public interface PostService {
 
 	List<PostView> getPostViews(int userid, int limit);
 
+	List<PostView> getRandomPostViews(int i);
+
 }
