@@ -133,6 +133,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 				if(ci.name().equals(rs.getString("name"))) {
 					rs.updateString("name", ci.name());
 				}
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

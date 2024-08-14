@@ -174,8 +174,6 @@ public class CommentModel extends  AbstractModel <Comment>{
 			stmt.setLong(4, c.postId());
 			stmt.setLong(5, c.id());
 			
-
-			
 			var row = stmt.executeUpdate();
 			if(0 == row) {
 				return null;
