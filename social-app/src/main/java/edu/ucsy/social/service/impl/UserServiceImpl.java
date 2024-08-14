@@ -11,6 +11,7 @@ import edu.ucsy.social.model.dto.view.ProfileView;
 import edu.ucsy.social.model.entity.CoverImage;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.User;
+import edu.ucsy.social.model.entity.UserDetail;
 import edu.ucsy.social.service.UserService;
 
 public class UserServiceImpl implements UserService {
@@ -56,7 +57,13 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		var profileDetailView = new ProfileDetailView(userid, user.email(), user.name());
-		return null;
+		
+		var userDetail = userModel.getRelational(OneToOne.class).getOne(UserDetail.class, userid);
+		if(null != userDetail) {
+			profileDetailView.setBirthDate(userDetail.birthDate());
+			profileDetailView.setAddress(userDetail.address());
+		}
+		return profileDetailView;
 	}
 
 }
