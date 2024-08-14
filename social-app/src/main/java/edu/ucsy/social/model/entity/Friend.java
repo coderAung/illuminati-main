@@ -1,5 +1,8 @@
 package edu.ucsy.social.model.entity;
 
+import edu.ucsy.social.data.annotation.Entity;
+
+@Entity
 public record Friend(
 		long id,
 		long userId,

@@ -2,6 +2,9 @@ package edu.ucsy.social.model.entity;
 
 import java.time.LocalDate;
 
+import edu.ucsy.social.data.annotation.Entity;
+
+@Entity
 public record UserDetail(
 		long userid,
 		LocalDate birthDate,
