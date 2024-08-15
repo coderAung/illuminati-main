@@ -9,7 +9,7 @@
 <c:url var="profile" value="/profile"></c:url>
 <c:url var="image" value="/img/logo.jpg"></c:url>
 
-<div class="navbar py-2 d-flex mb-3">
+<div class="navbar py-2 d-flex mb-3 shadow">
 	<div class="logo mx-auto">
 		<img src="${image}" alt="Logo">
 	</div>
@@ -26,11 +26,11 @@
 	<!-- Search Bar end -->
 
 	<!-- nav-links start -->
-	<div class="nav-links d-flex justify-content-evenly w-50">
-		<a href="">Home</a>
-		<a href="">Profile</a>
-		<a href="">Notifications</a>
-		<a href="">Setting</a>
+	<div class="nav-links d-flex justify-content-evenly w-50 position-relative">
+		<a href="${home}" class="nav-link text-white">Home</a>
+		<a href="${profile}" class="nav-link text-white">Profile</a>
+		<a href="${notifications}" class="nav-link text-white">Notifications</a>
+		<a href="${setting}" class="nav-link text-white">Setting</a>
 	</div>
 	<!-- nav-links end -->
 </div>
