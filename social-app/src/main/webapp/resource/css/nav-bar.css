@@ -27,15 +27,9 @@
 .search-bar input[type="text"] {
 	border: none;
 	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	color: #333;
 	outline: none;
-	transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.search-bar input[type="text"]:focus {
-	border-color: #a851ff;
-	box-shadow: 0 2px 8px rgba(18, 255, 243, 0.2);
+	color: 4b006e;
+	font-weight: 500;
 }
 
 .search-bar .icon {
@@ -51,7 +45,7 @@
 	display: inline-block;
 	color: black;
 	text-decoration: none;
-	font-weight: 450; /* Reduced font weight */
+	font-weight: 500; /* Reduced font weight */
 	padding-bottom: 5px;
 	transition: color 0.3s ease, font-weight 0.3s ease;
 	/* Transition for smoother change */
@@ -68,10 +62,15 @@
 	transition: width 0.3s ease;
 }
 
-.nav-link:hover::after {
-	width: 100%;
-}
-
 .nav-link:hover {
 	color: white;
 }
+.nav-link.nav-link-active::after,
+.nav-link:hover::after {
+    width: 100%; /* Underline shows on hover and active */
+}
+
+.nav-link.nav-link-active {
+    color: white; /* Active link color */
+}
+
