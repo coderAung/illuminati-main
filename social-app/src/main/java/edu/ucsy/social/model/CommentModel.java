@@ -16,7 +16,6 @@ public class CommentModel extends  AbstractModel <Comment>{
 
 	public CommentModel(DatabaseConnector connector) {
 		super(connector);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -174,8 +173,6 @@ public class CommentModel extends  AbstractModel <Comment>{
 			stmt.setLong(3, c.userId());
 			stmt.setLong(4, c.postId());
 			stmt.setLong(5, c.id());
-			
-
 			
 			var row = stmt.executeUpdate();
 			if(0 == row) {
