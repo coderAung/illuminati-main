@@ -2,15 +2,30 @@ package edu.ucsy.social.data;
 
 import java.lang.reflect.InvocationTargetException;
 
+import edu.ucsy.social.data.annotation.Entity;
 import edu.ucsy.social.data.db.DatabaseConnector;
+import edu.ucsy.social.data.exception.IllegalEntityException;
+import edu.ucsy.social.data.exception.NoSuchModelException;
 
 public abstract class ModelFactory {
 
 	private static String location = "edu.ucsy.social.model.%sModel";
+	
+	private static boolean isEntity(Class<?> e) {
+		var annotation = e.getDeclaredAnnotation(Entity.class);
+		if(null != annotation) {
+			return true;
+		}
+		return false;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> Model<T> getModel(Class<T> e, DatabaseConnector connector) {
-
+		
+		if(!isEntity(e)) {
+			throw new IllegalEntityException(e);
+		}
+		
 		try {
 			var c = Class.forName(location.formatted(e.getSimpleName()));
 			var constructor = c.getDeclaredConstructor(DatabaseConnector.class);
@@ -34,7 +49,7 @@ public abstract class ModelFactory {
 			e1.printStackTrace();
 		}
 
-		return null;
+		throw new NoSuchModelException(e);
 	}
 	
 }

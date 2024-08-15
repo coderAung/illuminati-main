@@ -19,6 +19,11 @@ create table user_details(
 user_id bigint primary key auto_increment,
 birth_date date null,
 address varchar(255) null,
+bio longtext null,
+phone_number varchar(255) null,
+gender enum('Male', 'Female', 'Others') null,
+relationship enum('Single', 'Married', 'Divorced', 'InARelaionship', 'IsComplicated'),
+occupaton enum('Student', 'Actor', 'Singer', 'Dancer', 'Influencer', 'DigialCreator'),
 foreign key (user_id) references users (id)
 );
 
@@ -117,4 +122,15 @@ post_id bigint not null,
 saved_at timestamp default(current_timestamp),
 foreign key (user_id) references users (id),
 foreign key (post_id) references posts (id)
+);
+
+create table notifications(
+id bigint primary key auto_increment,
+message longtext not null,
+type enum('FriendRequest', 'NewComment'),
+status enum('CHECKED', 'UNCHECKED') default(2),
+notified_at timestamp default(current_timestamp),
+user_id bigint not null,
+target_id bigint not null,
+foreign key (user_id) references users (id)
 );
