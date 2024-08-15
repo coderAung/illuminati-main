@@ -1,12 +1,15 @@
 package edu.ucsy.social.model.dto.view;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import edu.ucsy.social.model.entity.UserDetail.Gender;
 import edu.ucsy.social.model.entity.UserDetail.Occupation;
 import edu.ucsy.social.model.entity.UserDetail.Relationship;
 
-public class ProfileDetailView {
+public class ProfileDetailView implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private String email;

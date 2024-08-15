@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,8 +44,10 @@ public class CommentController extends Controller {
 
 	private void forwardToPostDetailPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get post id from request parameter
-		if(null == req.getParameter("postId")) {
+		if(StringTool.isEmpty(req.getParameter("postId"))) {
 			// show some errors
+			// redirect to post not found page
+
 		}
 		var postId = Integer.parseInt(req.getParameter("postId"));
 

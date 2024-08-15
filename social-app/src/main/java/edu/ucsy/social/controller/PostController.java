@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -69,8 +70,9 @@ public class PostController extends Controller {
 
 	private void forwardToPostDetailPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get post id from request parameter
-		if(null == req.getParameter("postId")) {
+		if(StringTool.isEmpty(req.getParameter("postId"))) {
 			// show some errors
+			// forward to post not found page
 		}
 		var postId = Integer.parseInt(req.getParameter("postId"));
 
@@ -86,4 +88,42 @@ public class PostController extends Controller {
 		// show post detail page
 		view(req, resp, "post-detail");
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		switch (path) {
+		case POST:
+
+			break;
+		case POST_CREATE:
+
+			break;
+		case POST_EDIT:
+
+			break;
+		case POST_DELETE:
+			deletePost(req, resp);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void deletePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		// get post id from request parameter
+		if(null == req.getParameter("postId")) {
+			redirect(req, resp, "/home");
+		}
+		var postId = Integer.parseInt(req.getParameter("postId"));
+		
+		// delete all related data with the target post
+		// such as post images and post's comments
+		// by using post service
+		postService.deletePost(postId);
+		
+		// redirect to home
+		redirect(req, resp, "/home");
+	}
+
 }

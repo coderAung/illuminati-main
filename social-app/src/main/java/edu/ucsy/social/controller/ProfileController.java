@@ -91,7 +91,7 @@ public class ProfileController extends Controller {
 		// get id from login user
 		var userId = getLoginUser(req).getId();
 		// get friend views of login user
-		var friendViews = friendService.getFriendView(userId, 30);
+		var friendViews = friendService.getFriendViews(userId, 30);
 		// set friend views request scope
 		req.setAttribute("friendViews", friendViews);
 		
@@ -109,7 +109,7 @@ public class ProfileController extends Controller {
 		req.setAttribute("profileView", profileView);
 		
 		// get 5 friend views
-		var friendViews =  friendService.getFriendView(userId, 5);
+		var friendViews =  friendService.getFriendViews(userId, 5);
 		// set 5 friend cards to request scope
 		req.setAttribute("friendView", friendViews);
 

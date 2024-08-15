@@ -1,8 +1,11 @@
 package edu.ucsy.social.model.dto.view;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class CommentView {
+public class CommentView implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private String content;
