@@ -94,7 +94,7 @@ public class PostController extends Controller {
 		var path = req.getServletPath();
 		switch (path) {
 		case POST:
-
+			createPost(req, resp);
 			break;
 		case POST_CREATE:
 
@@ -108,6 +108,18 @@ public class PostController extends Controller {
 		default:
 			break;
 		}
+	}
+
+	private void createPost(HttpServletRequest req, HttpServletResponse resp) {
+		// get user id from login user
+		
+		// get from what page the request come
+		
+		// build a create post form object by request parameter
+		
+		// ask post service to create the post
+		
+		// return to the page where the request come
 	}
 
 	private void deletePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
