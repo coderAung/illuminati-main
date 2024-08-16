@@ -50,12 +50,9 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 			if(row == 0 ) {
 				return null;
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-				
-					
+		}		
 		return null;
 	}
 
