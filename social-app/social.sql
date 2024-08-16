@@ -16,7 +16,7 @@ updated_at timestamp default(current_timestamp)
 );
 
 create table user_details(
-user_id bigint primary key auto_increment,
+user_id bigint primary key,
 birth_date date null,
 address varchar(255) null,
 bio longtext null,
@@ -69,7 +69,7 @@ foreign key (friend_id) references users (id)
 create table friend_requests(
 id bigint primary key auto_increment,
 request_to bigint not null,
-request_by bigint not null
+request_by bigint not null,
 foreign key (request_to) references users (id),
 foreign key (request_by) references users (id)
 );
