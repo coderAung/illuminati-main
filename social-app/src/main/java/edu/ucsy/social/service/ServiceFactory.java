@@ -2,6 +2,9 @@ package edu.ucsy.social.service;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.data.annotation.Service;
+
+@Service
 public abstract class ServiceFactory {
 
 	public static <T> T getService(Class<T> t, DataSource dataSource) {
