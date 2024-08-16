@@ -1,5 +1,6 @@
 package edu.ucsy.social.model;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,8 +38,9 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)
 				){
-			var birthDate = Timestamp.valueOf(LocalDateTime.now());
-				stmt.setTimestamp(1, birthDate);
+			var birthDate = Date.valueOf(LocalDate.now());
+			
+				stmt.setDate(1, birthDate);
 				stmt.setString(2, ud.address());
 				stmt.setString(3, ud.bio());
 				stmt.setString(4, ud.phoneNumber());
