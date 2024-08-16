@@ -17,8 +17,8 @@
 	
 	<div class="d-flex justify-content-center">
 		<div class="w-75">
-			<c:url var="createComment" value="/api/comment/create"></c:url>
-			<a href="${createComment}" class="btn btn-primary">Create Comment</a>
+			<c:url var="comment" value="/api/comment"></c:url>
+			<a href="${comment}" class="btn btn-primary">Get Comment</a>
 		</div>
 	</div>
 </body>

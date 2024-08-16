@@ -34,4 +34,8 @@ public abstract class JsonTool {
 		return gsonWithLocalDateTime.toJson(object);
 	}
 	
+	public static String jsonFromMap(Object object) {
+		return gsonWithLocalDateTime.toJson(object);
+	}
+	
 }
