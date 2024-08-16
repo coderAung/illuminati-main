@@ -10,8 +10,6 @@ import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
-import edu.ucsy.social.model.entity.CoverImage;
-import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.type.ImageStatus;
 import edu.ucsy.social.utils.StringTool;
