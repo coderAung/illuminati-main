@@ -18,7 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 				"/post", 
 				"/post/create",
 				"/post/edit",
-				"/post/delete"},
+				"/post/delete",
+				"/post/comment"},
 		loadOnStartup = 1)
 public class PostController extends Controller {
 
@@ -28,6 +29,7 @@ public class PostController extends Controller {
 	private static final String POST_CREATE = "/post/create";
 	private static final String POST_EDIT = "/post/edit";
 	private static final String POST_DELETE = "/post/delete";
+	private static final String POST_COMMENT = "/post/comment";
 	
 	@Resource(name = "social")
 	private DataSource dataSource;
@@ -54,6 +56,8 @@ public class PostController extends Controller {
 		case POST_DELETE:
 			
 			break;
+		case POST_COMMENT:
+			forwardToPostDetailPage(req, resp);
 		default:
 			break;
 		}

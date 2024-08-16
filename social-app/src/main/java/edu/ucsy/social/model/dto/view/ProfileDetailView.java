@@ -11,7 +11,7 @@ public class ProfileDetailView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private long id;
 	private String email;
 	private String name;
 	private LocalDate birthDate;
@@ -25,18 +25,18 @@ public class ProfileDetailView implements Serializable {
 	public ProfileDetailView() {
 	}
 
-	public ProfileDetailView(int id, String email, String name) {
+	public ProfileDetailView(long id, String email, String name) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.name = name;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
