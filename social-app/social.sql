@@ -9,7 +9,7 @@ id bigint primary key auto_increment,
 email varchar(255) not null unique,
 name varchar(255),
 password varchar(255),
-role enum('ADMIN', 'MEMBER') default(1),
+role enum('ADMIN', 'MEMBER') default(2),
 status enum('ACTIVE', 'SUSPENDED') default(1),
 created_at timestamp default(current_timestamp),
 updated_at timestamp default(current_timestamp)
@@ -64,6 +64,14 @@ friend_id bigint not null,
 check (user_id <> friend_id),
 foreign key (user_id) references users (id),
 foreign key (friend_id) references users (id)
+);
+
+create table friend_requests(
+id bigint primary key auto_increment,
+request_to bigint not null,
+request_by bigint not null
+foreign key (request_to) references users (id),
+foreign key (request_by) references users (id)
 );
 
 create table posts(
