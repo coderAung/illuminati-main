@@ -1,8 +1,11 @@
 package edu.ucsy.social.model.dto.view;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PostDetailView {
+public class PostDetailView implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private PostView postView;
 	private List<CommentView> commentViews;

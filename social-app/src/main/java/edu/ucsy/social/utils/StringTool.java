@@ -11,7 +11,13 @@ public class StringTool {
 				sb.append("%s, ".formatted(array[i]));
 			}
 		}
-
 		return sb.toString();
+	}
+	
+	public static boolean isEmpty(String string) {
+		return null == string || 
+				"".equals(string) || 
+				string.isEmpty() || 
+				string.isBlank();
 	}
 }

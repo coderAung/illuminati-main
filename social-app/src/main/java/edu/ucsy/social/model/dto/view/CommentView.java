@@ -1,15 +1,18 @@
 package edu.ucsy.social.model.dto.view;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class CommentView {
+public class CommentView implements Serializable {
 
-	private int id;
+	private static final long serialVersionUID = 1L;
+
+	private long id;
 	private String content;
 	private String userName;
 	private LocalDateTime updatedAt;
 
-	public CommentView(int id, String content, String userName, LocalDateTime updatedAt) {
+	public CommentView(long id, String content, String userName, LocalDateTime updatedAt) {
 		super();
 		this.id = id;
 		this.content = content;
@@ -17,11 +20,11 @@ public class CommentView {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

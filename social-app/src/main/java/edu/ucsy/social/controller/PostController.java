@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,7 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 				"/post", 
 				"/post/create",
 				"/post/edit",
-				"/post/delete"},
+				"/post/delete",
+				"/post/comment"},
 		loadOnStartup = 1)
 public class PostController extends Controller {
 
@@ -27,6 +29,7 @@ public class PostController extends Controller {
 	private static final String POST_CREATE = "/post/create";
 	private static final String POST_EDIT = "/post/edit";
 	private static final String POST_DELETE = "/post/delete";
+	private static final String POST_COMMENT = "/post/comment";
 	
 	@Resource(name = "social")
 	private DataSource dataSource;
@@ -53,6 +56,8 @@ public class PostController extends Controller {
 		case POST_DELETE:
 			
 			break;
+		case POST_COMMENT:
+			forwardToPostDetailPage(req, resp);
 		default:
 			break;
 		}
@@ -69,8 +74,9 @@ public class PostController extends Controller {
 
 	private void forwardToPostDetailPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get post id from request parameter
-		if(null == req.getParameter("postId")) {
+		if(StringTool.isEmpty(req.getParameter("postId"))) {
 			// show some errors
+			// forward to post not found page
 		}
 		var postId = Integer.parseInt(req.getParameter("postId"));
 
@@ -86,4 +92,54 @@ public class PostController extends Controller {
 		// show post detail page
 		view(req, resp, "post-detail");
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		switch (path) {
+		case POST:
+			createPost(req, resp);
+			break;
+		case POST_CREATE:
+
+			break;
+		case POST_EDIT:
+
+			break;
+		case POST_DELETE:
+			deletePost(req, resp);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void createPost(HttpServletRequest req, HttpServletResponse resp) {
+		// get user id from login user
+		
+		// get from what page the request come
+		
+		// build a create post form object by request parameter
+		
+		// ask post service to create the post
+		
+		// return to the page where the request come
+	}
+
+	private void deletePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		// get post id from request parameter
+		if(null == req.getParameter("postId")) {
+			redirect(req, resp, "/home");
+		}
+		var postId = Integer.parseInt(req.getParameter("postId"));
+		
+		// delete all related data with the target post
+		// such as post images and post's comments
+		// by using post service
+		postService.deletePost(postId);
+		
+		// redirect to home
+		redirect(req, resp, "/home");
+	}
+
 }

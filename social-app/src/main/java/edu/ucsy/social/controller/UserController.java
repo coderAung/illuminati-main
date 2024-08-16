@@ -34,4 +34,41 @@ public class UserController extends Controller {
 		view(req, resp, "register");
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		switch (path) {
+		case USER_CREATE:
+			createUser(req, resp);
+			break;
+		case USER_DELETE:
+			deleteUser(req, resp);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void deleteUser(HttpServletRequest req, HttpServletResponse resp) {
+		// get user id from login user
+		
+		// delete all related data of the user by using user service
+		
+		// redirect to login page
+	}
+
+	private void createUser(HttpServletRequest req, HttpServletResponse resp) {
+		// get register form data by request parameter
+		
+		// build register form from the above data
+		
+		// ask user service to create user
+		
+		// need to create separate folder for user's
+		// profile, cover images
+		
+		// consider user as logged in
+		
+		// redirect to home page with alert message SUCCESS
+	}
 }

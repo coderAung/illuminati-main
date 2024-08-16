@@ -1,6 +1,10 @@
 package edu.ucsy.social.model.dto;
 
-public class Alert {
+import java.io.Serializable;
+
+public class Alert implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String message;
 	private AlertType alertType;

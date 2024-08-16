@@ -1,14 +1,17 @@
 package edu.ucsy.social.model.dto.view;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import edu.ucsy.social.model.entity.UserDetail.Gender;
 import edu.ucsy.social.model.entity.UserDetail.Occupation;
 import edu.ucsy.social.model.entity.UserDetail.Relationship;
 
-public class ProfileDetailView {
+public class ProfileDetailView implements Serializable {
 
-	private int id;
+	private static final long serialVersionUID = 1L;
+
+	private long id;
 	private String email;
 	private String name;
 	private LocalDate birthDate;
@@ -22,18 +25,18 @@ public class ProfileDetailView {
 	public ProfileDetailView() {
 	}
 
-	public ProfileDetailView(int id, String email, String name) {
+	public ProfileDetailView(long id, String email, String name) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.name = name;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

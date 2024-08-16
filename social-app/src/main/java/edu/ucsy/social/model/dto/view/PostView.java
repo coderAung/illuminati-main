@@ -8,14 +8,16 @@ public class PostView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private long id;
 	private String content;
 	private LocalDateTime updatedAt;
 	private String userName;
+	private long commentCount;
+	private long shareCount;
 
 	private List<String> postImageList;
 
-	public PostView(int id, String content, LocalDateTime updatedAt, String userName, List<String> postImageList) {
+	public PostView(long id, String content, LocalDateTime updatedAt, String userName, List<String> postImageList) {
 		super();
 		this.id = id;
 		this.content = content;
@@ -24,12 +26,28 @@ public class PostView implements Serializable {
 		this.postImageList = postImageList;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(long commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public long getShareCount() {
+		return shareCount;
+	}
+
+	public void setShareCount(long shareCount) {
+		this.shareCount = shareCount;
 	}
 
 	public String getContent() {
