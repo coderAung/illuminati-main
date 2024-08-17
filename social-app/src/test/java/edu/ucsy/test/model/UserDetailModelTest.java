@@ -26,13 +26,14 @@ public class UserDetailModelTest {
 
 	@BeforeAll
 	static void init() {
-		var connector = CustomConnectorFactory.getConnectorWithPassword("admin");
+		var connector = CustomConnectorFactory.getConnectorWithPassword("root");
 		di = new DatabaseInitializer(connector);
 		di.loadUser();
 		di.truncate("user_details");
 		userDetailModel = ModelFactory.getModel(UserDetail.class, connector);
 	}
 
+	
 	@Order(1)
 	@ParameterizedTest
 	@CsvFileSource(

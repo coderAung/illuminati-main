@@ -60,7 +60,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 				rs.getTimestamp("created_at").toLocalDateTime(),
 				rs.getTimestamp("updated_at").toLocalDateTime(),
 				rs.getLong("user_id"),
-				rs.getString("user_name"),
+				rs.getString("name"),
 				rs.getLong("post_id")
 				);
 		return comment;

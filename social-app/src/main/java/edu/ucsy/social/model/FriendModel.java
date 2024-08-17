@@ -9,7 +9,6 @@ import java.util.List;
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Friend;
-import edu.ucsy.social.model.entity.FriendRequest;
 import edu.ucsy.social.utils.StringTool;
 
 public class FriendModel extends AbstractModel<Friend> {
@@ -124,7 +123,7 @@ public class FriendModel extends AbstractModel<Friend> {
 
 	@Override
 	public Friend update(Friend t) {
-		return null;
+		return null; 
 	}
 
 	@Override
@@ -150,7 +149,10 @@ public class FriendModel extends AbstractModel<Friend> {
 	}
 
 	public Friend friendFrom(ResultSet rs) throws SQLException {
-		var friend = new Friend(rs.getLong("id"), rs.getLong("user_id"), rs.getLong("friend_id"), rs.getString(""));
+		var friend = new Friend(rs.getLong("id"), 
+				rs.getLong("user_id"), 
+				rs.getLong("friend_id"),
+				rs.getString("name"));
 		return friend;
 
 	}

@@ -10,12 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
-
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
-import edu.ucsy.social.model.entity.SavedPost;
-import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.UserDetail;
 import edu.ucsy.social.model.entity.UserDetail.Gender;
 import edu.ucsy.social.model.entity.UserDetail.Occupation;
@@ -31,15 +27,16 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 	@Override
 	public UserDetail save(UserDetail ud) {
 		var sql = """
-				insert into user_details (userid, birth_date, address, bio, phone_number, gender, relationship, occupation)
+				insert into user_details (user_id, birth_date, address, bio, phone_number, gender, relationship, occupation)
 				 values(?, ?, ?, ?, ?, ?, ?, ?)
 				""";
+		
 		
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)
 				){
 			
-			stmt.setLong(1, ud.userid());
+			stmt.setLong(1, ud.userId());
 		
 			if (null != ud.birthDate()) {
 			    var birthDate = Date.valueOf(ud.birthDate());
@@ -51,28 +48,30 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 				stmt.setString(4, ud.bio());
 				stmt.setString(5, ud.phoneNumber());
 			
-			if(null != ud.gender().name()) {
+			if(null != ud.gender()) {
 				stmt.setInt(6, ud.gender().ordinal() + 1);
 			}else {
-				return null;
+				stmt.setInt(6, Gender.Others.ordinal() + 1);
 			}
 				
-			if(null != ud.relationship().name()) {
+			if(null != ud.relationship()) {
 				stmt.setInt(7, ud.relationship().ordinal() + 1);
 			}else {
-				return null;
+				stmt.setObject(7, null);
 			}
 				
-			if(null != ud.occupation().name()) {
-				stmt.setInt(8, ud.occupation().ordinal() + 1);}
-			else {
-				return null;
+			if(null != ud.occupation()) {
+				stmt.setInt(8, ud.occupation().ordinal() + 1);
+			}else {
+				stmt.setObject(8, null);
 			}
+			
 
 			var row = stmt.executeUpdate();
 			if(row == 0 ) {
 				return null;
 			}
+			return ud;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -81,7 +80,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 
 	@Override
 	public UserDetail findOne(long id) {
-		var sql = "select * from userdetails where id = ?";
+		var sql = "select * from user_details where user_id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)) {
 			stmt.setLong(1, id);
@@ -141,42 +140,42 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 
 	@Override
 	public UserDetail update(UserDetail ud) {
-		var sql = "select * from user_details where id = ?";
+		var sql = "select * from user_details where user_id = ?";
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
-			stmt.setLong(1, ud.userid());
+			stmt.setLong(1, ud.userId());
 			
 			var rs = stmt.executeQuery();
 			
 			if(rs.next()) {
 				
-				if(!ud.birthDate().equals(rs.getTimestamp("birth_date").toLocalDateTime().toLocalDate())) {
-					var updatedAt = Timestamp.valueOf(LocalDateTime.now());
-					rs.updateTimestamp("birth_date", updatedAt);	
+				var userDetail = userdetailFrom(rs);
+				if(null != ud.birthDate() && !ud.birthDate().equals(userDetail.birthDate())) {
+					rs.updateDate("birth_date", Date.valueOf(ud.birthDate()));
 				}
 				
-				if(!ud.address().equals(rs.getString("address"))) {
+				if(null != ud.address() && !ud.address().equals(userDetail.address())) {
 					rs.updateString("address", ud.address());
 				}
 				
-				if(!ud.bio().equals(rs.getString("bio"))) {
-					rs.updateString("address", ud.address());
+				if(null != ud.bio() && !ud.bio().equals(userDetail.bio())) {
+					rs.updateString("bio", ud.bio());
 				}
 				
-				if(!ud.phoneNumber().equals(rs.getString("phone_number"))) {
+				if(null != ud.phoneNumber() && !ud.phoneNumber().equals(userDetail.phoneNumber())) {
 					rs.updateString("phone_number", ud.phoneNumber());
 				}
 				
-				if(!ud.gender().equals(Gender.valueOf(rs.getString("gender")))) {
+				if(null != ud.gender() && !ud.gender().equals(userDetail.gender())) {
 					rs.updateString("gender", ud.gender().name());
 				}
 				
-				if(!ud.relationship().equals(Relationship.valueOf(rs.getString("relationship")))) {
+				if(null != ud.relationship() && !ud.relationship().equals(userDetail.relationship())) {
 					rs.updateString("relationship", ud.relationship().name());
 				}
 				
-				if(!ud.occupation().equals(Gender.valueOf(rs.getString("occupation")))) {
+				if(null != ud.occupation() && !ud.occupation().equals(userDetail.occupation())) {
 					rs.updateString("occupation", ud.occupation().name());
 				}
 				
@@ -213,35 +212,56 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 		return false;
 	}
 	
-	public boolean deleteOne(long id, String... cols) {
-		var sql = "select %s from user_details where id = ?";
-		var columns = StringTool.joinWithComma(cols);
-		
-		sql = sql.formatted(columns);
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
-			stmt.setLong(1, id);
-			var row  = stmt.executeUpdate();
-			if(row == 0) {
-				return false;
-			}
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+//	public boolean deleteOne(long id, String... cols) {
+//		var sql = "delete %s from user_details where id = ?";
+//		var columns = StringTool.joinWithComma(cols);
+//		
+//		sql = sql.formatted(columns);
+//		try(var conn = connector.getConnection();
+//				var stmt = conn.prepareStatement(sql)) {
+//			stmt.setLong(1, id);
+//			var row  = stmt.executeUpdate();
+//			if(row == 0) {
+//				return false;
+//			}
+//			return true;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
 	
 	private UserDetail userdetailFrom(ResultSet rs) throws SQLException {
+		LocalDate birthDate = null;
+		Gender gender = null;
+		Relationship relationship = null;
+		Occupation occupation = null;
+		
+		if(null != rs.getDate("birth_date")) {
+			birthDate = rs.getDate("birth_date").toLocalDate();
+		}
+		
+		if(null != rs.getString("gender")) {
+			gender = Gender.valueOf(rs.getString("gender"));
+		}
+		
+		if(null != rs.getString("relationship")) {
+			relationship = Relationship.valueOf(rs.getString("relationship"));
+		}
+		
+		if(null != rs.getString("occupation")) {
+			occupation = Occupation.valueOf(rs.getString("occupation"));
+		}
+		
 		var userdetail = new UserDetail(
 				rs.getLong("user_id"),
-				rs.getTimestamp("birth_date").toLocalDateTime().toLocalDate(),
+				birthDate,
 				rs.getString("address"),
 				rs.getString("bio"),
 				rs.getString("phone_number"),
-				Gender.valueOf(rs.getString("gender")),
-				Relationship.valueOf(rs.getString("relationship")),
-				Occupation.valueOf(rs.getString("occupation"))
+				gender,
+				relationship,
+				occupation
 				);
 		return userdetail;
 	}
