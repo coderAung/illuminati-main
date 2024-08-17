@@ -7,9 +7,10 @@
 <c:url var="notifications" value="/notifications"></c:url>
 <c:url var="setting" value="/setting"></c:url>
 <c:url var="profile" value="/profile"></c:url>
+
 <c:url var="image" value="/img/logo.jpg"></c:url>
 
-<div class="navbar py-3 d-flex mb-3 shadow">
+<div class="navbar py-3 d-flex mb-3">
 	<div class="logo mx-auto">
 		<img src="${image}" alt="Logo">
 	</div>
@@ -17,10 +18,15 @@
 	<!-- Search Bar start -->
 	<div class="search-bar">
 		<form action="#" class="w-100" method="get">
-			<i class="fas fa-search icon"></i>
-			<input type="text" name="query"
+			<span class="icon pointer">
+				<i class="fas fa-search"></i>
+			</span>
+			<input type="text" name=""
 			class="w-100 ps-5 pe-2 py-2 rounded"
 				placeholder="Type a word...">
+			<span class="close pointer">
+				<i class="fas fa-x pointer"></i>
+			</span>
 		</form>
 	</div>
 	<!-- Search Bar end -->
