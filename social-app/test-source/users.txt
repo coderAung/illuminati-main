@@ -1,11 +1,12 @@
-1	yewontaung@gmail.com	Ye Wont Aung	password
-2	kyawpainghtet@gmail.com	Kyaw Paing Htet	password
-3	heinhtetzaw@gmail.com	Hein Htet Zaw	password
-4	khunsintthwel@gmail.com	Khun Sint Thwel	password
-5	juejuesan@gmail.com	Jue Jue San	password
-6	htetnadi@gmail.com	Htet Nadi	password
-7	lailaiyee@gmail.com	Lai Lai Yee	password
-8	khaingzinthet@gmail.com	Khaing Zin Thet	password
-9	ttll@gmail.com	Than Thar Lin Latt	password
-10	merrieszen@gmail.com	Merries Zen	password
-11	ppmm@gmail.com	Phu Phu May Maung	password
+1	yewontaung@gmail.com	Ye Wont Aung	password	MEMBER	ACTIVE
+2	kyawpainghtet@gmail.com	Kyaw Paing Htet	password	MEMBER	ACTIVE
+3	heinhtetzaw@gmail.com	Hein Htet Zaw	password	MEMBER	ACTIVE
+4	khunsintthwel@gmail.com	Khun Sint Thwel	password	MEMBER	ACTIVE
+5	juejuesan@gmail.com	Jue Jue San	password	MEMBER	ACTIVE
+6	htetnadi@gmail.com	Htet Nadi	password	MEMBER	ACTIVE
+7	lailaiyee@gmail.com	Lai Lai Yee	password	MEMBER	ACTIVE
+8	khaingzinthet@gmail.com	Khaing Zin Thet	password	MEMBER	ACTIVE
+9	ttll@gmail.com	Than Thar Lin Latt	password	MEMBER	ACTIVE
+10	merrieszen@gmail.com	Merries Zen	password	MEMBER	ACTIVE
+11	ppmm@gmail.com	Phu Phu May Maung	password	MEMBER	ACTIVE
+12	admin@gmail.com	admin	admin	ADMIN	ACTIVE

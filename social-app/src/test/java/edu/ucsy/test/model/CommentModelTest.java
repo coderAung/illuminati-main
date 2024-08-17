@@ -28,7 +28,7 @@ public class CommentModelTest {
 	@BeforeAll
 	static void init() {
 		// initiate connector from CustomConnectorFactory here
-		connector = CustomConnectorFactory.getConnectorWithPassword("");
+		connector = CustomConnectorFactory.getConnectorWithPassword("root");
 		di = new DatabaseInitializer(connector);
 		di.truncate("comments");
 		commentModel = ModelFactory.getModel(Comment.class, connector);

@@ -9,14 +9,21 @@ id bigint primary key auto_increment,
 email varchar(255) not null unique,
 name varchar(255),
 password varchar(255),
+role enum('ADMIN', 'MEMBER') default(2),
+status enum('ACTIVE', 'SUSPENDED') default(1),
 created_at timestamp default(current_timestamp),
 updated_at timestamp default(current_timestamp)
 );
 
 create table user_details(
-user_id bigint primary key auto_increment,
+user_id bigint primary key,
 birth_date date null,
 address varchar(255) null,
+bio longtext null,
+phone_number varchar(255) null,
+gender enum('Male', 'Female', 'Others') null,
+relationship enum('Single', 'Married', 'Divorced', 'InARelaionship', 'IsComplicated'),
+occupaton enum('Student', 'Actor', 'Singer', 'Dancer', 'Influencer', 'DigialCreator'),
 foreign key (user_id) references users (id)
 );
 
@@ -57,6 +64,14 @@ friend_id bigint not null,
 check (user_id <> friend_id),
 foreign key (user_id) references users (id),
 foreign key (friend_id) references users (id)
+);
+
+create table friend_requests(
+id bigint primary key auto_increment,
+request_to bigint not null,
+request_by bigint not null,
+foreign key (request_to) references users (id),
+foreign key (request_by) references users (id)
 );
 
 create table posts(
@@ -115,4 +130,15 @@ post_id bigint not null,
 saved_at timestamp default(current_timestamp),
 foreign key (user_id) references users (id),
 foreign key (post_id) references posts (id)
+);
+
+create table notifications(
+id bigint primary key auto_increment,
+message longtext not null,
+type enum('FriendRequest', 'NewComment'),
+status enum('CHECKED', 'UNCHECKED') default(2),
+notified_at timestamp default(current_timestamp),
+user_id bigint not null,
+target_id bigint not null,
+foreign key (user_id) references users (id)
 );

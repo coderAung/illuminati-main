@@ -2,8 +2,10 @@ package edu.ucsy.social.model.entity;
 
 import java.time.LocalDateTime;
 
+import edu.ucsy.social.data.annotation.Entity;
 import edu.ucsy.social.model.entity.type.ImageStatus;
 
+@Entity
 public record CoverImage(
 		long id,
 		String name,
