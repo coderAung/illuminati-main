@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-     <form action = "/home">
-     <button>Get Started</button>
-     </form>
+
 </body>
 </html>
