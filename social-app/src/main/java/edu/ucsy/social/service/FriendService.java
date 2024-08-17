@@ -10,4 +10,8 @@ public interface FriendService {
 
 	List<FriendView> getFriendViews(int userid, int limit);
 
+	boolean confirmFriendRequest(int friendRequestId);
+
+	boolean deleteFriend(int userId, int friendId);
+
 }
