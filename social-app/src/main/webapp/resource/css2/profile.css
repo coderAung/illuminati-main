@@ -1,0 +1,126 @@
+@charset "ISO-8859-1";
+body {
+	width: 100%;
+	overflow-y: scroll;
+	background: #f5f5f5;
+}
+
+.profile-detail {
+	width: 70%;
+	background-color: #fff;
+	padding: 0px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	text-align: left;
+	margin:0px 500px;
+}
+
+.profileCoverImg {
+	width: 100%;
+	height: 350px;
+	object-fit: cover;
+	border-radius: 10px 10px 0 0;
+}
+
+.profileUserImg {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
+	position: absolute;
+	left: 40%;
+	right: 0;
+	margin-left: 30px;
+	transform: translateX(-50%);
+	top: 325px;
+	border: 3px solid white;
+}
+
+.profileInfo {
+	margin-top: 50px;
+	text-align: left;
+}
+
+.profileName {
+	font-size: 24px;
+	line-height: 0;
+	padding: 0px 43px;
+
+}
+
+.profileDesc {
+	margin-top: 10px;
+	font-style: italic;
+	padding: 0px 43px;
+}
+
+.userdetail {
+	margin-top: 20px;
+	text-align: left;
+	padding: 0px 20px ;
+}
+
+.userdetail p {
+	margin: 5px 0;
+}
+
+.profile-button {
+	margin-left: 700px;
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	margin-top: 20px;
+}
+
+.profile-button button {
+	padding: 10px 20px;
+	font-size: 14px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: rgba(184, 53, 190, 0.81);
+	color: white;
+	transition: background-color 0.3s ease;
+}
+
+.profile-button button:hover {
+	background-color: rgba(173, 0, 226, 1);
+}
+
+
+.friends-container {
+   font-size: 18px;
+   font-weight: 500;
+   margin-buttom: 10px; 
+   width: 65%;
+   left: 500px; 
+   position: absolute;
+   bottom: auto;
+   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+   margin-top: 0px; 
+   display: flex;
+   flex-direction: column;
+   padding: 0px 20px;
+   Top: 780px;
+   background-color: #fff;
+   
+}
+
+.friend-img {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.friends {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between; 
+}
+
+.friend {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+	cursor: pointer;
+}
