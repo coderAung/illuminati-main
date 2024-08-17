@@ -38,16 +38,37 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 		try(var conn = connector.getConnection();
 				var stmt = conn.prepareStatement(sql)
 				){
-			var birthDate = Date.valueOf(LocalDate.now());
 			
-				stmt.setDate(1, birthDate);
-				stmt.setString(2, ud.address());
-				stmt.setString(3, ud.bio());
-				stmt.setString(4, ud.phoneNumber());
-				stmt.setInt(5, ud.gender().ordinal() + 1);
-				stmt.setInt(6, ud.relationship().ordinal() + 1);
-				stmt.setInt(7, ud.occupation().ordinal() + 1);
+			stmt.setLong(1, ud.userid());
+		
+			if (null != ud.birthDate()) {
+			    var birthDate = Date.valueOf(ud.birthDate());
+			    stmt.setDate(2, birthDate);
+			} else {
+			    stmt.setDate(2, null);
+			}
+				stmt.setString(3, ud.address());
+				stmt.setString(4, ud.bio());
+				stmt.setString(5, ud.phoneNumber());
 			
+			if(null != ud.gender().name()) {
+				stmt.setInt(6, ud.gender().ordinal() + 1);
+			}else {
+				return null;
+			}
+				
+			if(null != ud.relationship().name()) {
+				stmt.setInt(7, ud.relationship().ordinal() + 1);
+			}else {
+				return null;
+			}
+				
+			if(null != ud.occupation().name()) {
+				stmt.setInt(8, ud.occupation().ordinal() + 1);}
+			else {
+				return null;
+			}
+
 			var row = stmt.executeUpdate();
 			if(row == 0 ) {
 				return null;

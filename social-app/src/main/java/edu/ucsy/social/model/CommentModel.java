@@ -75,7 +75,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
 				return commentFrom(rs);
-				
+				 
 			}
 			
 		} catch (SQLException e) {
