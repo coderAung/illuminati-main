@@ -16,7 +16,7 @@ public class UserDetailTest {
 	
 	@BeforeAll
 	static void init() {
-		di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithPassword("admin"));
+		di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithPassword("root"));
 		userDetailModel = ModelFactory.getModel(UserDetail.class, CustomConnectorFactory.getConnectorWithPassword("admin"));
 		di.truncate("user_details");
 	}
