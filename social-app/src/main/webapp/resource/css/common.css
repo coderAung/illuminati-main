@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+body {
+	background-color: #d9bcff;
+}
+
+.bg-pale {
+	background-color: #fefcff;
+}
+
+.btn-purple {
+	background-color: #7f00ff;
+	color: white;
+}
+
+.btn-purple:hover {
+	background-color: #7f00ff;
+	color: white;
+}
+
+.border-purple {
+	border: 1px solid #7f00ff;
+}
+
+.purple {
+	color: #7f00ff;
+}
+
+.friend-card img {
+	object-fit: cover;
+	width: 100%;
+	height: 150px;
+}
+
+.friend-card {
+	transition: transform 0.3s ease;
+}
+
+.friend-card:hover {
+	transform: scale(1.05); /* Grows the card slightly on hover */
+}
+
+.post-image-container {
+	background-color: #4b4b4b;
+}
+
+.post-image-container img {
+	width: 60%;
+	height: 100%;
+	object-fit: cover;
+}
+.menu-item {
+    position: relative;
+    transition: background-color 0.3s;
+    color: #333; /* Keeps the default font color */
+    border-bottom: 1px solid #e0e0e0; /* Light underline between items */
+}
+
+.menu-item:last-child {
+    border-bottom: none; /* Removes border from the last item */
+}
+
+.menu-item:hover {
+    background-color: #d0bdff; /* Lighter pale purple hover color */
+    color: #333; /* Keep font color unchanged */
+}
+
+.menu-item-active {
+    font-weight: bold;
+    color: #333; /* Default color for active item */
+}
+
+.menu-item-active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: #6f42c1; /* purple vertical line */
+}

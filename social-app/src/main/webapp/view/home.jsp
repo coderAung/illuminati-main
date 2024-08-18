@@ -15,7 +15,9 @@
 <body>
 
 	<!-- nav bar start -->
-	<jsp:include page="/component/nav-bar.jsp"></jsp:include>
+	<jsp:include page="/component/nav-bar.jsp">
+		<jsp:param value="nav-link-active" name="homeActive"/>
+	</jsp:include>
 	<!-- nav bar end -->
 
 	<!-- setting menu start -->

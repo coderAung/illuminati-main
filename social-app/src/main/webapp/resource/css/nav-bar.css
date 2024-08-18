@@ -1,12 +1,11 @@
 @charset "UTF-8";
 
+.pointer {
+	cursor: pointer;
+}
+
 .navbar {
-	background-color: #4b006e;
-	box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, 
-				rgba(0, 0, 0, 0.09) 0px 4px 2px, 
-				rgba(0, 0, 0, 0.09) 0px 8px 4px, 
-				rgba(0, 0, 0, 0.09) 0px 16px 8px, 
-				rgba(0, 0, 0, 0.09) 0px 32px 16px;
+	background-color: #7f00ff;
 }
 
 .logo img {
@@ -82,12 +81,15 @@
 .nav-link:hover {
 	color: white;
 }
-.nav-link.nav-link-active::after,
-.nav-link:hover::after {
-    width: 100%; /* Underline shows on hover and active */
+
+.nav-link.nav-link-active::after, .nav-link:hover::after {
+	width: 100%; /* Underline shows on hover and active */
 }
 
 .nav-link.nav-link-active {
-    color: white; /* Active link color */
+	color: white; /* Active link color */
 }
 
+.post-form {
+	border: 1px solid #4b006e;
+}

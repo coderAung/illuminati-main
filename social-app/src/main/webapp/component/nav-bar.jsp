@@ -10,7 +10,7 @@
 
 <c:url var="image" value="/img/logo.jpg"></c:url>
 
-<div class="navbar py-3 d-flex mb-3">
+<div class="navbar py-3 d-flex mb-3 sticky-top shadow">
 	<div class="logo mx-auto">
 		<img src="${image}" alt="Logo">
 	</div>
@@ -25,7 +25,7 @@
 			class="w-100 ps-5 pe-2 py-2 rounded"
 				placeholder="Type a word...">
 			<span class="close pointer">
-				<i class="fas fa-x pointer"></i>
+				<i class="bi bi-x fs-4 pointer"></i>
 			</span>
 		</form>
 	</div>
@@ -33,10 +33,10 @@
 
 	<!-- nav-links start -->
 	<div class="nav-links d-flex justify-content-evenly w-50 position-relative">
-		<a href="${home}" class="nav-link text-white nav-link-active">Home</a>
-		<a href="${profile}" class="nav-link text-white">Profile</a>
-		<a href="${notifications}" class="nav-link text-white">Notifications</a>
-		<a href="${setting}" class="nav-link text-white">Setting</a>
+		<a href="${home}" class="nav-link text-white ${param.homeActive}">Home</a>
+		<a href="${profile}" class="nav-link text-white ${param.profileActive}">Profile</a>
+		<a href="${notifications}" class="nav-link text-white ${param.noificationActive}">Notifications</a>
+		<a href="${setting}" class="nav-link text-white" ${param.settingActive}>Setting</a>
 	</div>
 	<!-- nav-links end -->
 </div>
