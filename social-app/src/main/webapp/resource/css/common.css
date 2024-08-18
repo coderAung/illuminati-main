@@ -51,8 +51,47 @@ body {
 
 .post-image-container img {
 	width: 60%;
-	height: 100%;
-	object-fit: cover;
+	height: 400px; /* Adjust the height to fit your design */
+    object-fit: cover;
+}
+
+
+.post-card {
+    background-color: #082032;
+    color: #F7EFE5;
+    border: 1px solid #2C394B;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.post-image-container {
+    background-color: #2C394B;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.carousel-item img {
+	width: 60%;
+	height: 400px; /* Adjust the height to fit your design */
+    object-fit: cover;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    color: #FF4C29;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+    color: #FF4C29;
+}
+
+.carousel-indicators button {
+    background-color: #FF4C29;
+}
+
+.carousel-indicators .active {
+    background-color: #FF571F;
 }
 
 .menu-item {
@@ -109,4 +148,41 @@ body {
 .link-hover:hover {
     transform: scale(1.1); /* Slightly increase the size */
     transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.post-card .text-center a {
+    transition: background-color 0.3s;
+}
+
+.post-card .text-center a:hover {
+    background-color: #334756;
+}
+
+
+/* Scrollbar styling */
+body::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #2C394B; /* Background color of the track */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #FF4C29; /* Thumb color (scrollbar handle) */
+    border-radius: 10px; /* Rounded corners on the thumb */
+    border: 2px solid #334756; /* Optional border around the thumb */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #FF571F; /* Darker shade on hover */
+}
+
+.post-form {
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for scaling and background color */
+}
+
+.post-form:hover {
+    transform: scale(1.01); /* Slightly increase the size of the element */
+    background-color: #1a2b3c; /* Optional: Change background color on hover */
 }

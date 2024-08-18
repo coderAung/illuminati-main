@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -21,16 +21,22 @@
 
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
-		<jsp:param value="nav-link-active" name="homeActive"/>
+		<jsp:param value="nav-link-active" name="homeActive" />
 	</jsp:include>
 	<!-- nav bar end -->
 
-	<!-- setting menu start -->
-
-	<!-- setting menu end -->
-
 	<!-- main content start -->
+	<main>
+		<div class="container-fluid row">
 
+			<!-- sidebar start -->
+			<jsp:include page="/component/sidebar.jsp">
+				<jsp:param name="homeActive" value="menu-item-active"/>
+			</jsp:include>
+			<!-- sidebar end -->
+
+		</div>
+	</main>
 	<!-- main content end -->
 
 </body>

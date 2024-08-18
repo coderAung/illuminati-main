@@ -6,7 +6,7 @@
 		<!-- Cover Image -->
 		<div class="position-relative" style="max-height: 250px">
 			<img
-				src="https://i.pinimg.com/originals/82/30/f9/8230f9270b33e80727fa422b73e4b366.jpg"
+				src="https://w0.peakpx.com/wallpaper/473/369/HD-wallpaper-avengers-infinity-war-and-endgame-poster-avengers-endgame-avengers-end-game-avengers-infinity-war-2019-movies-movies-poster.jpg"
 				alt="Cover Image" class="img-fluid rounded-top w-100 h-100"
 				style="object-fit: cover;">
 			<!-- Profile Image (overlapping cover image at the bottom left but inside) -->
