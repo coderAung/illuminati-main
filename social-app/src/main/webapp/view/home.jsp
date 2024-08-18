@@ -6,11 +6,16 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
+
 <jsp:include page="/resource/library/bootstrap.jsp"></jsp:include>
 <jsp:include page="/resource/library/icon.jsp"></jsp:include>
 
 <c:url var="navbarCss" value="/resource/css/nav-bar.css"></c:url>
 <link href="${navbarCss}" rel="stylesheet">
+
+<c:url var="commonCss" value="/resource/css/common.css"></c:url>
+<link href="${commonCss}" rel="stylesheet">
+
 </head>
 <body>
 

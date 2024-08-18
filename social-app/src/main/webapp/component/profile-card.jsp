@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <div class="d-flex mb-2 px-0">
-	<div class="card bg-pale">
+	<div class="card bg-pale color-white">
 		<!-- Cover Image -->
 		<div class="position-relative" style="max-height: 250px">
 			<img
@@ -23,12 +23,12 @@
 		<!-- Profile Information -->
 		<div class="card-body position-relative">
 			<div class="w-50 d-flex float-end justify-content-end">
-				<a href="#" class="btn btn-purple w-25 me-3">Detail</a> <a href="#"
-					class="btn w-25 btn-purple">Edit</a>
+				<a href="#" class="btn btn-common w-25 me-3">Detail</a> <a href="#"
+					class="btn w-25 btn-common">Edit</a>
 			</div>
 			<div class="mt-5 ms-3">
 				<div class="h5">Khin Thaw Tar</div>
-				<i class="text-muted">Life is Gift</i>
+				<i class="color-white">Life is Gift</i>
 			</div>
 		</div>
 	</div>

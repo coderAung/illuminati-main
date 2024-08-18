@@ -1,29 +1,33 @@
 @charset "UTF-8";
 
 body {
-	background-color: #d9bcff;
+	background-color: #334756;
 }
 
 .bg-pale {
-	background-color: #fefcff;
+	background-color: #082032;
 }
 
-.btn-purple {
-	background-color: #7f00ff;
+.color-white {
+	color: #F7EFE5;
+}
+
+.bg-common {
+	background-color: #082032;
+}
+
+.btn-common {
+	background-color: #2C394B;
 	color: white;
 }
 
-.btn-purple:hover {
-	background-color: #7f00ff;
+.btn-common:hover {
+	background-color: #2C394B;
 	color: white;
 }
 
-.border-purple {
-	border: 1px solid #7f00ff;
-}
-
-.purple {
-	color: #7f00ff;
+.border-common {
+	border: 1px solid #2C394B;
 }
 
 .friend-card img {
@@ -34,6 +38,7 @@ body {
 
 .friend-card {
 	transition: transform 0.3s ease;
+	border: 1px solid #334756;
 }
 
 .friend-card:hover {
@@ -41,7 +46,7 @@ body {
 }
 
 .post-image-container {
-	background-color: #4b4b4b;
+	background-color: #2C394B;
 }
 
 .post-image-container img {
@@ -49,11 +54,12 @@ body {
 	height: 100%;
 	object-fit: cover;
 }
+
 .menu-item {
     position: relative;
     transition: background-color 0.3s;
-    color: #333; /* Keeps the default font color */
-    border-bottom: 1px solid #e0e0e0; /* Light underline between items */
+    color: #F7EFE5; /* Keeps the default font color */
+    border-bottom: 1px solid #334756; /* Light underline between items */
 }
 
 .menu-item:last-child {
@@ -61,13 +67,13 @@ body {
 }
 
 .menu-item:hover {
-    background-color: #d0bdff; /* Lighter pale purple hover color */
-    color: #333; /* Keep font color unchanged */
+    background-color: #334756; /* Lighter pale purple hover color */
+    color: #F7EFE5; /* Keep font color unchanged */
 }
 
 .menu-item-active {
     font-weight: bold;
-    color: #333; /* Default color for active item */
+    color: #F7EFE5; /* Default color for active item */
 }
 
 .menu-item-active::before {
@@ -77,5 +83,30 @@ body {
     top: 0;
     height: 100%;
     width: 4px;
-    background-color: #6f42c1; /* purple vertical line */
+    background-color: #FF4C29; /* purple vertical line */
+}
+
+.post-form {
+	border: 1px solid #334756;
+}
+
+.link:hover {
+	background-color: #2C394B;
+}
+
+.color-orange {
+	color: #FF4C29;
+}
+
+.left-side {
+    position: sticky;
+    top: 60px;  /* Distance from the top to avoid the navbar */
+    height: calc(100vh - 60px);  /* Adjust height to account for the navbar */
+    overflow-y: auto;  /* Allows scrolling within the sidebar if necessary */
+    padding-right: 15px;  /* Space between the sidebar and the right column */
+}
+
+.link-hover:hover {
+    transform: scale(1.1); /* Slightly increase the size */
+    transition: transform 0.3s ease; /* Smooth transition */
 }

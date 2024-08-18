@@ -10,13 +10,13 @@
 
 <c:url var="image" value="/img/logo.jpg"></c:url>
 
-<div class="navbar py-3 d-flex mb-3 sticky-top shadow">
+<div class="navbar py-2 d-flex mb-3 sticky-top shadow">
 	<div class="logo mx-auto">
 		<img src="${image}" alt="Logo">
 	</div>
 
 	<!-- Search Bar start -->
-	<div class="search-bar">
+	<div class="search-bar rounded">
 		<form action="#" class="w-100" method="get">
 			<span class="icon pointer">
 				<i class="fas fa-search"></i>

@@ -12,9 +12,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Profile Features</title>
-<c:url value="/resource/css2/profile.css" var="css2"></c:url>
-<link rel="stylesheet" href="${css2}">
+<title>Illuminati | Profile</title>
+
 <jsp:include page="/resource/library/bootstrap.jsp"></jsp:include>
 <jsp:include page="/resource/library/icon.jsp"></jsp:include>
 
@@ -23,6 +22,7 @@
 
 <c:url var="commonCss" value="/resource/css/common.css"></c:url>
 <link href="${commonCss}" rel="stylesheet">
+
 </head>
 <body>
 	<!-- nav bar start -->
@@ -37,7 +37,7 @@
 			<!-- LEFT start -->
 			<jsp:include page="/component/sidebar.jsp"></jsp:include>
 			<!-- RIGHT start -->
-			<div class="col-8">
+			<div class="col-7 px-0">
 
 				<!-- Profile Card -->
 				<jsp:include page="/component/profile-card.jsp"></jsp:include>
@@ -51,7 +51,7 @@
 				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
 				<!-- create post end -->
 
-				<div class="container-fluid px-0">
+				<div class="container-fluid px-0 color-white">
 
 					<c:forEach begin="1" end="5">
 						<!-- new feed start -->
@@ -66,8 +66,8 @@
 									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSseyxPBdJXmPED_RXpfKnNe_K-aAq-R94Hyg&s">
 								</a>
 								<div class="d-flex flex-column">
-									<a href="#" class="text-decoration-none fw-bold"> Ko Ko </a> <small
-										class="text-muted">13 hours ago</small>
+									<a href="#" class="text-decoration-none color-white fw-bold"> Ko Ko </a> <small
+										class="color-white">13 hours ago</small>
 								</div>
 							</div>
 							<!-- user info end -->
@@ -87,10 +87,10 @@
 							<!-- Post Images end -->
 
 							<!-- comment and share section -->
-							<div class=" d-flex align-items-center border-purple rounded-bottom text-center">
-								<a class="py-2 pointer w-50 text-decoration-none purple fw-bold">Comment</a>
-								<span class="purple fw-bold">|</span> <a
-									class="py-2 pointer w-50 text-decoration-none purple fw-bold">Share</a>
+							<div class=" d-flex color-white p-1 align-items-center border-common rounded-bottom text-center">
+								<a class="py-2 pointer link w-100 color-white w-50 text-decoration-none fw-bold">Comment</a>
+								<span class="mx-2">|</span> <a
+									class="py-2 pointer link w-100 color-white w-50 text-decoration-none fw-bold">Share</a>
 							</div>
 
 						</div>

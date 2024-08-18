@@ -5,7 +5,7 @@
 }
 
 .navbar {
-	background-color: #7f00ff;
+	background-color: #082032;
 }
 
 .logo img {
@@ -26,14 +26,16 @@
 	max-width: 400px;
 	margin: 0 20px;
 	position: relative;
+	background-color: transparent;
+	border: 1px solid #334756;
 }
 
 .search-bar input[type="text"] {
 	border: none;
-	background-color: #fff;
 	outline: none;
-	color: 4b006e;
 	font-weight: 500;
+	color: #F7EFE5;
+	background-color: transparent;
 }
 
 .search-bar .icon {
@@ -41,7 +43,7 @@
 	left: 15px;
 	top: 50%;
 	transform: translateY(-50%);
-	color: #4b006e;
+	color: #F7EFE5;
 }
 
 .search-bar .close {
@@ -49,7 +51,7 @@
 	right: 15px;
 	top: 50%;
 	transform: translateY(-50%);
-	color: #4b006e;
+	color: #F7EFE5;
 }
 
 .pointer {
@@ -59,7 +61,6 @@
 .nav-link {
 	position: relative;
 	display: inline-block;
-	color: black;
 	text-decoration: none;
 	font-weight: 500; /* Reduced font weight */
 	padding-bottom: 5px;
@@ -72,7 +73,7 @@
 	position: absolute;
 	width: 0;
 	height: 2px;
-	background-color: white; /* Changed underline color to white */
+	background-color: #FF4C29; /* Changed underline color to white */
 	bottom: 0;
 	left: 0;
 	transition: width 0.3s ease;
@@ -88,8 +89,4 @@
 
 .nav-link.nav-link-active {
 	color: white; /* Active link color */
-}
-
-.post-form {
-	border: 1px solid #4b006e;
 }
