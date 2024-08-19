@@ -31,10 +31,19 @@
 
 			<!-- sidebar start -->
 			<jsp:include page="/component/sidebar.jsp">
-				<jsp:param name="homeActive" value="menu-item-active"/>
+				<jsp:param name="homeActive" value="menu-item-active" />
 			</jsp:include>
 			<!-- sidebar end -->
+			<div class="col-6 px-0">
 
+				<!-- post form start -->
+				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
+				<!-- post form end -->
+				
+				<!-- post start -->
+				<jsp:include page="/component/posts.jsp"></jsp:include>
+				<!-- post end -->
+			</div>
 		</div>
 	</main>
 	<!-- main content end -->
