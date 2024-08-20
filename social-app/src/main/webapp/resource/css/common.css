@@ -264,28 +264,16 @@ body::-webkit-scrollbar-thumb:hover {
 	border: 1px solid #082032;
 }
 
-.cancel-btn,
-.logout-btn {
-	border: 1px solid #FF571F;
-	color: #FF571F;
-}
-
-.cancel-btn:hover,
-.logout-btn:hover {
+.logout-btn, .logout-btn:hover {
 	border: 1px solid #FF571F;
 	background-color: #FF571F;
-	color: #082032;
+	color: #F7EFE5;
 }
 
-.change-password-btn {
-	border: 1px solid #04d9ff;
-	color: #04d9ff;
-}
-
-.change-password-btn:hover {
-	border: 1px solid #04d9ff;
-	background-color: #04d9ff;
-	color: #082032;
+.change-password-btn, .change-password-btn:hover {
+	border: 1px solid #082032;
+	background-color: #082032;
+	color: #F7EFE5;
 }
 
 .password-input {
@@ -300,12 +288,6 @@ body::-webkit-scrollbar-thumb:hover {
 	font-size: 1rem;
 }
 
-.change-btn, .change-btn:hover {
-	border: 1px solid #04d9ff;
-	background-color: #04d9ff;
-	color: #082032;
-}
-
 .setting-div {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -314,3 +296,16 @@ body::-webkit-scrollbar-thumb:hover {
     transform: scale(1.02); /* Slightly increase the size */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for more emphasis */
 }
+
+.cancel-btn {
+    border: 1px solid #F7EFE5; /* White border */
+    color: #F7EFE5; /* White text */
+    background-color: transparent; /* Transparent background */
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #F7EFE5; /* White background on hover */
+    color: #1B262C; /* Dark text for contrast on hover */
+}
+

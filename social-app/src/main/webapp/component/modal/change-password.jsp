@@ -15,8 +15,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn cancel-btn" type="button">Cancel</button>
-					<button class="btn change-btn" type="submit">Change</button>
+					<button class="btn cancel-btn" data-bs-dismiss="modal" type="button">Cancel</button>
+					<button class="btn change-password-btn" type="submit">Change</button>
 				</div>
 			</form>
 		</div>

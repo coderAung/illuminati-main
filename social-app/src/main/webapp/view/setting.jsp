@@ -31,26 +31,28 @@
 			</jsp:include>
 			<!-- sidebar end -->
 			<div class="col-6 px-0 color-white">
-				<div class="border-blue rounded p-3">
+				<div class="bg-common rounded p-3">
 					<h4 class="mb-3">Setting</h4>
-					<div class="bg-common setting-div rounded p-3 mb-3">
+					<div class="bg-pale setting-div rounded p-3 mb-3">
 						<span>Profile Detail</span>
 					</div>
-					<div class="bg-common setting-div rounded p-3 mb-3 d-flex align-items-center justify-content-between">
+					<div class="bg-pale setting-div rounded p-3 mb-3 d-flex align-items-center justify-content-between">
 						<span>Password</span>
-						<button type="button" data-bs-toggle="modal" data-bs-target="#change-password" class="btn change-password-btn">Change Password</button>
+						<button type="button" data-bs-toggle="modal" data-bs-target="#change-password" class="btn change-password-btn shadow">Change Password</button>
 					</div>
-					<div class="bg-common setting-div rounded p-3 mb-3">
+					<div class="bg-pale setting-div rounded p-3 mb-3">
 						<span>About Us</span>
 					</div>
-					<div class="bg-common setting-div rounded p-3 d-flex align-items-center justify-content-between">
+					<div class="bg-pale setting-div rounded p-3 d-flex align-items-center justify-content-between">
 						<span>Logout</span>
-						<button class="btn logout-btn">Logout</button>
+						<button class="btn logout-btn shadow" data-bs-toggle="modal" data-bs-target="#logout">Logout</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<jsp:include page="/component/modal/change-password.jsp"></jsp:include>
+		<jsp:include page="/component/modal/logout.jsp"></jsp:include>
+		
 	</main>
 	<!-- main content end -->
 </body>
