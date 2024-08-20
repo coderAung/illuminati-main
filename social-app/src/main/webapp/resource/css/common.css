@@ -5,11 +5,15 @@ body {
 }
 
 .bg-pale {
-	background-color: #082032;
+	background-color: #334756;
 }
 
 .color-white {
 	color: #F7EFE5;
+}
+
+.color-common {
+	color: #082032;
 }
 
 .bg-common {
@@ -19,11 +23,19 @@ body {
 .btn-common {
 	background-color: #2C394B;
 	color: white;
+	transition: all 0.3s ease;
 }
 
 .btn-common:hover {
 	background-color: #2C394B;
 	color: white;
+	transform: translateY(-2px); /* Slight lift on hover */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-common:active {
+	transform: translateY(0); /* Reset when clicked */
+	box-shadow: none;
 }
 
 .border-common {
@@ -52,77 +64,79 @@ body {
 .post-image-container img {
 	width: 100%;
 	height: 100%;
-    object-fit: cover;
+	object-fit: cover;
 }
 
-
 .post-card {
-    background-color: #082032;
-    color: #F7EFE5;
-    border: 1px solid #2C394B;
-    border-radius: 10px;
-    padding: 15px;
+	background-color: #082032;
+	color: #F7EFE5;
+	border: 1px solid #2C394B;
+	border-radius: 10px;
+	padding: 15px;
 }
 
 .post-image-container {
-    background-color: #2C394B;
-    padding: 10px;
+	background-color: #2C394B;
+	padding: 10px;
 	height: 400px; /* Adjust the height to fit your design */
 }
 
 .carousel-item img {
 	width: 60%;
 	height: 400px; /* Adjust the height to fit your design */
-    object-fit: cover;
+	object-fit: cover;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    color: #FF4C29;
+.carousel-control-prev-icon, .carousel-control-next-icon {
+	color: #FF4C29;
 }
 
 .carousel-control-prev:hover .carousel-control-prev-icon,
-.carousel-control-next:hover .carousel-control-next-icon {
-    color: #FF4C29;
+	.carousel-control-next:hover .carousel-control-next-icon {
+	color: #FF4C29;
 }
 
 .carousel-indicators button {
-    background-color: #FF4C29;
+	background-color: #FF4C29;
 }
 
 .carousel-indicators .active {
-    background-color: #FF571F;
+	background-color: #FF571F;
 }
 
 .menu-item {
-    position: relative;
-    transition: background-color 0.3s;
-    color: #F7EFE5; /* Keeps the default font color */
-    border-bottom: 1px solid #334756; /* Light underline between items */
+	position: relative;
+	transition: background-color 0.3s;
+	color: #F7EFE5; /* Keeps the default font color */
+	border-bottom: 1px solid #334756; /* Light underline between items */
+}
+
+.color-blue {
+	color: #04d9ff;
 }
 
 .menu-item:last-child {
-    border-bottom: none; /* Removes border from the last item */
+	border-bottom: none; /* Removes border from the last item */
 }
 
 .menu-item:hover {
-    background-color: #334756; /* Lighter pale purple hover color */
-    color: #F7EFE5; /* Keep font color unchanged */
+	background-color: #334756; /* Lighter pale purple hover color */
+	color: #F7EFE5; /* Keep font color unchanged */
 }
 
 .menu-item-active {
-    font-weight: bold;
-    color: #F7EFE5; /* Default color for active item */
+	font-weight: bold;
+	color: #F7EFE5; /* Default color for active item */
 }
 
 .menu-item-active::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background-color: #FF4C29; /* purple vertical line */
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 4px;
+	background-color: #FF4C29; /* purple vertical line */
 }
 
 .post-form {
@@ -138,51 +152,165 @@ body {
 }
 
 .left-side {
-    position: sticky;
-    top: 60px;  /* Distance from the top to avoid the navbar */
-    height: calc(100vh - 60px);  /* Adjust height to account for the navbar */
-    overflow-y: auto;  /* Allows scrolling within the sidebar if necessary */
-    padding-right: 15px;  /* Space between the sidebar and the right column */
+	position: sticky;
+	top: 60px; /* Distance from the top to avoid the navbar */
+	height: calc(100vh - 60px);
+	/* Adjust height to account for the navbar */
+	overflow-y: auto;
+	/* Allows scrolling within the sidebar if necessary */
+	padding-right: 15px;
+	/* Space between the sidebar and the right column */
 }
 
 .link-hover:hover {
-    transform: scale(1.1); /* Slightly increase the size */
-    transition: transform 0.3s ease; /* Smooth transition */
+	transform: scale(1.1); /* Slightly increase the size */
+	transition: transform 0.3s ease; /* Smooth transition */
 }
 
 .post-card .text-center a {
-    transition: background-color 0.3s;
+	transition: background-color 0.3s;
 }
 
 .post-card .text-center a:hover {
-    background-color: #334756;
+	background-color: #334756;
 }
 
-
-/* Scrollbar styling */
+/* Scroll bar styling */
 body::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+	width: 12px; /* Width of the scroll bar */
 }
 
 body::-webkit-scrollbar-track {
-    background-color: #2C394B; /* Background color of the track */
+	background-color: #2C394B; /* Background color of the track */
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #FF4C29; /* Thumb color (scrollbar handle) */
-    border-radius: 10px; /* Rounded corners on the thumb */
-    border: 2px solid #334756; /* Optional border around the thumb */
+	background-color: #FF4C29; /* Thumb color (scrollbar handle) */
+	border-radius: 10px; /* Rounded corners on the thumb */
+	border: 2px solid #334756; /* Optional border around the thumb */
 }
 
 body::-webkit-scrollbar-thumb:hover {
-    background-color: #FF571F; /* Darker shade on hover */
+	background-color: #FF571F; /* Darker shade on hover */
 }
 
 .post-form {
-    transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for scaling and background color */
+	transition: transform 0.3s ease, background-color 0.3s ease;
+	/* Smooth transition for scaling and background color */
 }
 
 .post-form:hover {
-    transform: scale(1.01); /* Slightly increase the size of the element */
-    background-color: #1a2b3c; /* Optional: Change background color on hover */
+	transform: scale(1.01); /* Slightly increase the size of the element */
+	background-color: #1a2b3c;
+	/* Optional: Change background color on hover */
+}
+
+.cover-img {
+	min-height: 200px;
+	max-height: 200px;
+	overflow: hidden;
+}
+
+.cover-img img {
+	width: 100%;
+	height: 100%;
+}
+
+.profile-img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	top: 80px;
+	left: 10px;
+	overflow: hidden;
+	border: 2px solid #082032;
+}
+
+.profile-img img {
+	width: 100%;
+	object-fit: cover;
+}
+
+.cover-img img, .profile-img img {
+	transition: transform 0.3s ease;
+}
+
+.cover-img img:hover, .profile-img img:hover {
+	transform: scale(1.05); /* Slightly enlarges the image on hover */
+}
+
+/* Optional - Add a shadow effect on hover */
+.cover-img img:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img img:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.bg-bluelight {
+	background-color: #04d9ff;
+}
+
+.color-orange {
+	color: #FF571F;
+}
+
+.bg-orange {
+	background-color: #FF571F;
+}
+
+.border-blue {
+	border: 1px solid #082032;
+}
+
+.cancel-btn,
+.logout-btn {
+	border: 1px solid #FF571F;
+	color: #FF571F;
+}
+
+.cancel-btn:hover,
+.logout-btn:hover {
+	border: 1px solid #FF571F;
+	background-color: #FF571F;
+	color: #082032;
+}
+
+.change-password-btn {
+	border: 1px solid #04d9ff;
+	color: #04d9ff;
+}
+
+.change-password-btn:hover {
+	border: 1px solid #04d9ff;
+	background-color: #04d9ff;
+	color: #082032;
+}
+
+.password-input {
+	border: 1px solid #04d9ff;
+}
+
+.password-input input {
+	color: #04d9ff;
+	background: transparent;
+	border: none;
+	outline: none;
+	font-size: 1rem;
+}
+
+.change-btn, .change-btn:hover {
+	border: 1px solid #04d9ff;
+	background-color: #04d9ff;
+	color: #082032;
+}
+
+.setting-div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.setting-div:hover {
+    transform: scale(1.02); /* Slightly increase the size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for more emphasis */
 }

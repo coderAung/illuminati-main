@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<div class="bg-pale mb-2 p-3 color-white rounded">
+<div class="bg-common mb-2 p-3 color-white rounded">
 	<div class="mb-3 d-flex justify-content-between">
 		<span class="fs-5">Friends (10)</span> <a href="#"
 			class="text-decoration-none btn btn-common"> <i class="bi bi-search"></i> Find a friend 
@@ -34,7 +34,7 @@
 		</div>
 		<div class="col d-flex justify-content-center my-auto">
 			<a href=""
-				class="d-flex color-orange flex-column link-hover text-decoration-none align-items-center">
+				class="d-flex color-blue flex-column link-hover text-decoration-none align-items-center">
 				<i class="bi bi-arrow-right-circle fs-1"></i> <span>See All</span>
 			</a>
 		</div>

@@ -31,7 +31,7 @@
 			<!-- Post Images start -->
 
 			<div class="p-2 text-center post-image-container">
-				<img class="rounded"
+				<img
 					src="https://www.ugaoo.com/cdn/shop/articles/shutterstock_223679731.jpg?v=1661873480">
 			</div>
 			<!-- Post Images end -->
@@ -40,9 +40,13 @@
 			<div
 				class=" d-flex color-white p-1 align-items-center border-common rounded-bottom text-center">
 				<a
-					class="py-2 pointer link w-100 color-white w-50 text-decoration-none fw-bold">Comment</a>
+					class="py-2 pointer link w-100 color-white w-50 text-decoration-none">
+					Comment <i class="bi bi-dot"></i> <small>20 comments</small>
+					</a>
 				<span class="mx-2">|</span> <a
-					class="py-2 pointer link w-100 color-white w-50 text-decoration-none fw-bold">Share</a>
+					class="py-2 pointer link w-100 color-white w-50 text-decoration-none">
+					Share <i class="bi bi-dot"></i> <small>20 shares</small>
+					</a>
 			</div>
 
 		</div>

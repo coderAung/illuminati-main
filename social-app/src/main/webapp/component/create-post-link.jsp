@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<div class="bg-pale create-post color-white rounded mb-2 p-3">
-	<div class="mb-3 fs-5">Create A Post</div>
+<div class="bg-common create-post color-white rounded mb-2 p-3">
+	<div class="mb-3 d-flex align-items-center">
+		<span class="fs-5 me-3">Create a post</span>
+		<div class="bg-orange flex-fill" style="width: 1px;height: 2px;"></div>
+	</div>
 	<div class="d-flex">
 		<a href="#" class="me-3"> <img style="width: 50px; height: 50px"
 			class="rounded-circle"

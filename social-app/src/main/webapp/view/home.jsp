@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Home</title>
+<title>Illuminati | Home</title>
 
 <jsp:include page="/resource/library/bootstrap.jsp"></jsp:include>
 <jsp:include page="/resource/library/icon.jsp"></jsp:include>

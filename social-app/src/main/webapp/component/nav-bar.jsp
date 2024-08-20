@@ -36,7 +36,7 @@
 		<a href="${home}" class="nav-link text-white ${param.homeActive}">Home</a>
 		<a href="${profile}" class="nav-link text-white ${param.profileActive}">Profile</a>
 		<a href="${notifications}" class="nav-link text-white ${param.noificationActive}">Notifications</a>
-		<a href="${setting}" class="nav-link text-white" ${param.settingActive}>Setting</a>
+		<a href="${setting}" class="nav-link text-white ${param.settingActive}">Setting</a>
 	</div>
 	<!-- nav-links end -->
 </div>
