@@ -11,9 +11,8 @@
 <c:url var="setting" value="/setting"></c:url>
 
 
-<div class="col-3 left-side">
 	<!-- ==========================side bar start ======================================-->
-	<div class="sidebar bg-common rounded mb-2 p-2">
+	<div class="sidebar bg-card-2 rounded mb-2 p-2">
 
 		<a href="${home}"
 			class="menu-item ${param.homeActive} py-2 px-4 pointer d-block text-decoration-none">
@@ -29,7 +28,7 @@
 			Friend Requests</a>
 	</div>
 
-	<div class="sidebar bg-common rounded p-2">
+	<div class="sidebar bg-card-2 rounded p-2">
 
 		<a href="${saved}"
 			class="menu-item ${param.savedActive} py-2 px-4 pointer d-block text-decoration-none">
@@ -42,4 +41,3 @@
 			Setting </a>
 	</div>
 	<!--  =====================side bar end  -->
-</div>

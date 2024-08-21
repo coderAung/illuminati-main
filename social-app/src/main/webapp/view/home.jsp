@@ -7,17 +7,13 @@
 <meta charset="ISO-8859-1">
 <title>Illuminati | Home</title>
 
-<jsp:include page="/resource/library/bootstrap.jsp"></jsp:include>
-<jsp:include page="/resource/library/icon.jsp"></jsp:include>
-
-<c:url var="navbarCss" value="/resource/css/nav-bar.css"></c:url>
-<link href="${navbarCss}" rel="stylesheet">
+<jsp:include page="/resource/style.jsp"></jsp:include>
 
 <c:url var="commonCss" value="/resource/css/common.css"></c:url>
 <link href="${commonCss}" rel="stylesheet">
 
 </head>
-<body>
+<body class="bg-black">
 
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
@@ -29,17 +25,19 @@
 	<main>
 		<div class="container-fluid row">
 
-			<!-- sidebar start -->
-			<jsp:include page="/component/sidebar.jsp">
-				<jsp:param name="homeActive" value="menu-item-active" />
-			</jsp:include>
+			<div class="col-3 left-side mx-3">
+				<!-- sidebar start -->
+				<jsp:include page="/component/sidebar.jsp">
+					<jsp:param name="homeActive" value="menu-item-active" />
+				</jsp:include>
+			</div>
 			<!-- sidebar end -->
 			<div class="col-6 px-0">
 
 				<!-- post form start -->
 				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
 				<!-- post form end -->
-				
+
 				<!-- post start -->
 				<jsp:include page="/component/posts.jsp"></jsp:include>
 				<!-- post end -->

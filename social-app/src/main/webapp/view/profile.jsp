@@ -14,17 +14,13 @@
 <meta charset="ISO-8859-1">
 <title>Illuminati | Profile</title>
 
-<jsp:include page="/resource/library/bootstrap.jsp"></jsp:include>
-<jsp:include page="/resource/library/icon.jsp"></jsp:include>
-
-<c:url var="navbarCss" value="/resource/css/nav-bar.css"></c:url>
-<link href="${navbarCss}" rel="stylesheet">
+<jsp:include page="/resource/style.jsp"></jsp:include>
 
 <c:url var="commonCss" value="/resource/css/common.css"></c:url>
 <link href="${commonCss}" rel="stylesheet">
 
 </head>
-<body>
+<body class="bg-black">
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
 		<jsp:param value="nav-link-active" name="profileActive" />
@@ -34,11 +30,15 @@
 	<!-- main part start -->
 	<main>
 		<div class="container-fluid row">
-			<!-- LEFT start -->
-			<jsp:include page="/component/sidebar.jsp">
-				<jsp:param value="menu-item-active" name="profileActive" />
-			</jsp:include>
-			<!-- RIGHT start -->
+			
+			<div class="col-3 left-side mx-3">
+				<!-- sidebar start -->
+				<jsp:include page="/component/sidebar.jsp">
+					<jsp:param value="menu-item-active" name="profileActive" />
+				</jsp:include>
+			</div>
+			
+			
 			<div class="col-6 px-0">
 
 				<!-- Profile Card -->
