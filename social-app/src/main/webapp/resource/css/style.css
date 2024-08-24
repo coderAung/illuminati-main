@@ -1,0 +1,294 @@
+@charset "UTF-8";
+
+.bg-black {
+	background-color: #000000;
+}
+
+.bg-card {
+	background-color: #161618;
+}
+
+.color-app {
+	color: #0088cc;
+}
+
+.bg-card-2 {
+	background-color: #212124;
+}
+
+.txt-white {
+	color: #ffffff;
+}
+
+.txt-grey {
+	color: #818181;
+}
+
+.bg-grey {
+	background-color: #818181;
+}
+
+.nav-link {
+	position: relative;
+	display: inline-block;
+	text-decoration: none;
+	padding-bottom: 5px;
+	transition: color 0.3s ease, font-weight 0.3s ease;
+	/* Transition for smoother change */
+}
+
+.nav-link::after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 2px;
+	background-color: #0088cc; /* Changed underline color to white */
+	bottom: 0;
+	left: 0;
+	transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+	color: white;
+}
+
+.nav-link.nav-link-active::after, .nav-link:hover::after {
+	width: 100%; /* Underline shows on hover and active */
+}
+
+.nav-link.nav-link-active {
+	color: white; /* Active link color */
+}
+
+.search-bar {
+	position: relative;
+}
+
+.search-bar input {
+	background: transparent;
+	border: none;
+	outline: none;
+}
+
+.search-bar input::placeholder {
+	color: #818181;
+}
+
+.search-bar .icon {
+	position: absolute;
+	left: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #F7EFE5;
+}
+.pointer {
+	cursor: pointer;
+}
+
+.menu-item:hover {
+	background-color: #282828; /* Lighter pale purple hover color */
+	color: #ffffff; /* Keep font color unchanged */
+}
+
+.menu-item-active {
+	background-color: #282828; /* Lighter pale purple hover color */
+	color: #ffffff; /* Default color for active item */
+}
+
+.menu-item-active::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 4px;
+	background-color: #0088cc; /* purple vertical line */
+}
+.menu-item:last-child {
+	border-bottom: none; /* Removes border from the last item */
+}
+
+.menu-item {
+	position: relative;
+	transition: background-color 0.3s;
+	color: #ffffff; /* Keeps the default font color */
+	border-bottom: 1px solid #818181; /* Light underline between items */
+}
+
+.post-form {
+	border: 1px solid #818181;
+}
+
+.post-form {
+	transition: transform 0.3s ease, background-color 0.3s ease;
+	/* Smooth transition for scaling and background color */
+}
+
+.post-form:hover {
+	transform: scale(1.01); /* Slightly increase the size of the element */
+	background-color: #212124;
+	/* Optional: Change background color on hover */
+}
+
+.post-card .text-center a {
+	transition: background-color 0.3s;
+}
+
+.post-card .text-center a:hover {
+	background-color: #212124;
+}
+
+.post-card {
+	background-color: #161618;
+	color: #F7EFE5;
+	padding: 15px;
+}
+
+.post-image-container img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.post-image-container {
+	height: 400px; /* Adjust the height to fit your design */
+}
+
+.btn-normal, .btn-normal:hover {
+	background-color: #212124;
+	color: #ffffff;
+}
+
+.btn-normal:active {
+	transform: translateY(0); /* Reset when clicked */
+	box-shadow: none;
+}
+
+.btn-normal:hover {
+	color: #ffffff;
+	transform: translateY(-2px); /* Slight lift on hover */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.setting-div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.setting-div:hover {
+    transform: scale(1.02); /* Slightly increase the size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for more emphasis */
+}
+
+.change-password-btn, .change-password-btn:hover {
+	border: 1px solid #0088cc;
+	background-color: #0088cc;
+	color: #000000;
+	font-weight: 500;
+}
+
+.cancel-btn,
+.logout-btn, .logout-btn:hover {
+	background-color: #950606;
+	border: 1px solid #950606;
+	color: #ffffff;
+}
+
+.txt-red {
+	color: #950606;
+}
+
+.cover-img {
+	min-height: 200px;
+	max-height: 200px;
+	overflow: hidden;
+}
+
+.cover-img img {
+	width: 100%;
+	height: 100%;
+}
+
+.profile-img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	top: 80px;
+	left: 10px;
+	overflow: hidden;
+}
+
+.profile-img img {
+	width: 100%;
+	object-fit: cover;
+}
+
+.cover-img img, .profile-img img {
+	transition: transform 0.3s ease;
+}
+
+.cover-img img:hover, .profile-img img:hover {
+	transform: scale(1.05); /* Slightly enlarges the image on hover */
+}
+
+/* Optional - Add a shadow effect on hover */
+.cover-img img:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img img:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.password-input input {
+	color: #ffffff;
+	background: transparent;
+	border: none;
+	outline: none;
+	font-size: 1rem;
+}
+
+.password-input input:placeholder {
+	color: #818181;
+}
+
+.close-btn {
+	color: #ffffff;
+	border: none;
+	background: transparent;
+}
+
+
+.left-side {
+	position: sticky;
+	top: 60px; /* Distance from the top to avoid the navbar */
+	height: calc(100vh - 60px);
+	/* Adjust height to account for the navbar */
+	overflow-y: auto;
+	/* Allows scrolling within the sidebar if necessary */
+	padding-right: 15px;
+	/* Space between the sidebar and the right column */
+}
+
+.friend-card img {
+	object-fit: cover;
+	width: 100%;
+	height: 100px;
+}
+
+.friend-card {
+	transition: transform 0.3s ease;
+	background-color: #212124;
+}
+
+.friend-card:hover {
+	transform: scale(1.05); /* Grows the card slightly on hover */
+}
+
+
+.link-hover:hover {
+	transform: scale(1.1); /* Slightly increase the size */
+	transition: transform 0.3s ease; /* Smooth transition */
+}
+
+
+

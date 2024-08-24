@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.logo {
+	border: 2px solid #ffffff;
+	width: 30px;
+	border-radius: 50%;
+}
+
+.logo-container {
+	transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+	transform: scale(1.1); /* Increase the size slightly */
+}
