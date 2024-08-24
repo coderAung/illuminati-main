@@ -10,12 +10,12 @@
 
 <c:url var="logo" value="/img/circle-i-logo.png"></c:url>
 
-<div class="bg-card navbar txt-white py-2 d-flex mb-3 sticky-top shadow">
+<div class="bg-card navbar py-2 d-flex mb-3 sticky-top shadow">
 	<div class="d-flex align-items-center mx-auto text-center logo-container pointer">
 		<div class="logo">
 			<i class="fa-solid fa-i"></i>
 		</div>
-		<span class="ms-3 fs-5">Illuminati</span>
+		<span class="ms-3 fs-5 txt-text">Illuminati</span>
 	</div>
 
 	<!-- Search Bar start -->
@@ -30,13 +30,13 @@
 	<!-- nav-links start -->
 	<div
 		class="nav-links d-flex justify-content-evenly w-50 position-relative">
-		<a href="${home}" class="nav-link text-white ${param.homeActive}">Home</a>
+		<a href="${home}" class="nav-link ${param.homeActive}">Home</a>
 		<a href="${profile}"
-			class="nav-link text-white ${param.profileActive}">Profile</a> <a
+			class="nav-link ${param.profileActive}">Profile</a> <a
 			href="${notifications}"
-			class="nav-link text-white ${param.noificationActive}">Notifications</a>
+			class="nav-link ${param.noificationActive}">Notifications</a>
 		<a href="${setting}"
-			class="nav-link text-white ${param.settingActive}">Setting</a>
+			class="nav-link ${param.settingActive}">Setting</a>
 	</div>
 	<!-- nav-links end -->
 </div>

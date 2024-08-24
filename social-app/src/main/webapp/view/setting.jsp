@@ -9,9 +9,8 @@
 </head>
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
-<c:url var="commonCss" value="/resource/css/common.css"></c:url>
-<link href="${commonCss}" rel="stylesheet">
-<body class="bg-black">
+
+<body class="main-bg">
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
 		<jsp:param value="nav-link-active" name="settingActive" />
