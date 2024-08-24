@@ -3,6 +3,8 @@ package edu.ucsy.test.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -28,7 +30,7 @@ public class CommentModelTest {
 	@BeforeAll
 	static void init() {
 		// initiate connector from CustomConnectorFactory here
-		connector = CustomConnectorFactory.getConnectorWithPassword("root");
+		connector = CustomConnectorFactory.getConnectorWithPassword("admin");
 		di = new DatabaseInitializer(connector);
 		di.truncate("comments");
 		commentModel = ModelFactory.getModel(Comment.class);
@@ -42,17 +44,27 @@ public class CommentModelTest {
 	void test_save(long id, String content, long userId, long postId, String userName) {
 //		System.out.printf("%s %s %s %s %s%n", id, content, userId, postId, userName);
 		var comment = new Comment(content, userId, userName, postId);
-		comment = commentModel.save(comment);
 		
-		assertNotNull(comment);
-		assertEquals(id, comment.id());
-		assertEquals(content, comment.content());
-		assertEquals(userId, comment.userId());
-		assertEquals(postId, comment.postId());
-		assertEquals(userName, comment.userName());
+		try(var conn = connector.getConnection()) {
+			commentModel.setConnection(conn);
+			comment = commentModel.save(comment);
+			
+			assertNotNull(comment);
+			assertEquals(id, comment.id());
+			assertEquals(content, comment.content());
+			assertEquals(userId, comment.userId());
+			assertEquals(postId, comment.postId());
+			assertEquals(userName, comment.userName());
+			
+			assertNotNull(comment.createdAt());
+			assertNotNull(comment.updatedAt());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			commentModel.setConnection(null);
+		}
 		
-		assertNotNull(comment.createdAt());
-		assertNotNull(comment.updatedAt());
 	}
 	
 	@Disabled
@@ -62,16 +74,24 @@ public class CommentModelTest {
 			files = {"test-source/comments.txt"},
 			delimiter = '\t')
 	void test_findOne(long id, String content, long userId, long postId, String userName) {
-		var comment = commentModel.findOne(id);
+		try(var conn = connector.getConnection()) {
+			commentModel.setConnection(conn);
 
-		assertNotNull(comment);
-		assertEquals(id, comment.id());
-		assertEquals(content, comment.content());
-		assertEquals(userId, comment.userId());
-		assertEquals(postId, comment.postId());
-		assertEquals(userName, comment.userName());
-		
-		assertNotNull(comment.createdAt());
-		assertNotNull(comment.updatedAt());
+			var comment = commentModel.findOne(id);
+
+			assertNotNull(comment);
+			assertEquals(id, comment.id());
+			assertEquals(content, comment.content());
+			assertEquals(userId, comment.userId());
+			assertEquals(postId, comment.postId());
+			assertEquals(userName, comment.userName());
+			
+			assertNotNull(comment.createdAt());
+			assertNotNull(comment.updatedAt());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			commentModel.setConnection(null);
+		}
 	}
 }

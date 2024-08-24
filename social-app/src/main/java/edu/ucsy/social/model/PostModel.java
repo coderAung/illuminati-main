@@ -16,12 +16,12 @@ public class PostModel extends AbstractModel<Post> {
 
 	@Override
 	public Post save(Post p) {
-		var sql1 = """
+		var sql = """
 					insert into posts (content, created_at, updated_at, user_id)
 					values (?, ?, ?, ?)
 				""";		
 		
-		try(var stmt = connection.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS)) {
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, p.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());

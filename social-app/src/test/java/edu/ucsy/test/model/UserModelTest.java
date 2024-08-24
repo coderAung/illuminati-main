@@ -60,6 +60,8 @@ public class UserModelTest {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			model.setConnection(null);
 		}
 		
 	}
@@ -73,12 +75,15 @@ public class UserModelTest {
 		var user = new User(id, email, name, password, Role.MEMBER, Status.ACTIVE, null, null);
 		
 		try(var connection = connector.getConnection()) {
+			model.setConnection(connector.getConnection());
 			var updatedUser = model.update(user);
 			
 			assertNotNull(updatedUser);
 			assertEquals(name, updatedUser.name());
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			model.setConnection(null);
 		}
 	}
 	
@@ -89,6 +94,7 @@ public class UserModelTest {
 			delimiter = '\t')
 	void test_find_one(long id, String email, String name, String password, Role role) {
 		try(var connection = connector.getConnection()) {
+			model.setConnection(connector.getConnection());
 			var user = model.findOne(id);
 			assertNotNull(user);
 			assertEquals(id, user.id());
@@ -99,6 +105,8 @@ public class UserModelTest {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			model.setConnection(null);
 		}
 	}
 }
