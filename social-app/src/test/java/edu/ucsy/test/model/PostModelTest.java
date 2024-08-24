@@ -3,6 +3,8 @@ package edu.ucsy.test.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -32,7 +34,7 @@ public class PostModelTest {
 		di = new DatabaseInitializer(connector);
 		di.truncate("posts");
 		
-		postModel = ModelFactory.getModel(Post.class, connector);
+		postModel = ModelFactory.getModel(Post.class);
 	}
 	
 	@Order(1)
@@ -42,13 +44,22 @@ public class PostModelTest {
 			delimiter = '\t')
 	void test_save(long id, String content, long userId, String userName) {
 		var post = new Post(content, userId, userName);
-		post = postModel.save(post);
 		
-		assertNotNull(post);
-		assertEquals(id, post.id());
-		assertEquals(content, post.content());
-		assertEquals(userId, post.userId());
-		assertEquals(userName, post.userName());	
+		try(var conn = connector.getConnection()) {
+			postModel.setConnection(conn);
+			post = postModel.save(post);
+			
+			assertNotNull(post);
+			assertEquals(id, post.id());
+			assertEquals(content, post.content());
+			assertEquals(userId, post.userId());
+			assertEquals(userName, post.userName());	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			postModel.setConnection(null);
+		}
+		
 	}
 	
 	@Order(2)
@@ -57,21 +68,37 @@ public class PostModelTest {
 			files = {"test-source/posts.txt"},
 			delimiter = '\t')
 	void test_find_one(long id, String content, long userId, String userName) {
-		var post = postModel.findOne(id);
+		
+		try(var conn = connector.getConnection()) {
+			postModel.setConnection(conn);
+			var post = postModel.findOne(id);
 
-		assertNotNull(post);
-		assertEquals(id, post.id());
-		assertEquals(content, post.content());
-		assertEquals(userId, post.userId());
-		assertEquals(userName, post.userName());
+			assertNotNull(post);
+			assertEquals(id, post.id());
+			assertEquals(content, post.content());
+			assertEquals(userId, post.userId());
+			assertEquals(userName, post.userName());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			postModel.setConnection(null);
+		}
+		
 	}
 
 	@Order(3)
 	@Test
 	void test_getAll() {
-		var posts = postModel.getAll();
-		assertNotNull(posts);
-		assertEquals(10, posts.size());
+		try(var conn = connector.getConnection()) {
+			postModel.setConnection(conn);
+			var posts = postModel.getAll();
+			assertNotNull(posts);
+			assertEquals(10, posts.size());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			postModel.setConnection(null);
+		}
 	}
 	
 	@Order(4)
@@ -81,13 +108,21 @@ public class PostModelTest {
 			delimiter = '\t')
 	void test_update(long id, String content, long userId, String userName) {
 		var post = new Post(id, content, null, null, userId, userName);
-		post = postModel.update(post);
-		
-		assertNotNull(post);
-		assertEquals(id, post.id());
-		assertEquals(content, post.content());
-		assertEquals(userId, post.userId());
-		assertEquals(userName, post.userName());
+		try(var conn = connector.getConnection()) {
+			postModel.setConnection(conn);
+			post = postModel.update(post);
+			
+			assertNotNull(post);
+			assertEquals(id, post.id());
+			assertEquals(content, post.content());
+			assertEquals(userId, post.userId());
+			assertEquals(userName, post.userName());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			postModel.setConnection(null);
+		}
 	}
 		
 }
