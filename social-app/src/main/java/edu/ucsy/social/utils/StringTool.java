@@ -2,8 +2,6 @@ package edu.ucsy.social.utils;
 
 import java.time.LocalDateTime;
 
-import edu.ucsy.social.model.entity.type.ImageStatus;
-
 public class StringTool {
 
 	public static String joinWithComma(String [] array) {

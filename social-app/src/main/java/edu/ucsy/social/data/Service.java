@@ -1,5 +1,7 @@
 package edu.ucsy.social.data;
 
+import java.sql.Connection;
+
 import edu.ucsy.social.data.db.DatabaseConnector;
 
 public abstract class Service {
@@ -10,7 +12,7 @@ public abstract class Service {
 		this.connector = connector;
 	}
 	
-	protected abstract void initConnection();
+	protected abstract void initConnection(Connection connection);
 	
 	protected abstract void destroyConnection();
 }
