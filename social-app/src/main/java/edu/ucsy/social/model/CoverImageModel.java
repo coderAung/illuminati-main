@@ -9,15 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.CoverImage;
 import edu.ucsy.social.model.entity.type.ImageStatus;
 
 public class CoverImageModel extends AbstractModel <CoverImage>{
-
-	public CoverImageModel(DatabaseConnector connector) {
-		super(connector);
-	}
 
 	@Override
 	public CoverImage save(CoverImage ci) {
@@ -25,8 +20,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 				insert into cover_images (name, user_id, status, uploaded_at )
 				 values ( ?, ?, ?, ?)
 				""";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			
 			stmt.setString(1, ci.name());
 			stmt.setLong(2, ci.userId());
@@ -54,8 +48,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 	@Override
 	public CoverImage findOne(long id) {
 		var sql= "select * from cover_images where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 			stmt.setLong(1,id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -87,8 +80,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 	@Override
 	public List<CoverImage> getAll() {
 		var sql = "select * from cover_images";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)){
+		try(var stmt = connection.prepareStatement(sql)){
 			var rs = stmt.executeQuery();
 			var coverImages = new ArrayList<CoverImage>();
 			while(rs.next()) {
@@ -104,8 +96,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 	@Override
 	public List<CoverImage> get(long limit) {
 		var sql = "select * from cover_images limit ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)){
+		try(var stmt = connection.prepareStatement(sql)){
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
 			var coverImages = new ArrayList<CoverImage>();
@@ -122,8 +113,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 	@Override
 	public CoverImage update(CoverImage ci) {
 		var sql ="select * from cover_images where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 			stmt.setLong(1, ci.id());
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -148,8 +138,7 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from cover_images where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if(row == 0 ) {
@@ -161,7 +150,5 @@ public class CoverImageModel extends AbstractModel <CoverImage>{
 		}
 		return false;
 	}
-
-	
 
 }

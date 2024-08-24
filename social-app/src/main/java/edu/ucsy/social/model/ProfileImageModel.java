@@ -9,16 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.type.ImageStatus;
 import edu.ucsy.social.utils.StringTool;
 
 public class ProfileImageModel extends AbstractModel<ProfileImage> {
-
-	public ProfileImageModel(DatabaseConnector connector) {
-		super(connector);
-	}
 
 	@Override
 	public ProfileImage save(ProfileImage pi) {
@@ -26,8 +21,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 				insert into profile_images (name, user_id, status, uploaded_at)
 				values(?, ?, ?, ?, ?)
 				""";
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			stmt.setString(1, pi.name());
 			stmt.setLong(2, pi.userId());
@@ -56,7 +50,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 	public ProfileImage findOne(long id) {
 
 		var sql = "select * from profile_images where id = ?";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -74,8 +68,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 		var sql = "select %s from proifle_images where id = ?";
 		var columns = StringTool.joinWithComma(cols);
 		sql =sql.formatted(columns);
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)){
+		try(var stmt = connection.prepareStatement(sql)){
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -90,7 +83,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 	@Override
 	public List<ProfileImage> getAll() {
 		var sql = "select * from profile_images";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			var rs = stmt.executeQuery();
 			var profileImages = new ArrayList<ProfileImage>();
 			while (rs.next()) {
@@ -106,8 +99,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 	@Override
 	public List<ProfileImage> get(long limit) {
 		var sql = "select * from profile_images limit ?";
-		try (var conn = connector.getConnection(); 
-				var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
 			var profileImages = new ArrayList<ProfileImage>();
@@ -125,8 +117,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 	public ProfileImage update(ProfileImage pi) {
 		
 		var sql = "select * from profile_images where id = ?";
-	try(var conn = connector.getConnection();
-			var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+		try(var stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 		
 		stmt.setLong(1, pi.id());
 		
@@ -166,8 +157,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from profile_images where id = ?";
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if (row == 0) {

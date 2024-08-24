@@ -9,21 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.utils.StringTool;
 
 public class SavedPostModel extends AbstractModel<SavedPost> {
 
-	public SavedPostModel(DatabaseConnector connector) {
-		super(connector);
-	}
-
 	@Override
 	public SavedPost save(SavedPost sp) {
 		var sql = "insert into saved_posts (user_id, post_id, saved_at) values (?, ?, ?)";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, sp.userId());
 			stmt.setLong(2, sp.postId());
 			var savedAt = Timestamp.valueOf(LocalDateTime.now());
@@ -48,8 +42,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 	@Override
 	public SavedPost findOne(long id) {
 		var sql = "select * from saved_posts where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -68,8 +61,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 		var columns = StringTool.joinWithComma(cols);
 		
 		sql = sql.formatted(columns);
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -84,8 +76,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 	@Override
 	public List<SavedPost> getAll() {
 		var sql = "select * from saved_posts";
-		try (var conn = connector.getConnection(); 
-				var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
 			var savedposts = new ArrayList<SavedPost>();
@@ -105,8 +96,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 	@Override
 	public List<SavedPost> get(long limit) {
 		var sql = "select * from saved_posts limit ?";
-		try (var conn = connector.getConnection(); 
-				var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
@@ -137,8 +127,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from saved_posts where id = ?";
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if (row == 0) {
