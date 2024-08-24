@@ -83,7 +83,7 @@ public class FriendModel extends AbstractModel<Friend> {
 
 	@Override
 	public List<Friend> getAll() {
-		var sql = "select f.id, u.name from friends as f join users as u on f.usre_id = u.id";
+		var sql = "select f.id, u.name from friends as f join users as u on f.user_id = u.id";
 		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
@@ -103,7 +103,7 @@ public class FriendModel extends AbstractModel<Friend> {
 
 	@Override
 	public List<Friend> get(long limit) {
-		var sql = "select f.id, u.name from friends as f join users as u on f.usre_id = u.id limit ?";
+		var sql = "select f.id, u.name from friends as f join users as u on f.user_id = u.id limit ?";
 		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
