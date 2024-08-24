@@ -30,7 +30,7 @@
 
 			<!-- Post Images start -->
 
-			<div class="p-2 text-center post-image-container">
+			<div class="text-center post-image-container">
 				<img
 					src="https://www.ugaoo.com/cdn/shop/articles/shutterstock_223679731.jpg?v=1661873480">
 			</div>
