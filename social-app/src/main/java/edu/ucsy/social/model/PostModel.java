@@ -1,5 +1,6 @@
 package edu.ucsy.social.model;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
@@ -52,6 +53,12 @@ public class PostModel extends AbstractModel<Post> {
 	public boolean delete(long id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public ResultSet findOne(long id, String... cols) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
