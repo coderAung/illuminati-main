@@ -28,7 +28,7 @@ public class UserModelPostImageTest {
 		di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithAdmin());
 		di.truncate("users");
 		
-		model = ModelFactory.getModel(User.class, CustomConnectorFactory.getConnectorWithAdmin());
+		model = ModelFactory.getModel(User.class);
 		di.loadUser();
 		di.loadPostImage();
 	}

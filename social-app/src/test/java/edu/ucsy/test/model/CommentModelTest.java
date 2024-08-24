@@ -31,7 +31,7 @@ public class CommentModelTest {
 		connector = CustomConnectorFactory.getConnectorWithPassword("root");
 		di = new DatabaseInitializer(connector);
 		di.truncate("comments");
-		commentModel = ModelFactory.getModel(Comment.class, connector);
+		commentModel = ModelFactory.getModel(Comment.class);
 	}
 	
 	@Order(1)

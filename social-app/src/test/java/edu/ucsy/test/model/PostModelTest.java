@@ -32,7 +32,7 @@ public class PostModelTest {
 		di = new DatabaseInitializer(connector);
 		di.truncate("posts");
 		
-		postModel = ModelFactory.getModel(Post.class, connector);
+		postModel = ModelFactory.getModel(Post.class);
 	}
 	
 	@Order(1)
