@@ -73,10 +73,7 @@ public class FriendServiceImpl implements FriendService{
 
 	@Override
 	public boolean deleteFriend(int userId, int friendId) {
-	
 		Friend friend = friendModel.findOne(userId);
-		
-		
 		return false;
 	}
 
