@@ -203,7 +203,7 @@
 	font-weight: 500;
 }
 
-.cancel-btn,
+.cancel-btn, .cancel-btn:hover,
 .logout-btn, .logout-btn:hover {
 	background-color: var(--danger);
 	border: 1px solid var(--danger);
