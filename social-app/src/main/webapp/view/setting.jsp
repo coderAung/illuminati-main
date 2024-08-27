@@ -20,8 +20,8 @@
 	<main>
 		<div class="container-fluid row">
 
+			<!-- sidebar start -->
 			<div class="col-3 left-side mx-3">
-				<!-- sidebar start -->
 				<jsp:include page="/component/sidebar.jsp">
 					<jsp:param name="settingActive" value="menu-item-active" />
 				</jsp:include>

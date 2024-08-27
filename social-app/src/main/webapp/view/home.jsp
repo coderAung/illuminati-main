@@ -9,9 +9,6 @@
 
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
-<c:url var="commonCss" value="/resource/css/common.css"></c:url>
-<link href="${commonCss}" rel="stylesheet">
-
 </head>
 <body class="main-bg">
 
@@ -25,8 +22,8 @@
 	<main>
 		<div class="container-fluid row">
 
+			<!-- sidebar start -->
 			<div class="col-3 left-side mx-3">
-				<!-- sidebar start -->
 				<jsp:include page="/component/sidebar.jsp">
 					<jsp:param name="homeActive" value="menu-item-active" />
 				</jsp:include>

@@ -7,7 +7,7 @@
 	
 	--secondary: #9394a5;
 	--card2: #334756;
-	--app: #FF4C29;
+	--app: #bf3900;
 	--hover: #334756;
 	
 	--hover2: #334756;
@@ -199,7 +199,7 @@
 .change-password-btn, .change-password-btn:hover {
 	border: 1px solidvar(--app);
 	background-color: var(--app);
-	color: var(--mainBg);
+	color: var(--text);
 	font-weight: 500;
 }
 
@@ -318,4 +318,26 @@
 
 .logo-container:hover {
 	transform: scale(1.1); /* Increase the size slightly */
+}
+
+.btn-deep, .btn-deep:hover {
+	background-color: var(--card);
+	color: var(--text);
+}
+
+.bg-card-normal {
+	background-color: var(--card2);
+}
+
+.profile-photo {
+	width: 4em;
+	height: 4em;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.profile-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
