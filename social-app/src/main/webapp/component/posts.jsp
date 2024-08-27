@@ -13,7 +13,7 @@
 			<div class="d-flex px-2">
 				<a href="#" class="me-3"> <img style="width: 45px; height: 45px"
 					class="rounded-circle"
-					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSseyxPBdJXmPED_RXpfKnNe_K-aAq-R94Hyg&s">
+					src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
 				</a>
 				<div class="d-flex flex-column">
 					<a href="#" class="text-decoration-none txt-white fw-bold">
@@ -32,7 +32,7 @@
 
 			<div class="text-center post-image-container pointer">
 				<img
-					src="https://www.ugaoo.com/cdn/shop/articles/shutterstock_223679731.jpg?v=1661873480">
+					src="https://www.komar.de/media/catalog/product/cache/5/image/1230x/17f82f742ffe127f42dca9de82fb58b1/I/A/IADX4-079.jpg">
 			</div>
 			<!-- Post Images end -->
 

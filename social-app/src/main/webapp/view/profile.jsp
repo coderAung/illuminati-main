@@ -20,7 +20,7 @@
 <link href="${commonCss}" rel="stylesheet">
 
 </head>
-<body class="bg-black">
+<body class="main-bg">
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
 		<jsp:param value="nav-link-active" name="profileActive" />

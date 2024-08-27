@@ -1,0 +1,15 @@
+1	a good one	1	1	Ye Wont Aung
+2	not too bad	7	2	Lai Lai Yee
+3	make sense	7	3	Lai Lai Yee
+4	go to heaven	4	10	Khun Sint Thwel
+5	bye bye too	3	3	Hein Htet Zaw
+6	bad decision	4	3	Khun Sint Thwel
+7	keey trying	5	4	Jue Jue San
+8	try sleeping	5	6	Jue Jue San
+9	movie is bad	5	3	Jue Jue San
+10	movie is good	6	4	Htet Nadi
+11	english vinglish	3	10	Hein Htet Zaw
+12	bad one	5	2	Jue Jue San
+13	good one	2	1	Kyaw Paing Htet
+14	let go out	5	3	Jue Jue San
+15	got to go	8	4	Khaing Zin Thet

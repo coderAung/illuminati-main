@@ -1,16 +1,22 @@
 @charset "UTF-8";
 
 :root {
-	--mainBg: #000000;
-	--card: #161618;
-	--text: #ffffff;
-	--secondary: #818181;
-	--card2: #212124;
-	--app: #0088cc;
-	--hover: #282828;
-	--hover2: #212124;
-	--danger: #950606;
+	--mainBg: #334756;
+	--card: #082032;
+	--text: #F7EFE5;
+	
+	--secondary: #9394a5;
+	--card2: #334756;
+	--app: #FF4C29;
+	--hover: #334756;
+	
+	--hover2: #334756;
+	
+	--danger: #1B262C;
+	
+	--text-reverse: #000000;
 }
+
 
 .txt-text {
 	color: var(--text);
@@ -79,6 +85,7 @@
 
 .search-bar {
 	position: relative;
+	background-color: var(--mainBg);
 }
 
 .search-bar input {

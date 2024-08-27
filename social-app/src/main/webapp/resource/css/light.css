@@ -1,18 +1,23 @@
 @charset "UTF-8";
 
 :root {
-	--mainBg: #000000;
-	--card: #161618;
-	--text: #ffffff;
-	--secondary: #818181;
-	--card2: #212124;
-	--app: #0088cc;
-	--hover: #282828;
-	--hover2: #212124;
-	--danger: #950606;
+	--mainBg: #e4e5f1;
+	--card: #fafafa;
+	--text: #000000;
+	--secondary: #9394a5;
+	--card2: #d2d3db;
+	--app: #902bf5;
+	--hover: #9394a5;
+	--hover2: #d2d3db;
+	--danger: #ce0018;
+	--text-reverse: #ffffff;
 }
 
 .txt-text {
+	color: var(--text);
+}
+
+.navbar {
 	color: var(--text);
 }
 
@@ -31,6 +36,7 @@
 .bg-card-2 {
 	background-color: var(--card2);
 }
+
 
 .txt-white {
 	color: var(--text);
@@ -73,7 +79,7 @@
 	width: 100%; /* Underline shows on hover and active */
 }
 
-.nav-link.nav-link-active {
+.nav-link-active {
 	color: var(--text); /* Active link color */
 }
 
@@ -114,6 +120,7 @@
 	width: 4px;
 	background-color: var(--app); /* purple vertical line */
 }
+
 .menu-item:last-child {
 	border-bottom: none; /* Removes border from the last item */
 }
@@ -196,11 +203,11 @@
 	font-weight: 500;
 }
 
-.cancel-btn,
+.cancel-btn, .cancel-btn:hover,
 .logout-btn, .logout-btn:hover {
 	background-color: var(--danger);
 	border: 1px solid var(--danger);
-	color: var(--text);
+	color: var(--text-reverse);
 }
 
 .txt-red {
@@ -267,7 +274,6 @@
 	background: transparent;
 }
 
-
 .left-side {
 	position: sticky;
 	top: 60px; /* Distance from the top to avoid the navbar */
@@ -293,6 +299,7 @@
 .friend-card:hover {
 	transform: scale(1.05); /* Grows the card slightly on hover */
 }
+
 
 .link-hover:hover {
 	transform: scale(1.1); /* Slightly increase the size */
