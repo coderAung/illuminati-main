@@ -37,6 +37,7 @@ public class UserModelPostImageTest {
 		di.loadPostImage();
 	}
 	
+	
 	@ParameterizedTest
 	@CsvSource({"1,2,3"})
 	void test_getManyImage(int id1, int id2, int id3) {
