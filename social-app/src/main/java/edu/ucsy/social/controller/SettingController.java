@@ -1,0 +1,93 @@
+package edu.ucsy.social.controller;
+
+import java.io.IOException;
+
+import javax.sql.DataSource;
+
+import edu.ucsy.social.model.dto.Alert;
+import edu.ucsy.social.model.dto.Alert.AlertType;
+import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(
+		urlPatterns = {"/setting", "/setting/change-password"},
+		loadOnStartup = 1)
+public class SettingController extends Controller {
+
+	private static final long serialVersionUID = 1L;
+	private static final String SETTING = "/setting";
+	private static final String CHANGE_PASSWORD = "/setting/change-password";
+
+	@Resource(name = "social")
+	private DataSource dataSource;
+	private UserService userService;
+	
+	@Override
+	public void init() throws ServletException {
+		userService = ServiceFactory.getService(UserService.class, dataSource);
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		switch (path) {
+		case SETTING:
+			forwardToSettingPage(req, resp);
+			break;
+		case CHANGE_PASSWORD:
+			forwardToChangePasswordPage(req, resp);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void forwardToChangePasswordPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		view(req, resp, "change-password");
+	}
+	
+	private void forwardToSettingPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		view(req, resp, "setting");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		var path = req.getServletPath();
+		switch (path) {
+		case SETTING:
+
+			break;
+		case CHANGE_PASSWORD:
+			changePassword(req, resp);
+			break;
+		default:
+			break;
+		}		
+	}
+
+	private void changePassword(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		//get user id from login user
+		var userId = getLoginUser(req).getId();
+		
+		// get new password from request parameter
+		var newPassword = req.getParameter("newPassword");
+		
+		// change password using user service
+		var result = userService.changePassword(newPassword, userId);
+		
+		// redirect to profile page with alert message for changing password
+		if(result) {
+			var alert = new Alert("Password is successfully changed!", AlertType.INFO);
+			req.getSession(true).setAttribute("alert", alert);
+		} else {
+			var alert = new Alert("Password changing is failed!", AlertType.DANGER);
+			req.getSession(true).setAttribute("alert", alert);
+		}
+		redirect(req, resp, "/profile");
+	}
+}

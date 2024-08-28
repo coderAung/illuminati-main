@@ -2,6 +2,7 @@ package edu.ucsy.social.controller;
 
 import java.io.IOException;
 
+import edu.ucsy.social.model.dto.LoginUser;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,10 @@ public abstract class Controller extends HttpServlet {
     		throws IOException {
     	var url = getServletContext().getContextPath().concat(path);
     	resp.sendRedirect(url);
+    }
+    
+    protected LoginUser getLoginUser(HttpServletRequest req) {
+    	return (LoginUser) req.getSession(true).getAttribute("loginUser");
     }
 
 }

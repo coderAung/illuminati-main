@@ -8,30 +8,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(
-		urlPatterns = { "/login", "/logout" },
+		urlPatterns = {"/other/profile"},
 		loadOnStartup = 1)
-public class SecurityController extends Controller {
+public class OtherUserController extends Controller {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String LOG_IN = "/login";
-	private static final String LOG_OUT = "/logout";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		var path = req.getServletPath();
+		
 		switch (path) {
-		case LOG_IN:
-			forwardToLoginPage(req, resp);
+		case "/other/profile":
+			forwardToOtherProfilePage(req, resp);
 			break;
-		case LOG_OUT:
-			break;
+
 		default:
 			break;
 		}
 	}
 
-	private void forwardToLoginPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		view(req, resp, "login");
+	private void forwardToOtherProfilePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		view(req, resp, "other-profile");
 	}
 }
