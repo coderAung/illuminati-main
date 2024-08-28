@@ -9,17 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.social.model.entity.User.Status;
 import edu.ucsy.social.utils.StringTool;
 
 public class UserModel extends AbstractModel<User> {
-
-	public UserModel(DatabaseConnector connector) {
-		super(connector);
-	}
 
 	@Override
 	public User save(User u) {
@@ -28,8 +23,7 @@ public class UserModel extends AbstractModel<User> {
 				 values (?, ?, ?, ?, ?, ?)
 				""";
 		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			
 			stmt.setString(1, u.email());
 			stmt.setString(2, u.name());
@@ -60,8 +54,7 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public User findOne(long id) {
 		var sql = "select * from users where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -77,8 +70,7 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public List<User> getAll() {
 		var sql = "select * from users";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			var rs = stmt.executeQuery();
 			var users = new ArrayList<User>();
@@ -98,8 +90,7 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public List<User> get(long limit) {
 		var sql = "select * from users limit ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
@@ -119,8 +110,7 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public User update(User u) {
 		var sql = "select * from users where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+		try(var stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
 			stmt.setLong(1, u.id());
 			
@@ -171,8 +161,7 @@ public class UserModel extends AbstractModel<User> {
 					role = ?, status = ?, updated_at = ?
 				where id = ?
 				""";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setString(1, u.email());
 			stmt.setString(2, u.name());
@@ -201,8 +190,7 @@ public class UserModel extends AbstractModel<User> {
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from users where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if(0 == row) {
@@ -235,8 +223,7 @@ public class UserModel extends AbstractModel<User> {
 		var columns = StringTool.joinWithComma(cols);		
 		sql = sql.formatted(columns);
 		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();

@@ -9,15 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.utils.StringTool;
 
 public class CommentModel extends  AbstractModel <Comment>{
-
-	public CommentModel(DatabaseConnector connector) {
-		super(connector);
-	}
 
 	@Override
 	public Comment save(Comment c) {
@@ -26,8 +21,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 				 values (?, ?, ?, ?, ?)
 				""";
 		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			
 			stmt.setString(1, c.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
@@ -70,13 +64,11 @@ public class CommentModel extends  AbstractModel <Comment>{
 	@Override
 	public Comment findOne(long id) {
 		var sql = "select c.* , u.name as user_name from comments as c join users as u on c.user_id = u.id where c.id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
 				return commentFrom(rs);
-				 
 			}
 			
 		} catch (SQLException e) {
@@ -88,8 +80,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 	@Override
 	public List<Comment> getAll() {
 		var sql = "select p.id,p.content as post , c.content as comment, u.name as user_name from posts as p join comments as c on p.id = c.post_id join users as u on u.id = p.user_id";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			var rs = stmt.executeQuery();
 			var comments = new ArrayList<Comment>();
@@ -109,8 +100,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 	@Override
 	public List<Comment> get(long limit) {
 		var sql = "select * from comments limit ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
@@ -130,8 +120,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 	@Override
 	public Comment update(Comment c) {
 		var sql = "select * from comments where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+		try(var stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
 			stmt.setLong(1, c.id());
 			
@@ -165,8 +154,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 				values (?, ?, ?, ?)
 				where id = ?
 				""";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setString(1, c.content());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
@@ -191,8 +179,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from comments where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if(row == 0) {
@@ -206,8 +193,6 @@ public class CommentModel extends  AbstractModel <Comment>{
 		return false;
 	}
 	
-	
-
 	@Override
 	public ResultSet findOne(long id, String... cols) {
 		var sql = "select %s from users where id = ?";

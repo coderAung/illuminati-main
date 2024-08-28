@@ -9,25 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.utils.StringTool;
 
 public class PostModel extends AbstractModel<Post> {
 
-	public PostModel(DatabaseConnector connector) {
-		super(connector);
-	}
-
 	@Override
 	public Post save(Post p) {
-		var sql1 = """
+		var sql = """
 					insert into posts (content, created_at, updated_at, user_id)
 					values (?, ?, ?, ?)
 				""";		
 		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS)) {
+		try(var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, p.content());
 			var createdAt = Timestamp.valueOf(LocalDateTime.now());
 			var updatedAt = Timestamp.valueOf(LocalDateTime.now());
@@ -60,8 +54,7 @@ public class PostModel extends AbstractModel<Post> {
 	@Override
 	public Post findOne(long id) {
 		var sql = "select p.*, u.name as user_name from posts as p join users as u on u.id = p.user_id where p.id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -77,8 +70,7 @@ public class PostModel extends AbstractModel<Post> {
 	@Override
 	public List<Post> getAll() {
 		var sql = "select p.* , u.name as user_name from posts as p join users as u on u.id = p.user_id";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			var rs = stmt.executeQuery();
 			var posts = new ArrayList<Post>();
@@ -98,8 +90,7 @@ public class PostModel extends AbstractModel<Post> {
 	@Override
 	public List<Post> get(long limit) {
 		var sql = "select * from posts limit ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setLong(1, limit);
 			var rs = stmt.executeQuery();
@@ -119,8 +110,7 @@ public class PostModel extends AbstractModel<Post> {
 	@Override
 	public Post update(Post p) {
 		var sql = "select * from posts where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+		try(var stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
 			stmt.setLong(1, p.id());
 			
@@ -155,8 +145,7 @@ public class PostModel extends AbstractModel<Post> {
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from posts where id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if(row == 0) {
@@ -189,8 +178,7 @@ public class PostModel extends AbstractModel<Post> {
 		var columns = StringTool.joinWithComma(cols);
 		
 		sql = sql.formatted(columns);
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {

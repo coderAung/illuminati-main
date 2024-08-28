@@ -1,13 +1,13 @@
 package edu.ucsy.social.data;
 
-import edu.ucsy.social.data.db.DatabaseConnector;
+import java.sql.Connection;
 
 public abstract class AbstractModel<T> implements Model<T> {
 
-    protected DatabaseConnector connector;
-
-    public AbstractModel(DatabaseConnector connector) {
-    	this.connector = connector;
-	}
+    protected Connection connection;
     
+    @Override
+    public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
 }

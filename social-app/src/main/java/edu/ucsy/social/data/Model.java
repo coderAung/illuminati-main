@@ -1,5 +1,6 @@
 package edu.ucsy.social.data;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -38,4 +39,6 @@ public interface Model<T> {
 		}
 		return null;
 	}
+	
+	void setConnection(Connection connection);
 }

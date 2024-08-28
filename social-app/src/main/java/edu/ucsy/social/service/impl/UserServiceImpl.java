@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 	private Model<User> userModel;
 	
 	public UserServiceImpl(DataSource dataSource) {
-		this.userModel = ModelFactory.getModel(User.class, ConnectorFactory.getConnector(dataSource));
+		this.userModel = ModelFactory.getModel(User.class);
 	}
 
 	@Override
