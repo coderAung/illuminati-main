@@ -1,0 +1,12 @@
+1	Shwepyithar	CS student	9123456	Male	Student
+2	Sanchaung	CS student	9123456	Male	Student
+3	Phaukan	CS student	9123456	Male	Student
+4	Shwepyithar	CS student	9123456	Female	Student
+5	Shwepyithar	CS student	9123456	Female	Student
+6	Hlaing Thar Ya	CS student	9123456	Female	Student
+7	Mingalardon	CS student	9123456	Female	Student
+8	North Okkala	CS student	9123456	Female	Student
+9	Thar Kay Ta	CS student	9123456	Female	Student
+10	North Okkala	CS student	9123456	Female	Student
+11	Shwepyithar	CS student	9123456	Female	Student
+12	New York	CS student	9123456	Others	Student

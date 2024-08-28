@@ -25,10 +25,10 @@ public class UserModelPostImageTest {
 
 	@BeforeAll
 	static void init() {
-		di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithAdmin());
+		di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithPassword("root"));
 		di.truncate("users");
 		
-		model = ModelFactory.getModel(User.class, CustomConnectorFactory.getConnectorWithAdmin());
+		model = ModelFactory.getModel(User.class, CustomConnectorFactory.getConnectorWithPassword("root"));
 		di.loadUser();
 		di.loadPostImage();
 	}

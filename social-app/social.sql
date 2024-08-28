@@ -16,7 +16,7 @@ updated_at timestamp default(current_timestamp)
 );
 
 create table user_details(
-user_id bigint primary key auto_increment,
+user_id bigint primary key,
 birth_date date null,
 address varchar(255) null,
 bio longtext null,

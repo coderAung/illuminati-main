@@ -11,6 +11,7 @@ import java.util.List;
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Comment;
+import edu.ucsy.social.utils.StringTool;
 
 public class CommentModel extends  AbstractModel <Comment>{
 
@@ -60,7 +61,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 				rs.getTimestamp("created_at").toLocalDateTime(),
 				rs.getTimestamp("updated_at").toLocalDateTime(),
 				rs.getLong("user_id"),
-				rs.getString("user_name"),
+				rs.getString("name"),
 				rs.getLong("post_id")
 				);
 		return comment;
@@ -75,7 +76,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
 				return commentFrom(rs);
-				
+				 
 			}
 			
 		} catch (SQLException e) {
@@ -209,7 +210,22 @@ public class CommentModel extends  AbstractModel <Comment>{
 
 	@Override
 	public ResultSet findOne(long id, String... cols) {
-		// TODO Auto-generated method stub
+		var sql = "select %s from users where id = ?";
+		var columns = StringTool.joinWithComma(cols);		
+		sql = sql.formatted(columns);
+		
+		try(var conn = connector.getConnection();
+				var stmt = conn.prepareStatement(sql)) {
+			
+			stmt.setLong(1, id);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 		return null;
 	}
 
