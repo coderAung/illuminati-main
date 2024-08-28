@@ -21,13 +21,13 @@
 	<!-- main part start -->
 	<main>
 		<div class="container-fluid row">
-			<!-- sidebar start -->
+			<!-- side bar start -->
 			<div class="col-3 left-side mx-3">
 				<jsp:include page="/component/sidebar.jsp">
 					<jsp:param name="friendsActive" value="menu-item-active" />
 				</jsp:include>
 			</div>
-			<!-- sidebar end -->
+			<!-- side bar end -->
 
 			<div class="col-6 bg-card mb-2 p-3 rounded">
 				<h4 class="txt-text">Friends</h4>
