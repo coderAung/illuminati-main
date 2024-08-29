@@ -1,0 +1,411 @@
+@charset "UTF-8";
+
+:root {
+	--mainBg: #334756;
+	--card: #082032;
+	--text: #F7EFE5;
+	
+	--secondary: #9394a5;
+	--card2: #334756;
+	--app: #bf3900;
+	--hover: #334756;
+	
+	--hover2: #334756;
+	
+	--danger: #1B262C;
+	
+	--text-reverse: #000000;
+}
+
+
+.txt-text {
+	color: var(--text);
+}
+
+.main-bg {
+	background-color: var(--mainBg);
+}
+
+.bg-card {
+	background-color: var(--card);
+}
+
+.color-app {
+	color: var(--app);
+}
+
+.bg-card-2 {
+	background-color: var(--card2);
+}
+
+.txt-white {
+	color: var(--text);
+}
+
+.txt-grey {
+	color: var(--secondary);
+}
+
+.bg-grey {
+	background-color: var(--secondary);
+}
+
+.nav-link {
+	position: relative;
+	display: inline-block;
+	color: var(--text);
+	text-decoration: none;
+	padding-bottom: 5px;
+	transition: color 0.3s ease, font-weight 0.3s ease;
+	/* Transition for smoother change */
+}
+
+.nav-link::after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 2px;
+	background-color: var(--app); /* Changed underline color to white */
+	bottom: 0;
+	left: 0;
+	transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+	color: var(--text);
+}
+
+.nav-link.nav-link-active::after, .nav-link:hover::after {
+	width: 100%; /* Underline shows on hover and active */
+}
+
+.nav-link.nav-link-active {
+	color: var(--text); /* Active link color */
+}
+
+.search-bar {
+	position: relative;
+	background-color: var(--mainBg);
+}
+
+.search-bar input {
+	background: transparent;
+	border: none;
+	outline: none;
+}
+
+.search-bar input::placeholder {
+	color: var(--secondary);
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.menu-item:hover {
+	background-color: var(--hover); /* Lighter pale purple hover color */
+	color: var(--text); /* Keep font color unchanged */
+}
+
+.menu-item-active {
+	background-color: var(--hover); /* Lighter pale purple hover color */
+	color: var(--text); /* Default color for active item */
+}
+
+.menu-item-active::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 4px;
+	background-color: var(--app); /* purple vertical line */
+}
+.menu-item:last-child {
+	border-bottom: none; /* Removes border from the last item */
+}
+
+.menu-item {
+	position: relative;
+	transition: background-color 0.3s;
+	color: var(--text); /* Keeps the default font color */
+	border-bottom: 1px solid var(--secondary); /* Light underline between items */
+}
+
+.post-form {
+	border: 1px solid var(--secondary);
+}
+
+.post-form {
+	transition: transform 0.3s ease, background-color 0.3s ease;
+	/* Smooth transition for scaling and background color */
+}
+
+.post-form:hover {
+	transform: scale(1.01); /* Slightly increase the size of the element */
+	background-color: var(--hover2);
+	/* Optional: Change background color on hover */
+}
+
+.post-card .text-center a {
+	transition: background-color 0.3s;
+}
+
+.post-card .text-center a:hover {
+	background-color: var(--hover2);
+}
+
+.post-card {
+	background-color: var(--card);
+	color: var(--text);
+	padding: 15px;
+}
+
+.post-image-container img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.post-image-container {
+	height: 400px; /* Adjust the height to fit your design */
+}
+
+.btn-normal, .btn-normal:hover {
+	background-color: var(--hover2);
+	color: var(--text);
+}
+
+.btn-normal:active {
+	transform: translateY(0); /* Reset when clicked */
+	box-shadow: none;
+}
+
+.btn-normal:hover {
+	color: var(--text);
+	transform: translateY(-2px); /* Slight lift on hover */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.setting-div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.setting-div:hover {
+    transform: scale(1.02); /* Slightly increase the size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for more emphasis */
+}
+
+.change-password-btn, .change-password-btn:hover {
+	border: 1px solidvar(--app);
+	background-color: var(--app);
+	color: var(--text);
+	font-weight: 500;
+}
+
+.cancel-btn, .cancel-btn:hover,
+.logout-btn, .logout-btn:hover {
+	background-color: var(--danger);
+	border: 1px solid var(--danger);
+	color: var(--text);
+}
+
+.txt-red {
+	color: var(--danger);
+}
+
+.cover-img {
+	min-height: 200px;
+	max-height: 200px;
+	overflow: hidden;
+}
+
+.cover-img img {
+	width: 100%;
+	height: 100%;
+}
+
+.profile-img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	top: 80px;
+	left: 10px;
+	overflow: hidden;
+}
+
+.profile-img img {
+	width: 100%;
+	object-fit: cover;
+}
+
+.cover-img img, .profile-img img {
+	transition: transform 0.3s ease;
+}
+
+.cover-img img:hover, .profile-img img:hover {
+	transform: scale(1.05); /* Slightly enlarges the image on hover */
+}
+
+/* Optional - Add a shadow effect on hover */
+.cover-img img:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img img:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.password-input input {
+	color: var(--text);
+	background: transparent;
+	border: none;
+	outline: none;
+	font-size: 1rem;
+}
+
+.password-input input:placeholder {
+	color: var(--secondary);
+}
+
+.close-btn {
+	color: var(--text);
+	border: none;
+	background: transparent;
+}
+
+
+.left-side {
+	position: sticky;
+	top: 60px; /* Distance from the top to avoid the navbar */
+	height: calc(100vh - 60px);
+	/* Adjust height to account for the navbar */
+	overflow-y: auto;
+	/* Allows scrolling within the sidebar if necessary */
+	padding-right: 15px;
+	/* Space between the sidebar and the right column */
+}
+
+.friend-card img {
+	object-fit: cover;
+	width: 100%;
+	height: 100px;
+}
+
+.friend-card {
+	transition: transform 0.3s ease;
+	background-color: var(--card2);
+}
+
+.friend-card:hover {
+	transform: scale(1.05); /* Grows the card slightly on hover */
+}
+
+.link-hover:hover {
+	transform: scale(1.1); /* Slightly increase the size */
+	transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.logo {
+	border: 2px solid var(--app);
+	width: 30px;
+	border-radius: 50%;
+}
+
+.logo-container {
+	transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+	transform: scale(1.1); /* Increase the size slightly */
+}
+
+.btn-deep, .btn-deep:hover {
+	background-color: var(--card);
+	color: var(--text);
+}
+
+.bg-card-normal {
+	background-color: var(--card2);
+}
+
+.profile-photo {
+	width: 4em;
+	height: 4em;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.profile-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.btn-login {
+	background-color: var(--app);
+	color: var(--text);
+	border: none;
+	outline: none;
+}
+
+.login-form h1 {
+	animation: textFadeIn 1.5s ease-in-out;
+	position: relative;
+	display: inline-block;
+	padding-bottom: 5px;
+	border-bottom: 2px solid rgba(63, 98, 160, 0.5);
+}
+
+.login-form h1::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -2px;
+	width: 0;
+	height: 2px;
+	background: var(--app);
+	transition: width 0.4s ease, left 0.4s ease;
+}
+
+.login-form h1:hover::after {
+	width: 100%;
+	left: 0;
+}
+
+.login-form .links {
+	margin-top: 20px;
+	animation: textFadeIn 2s ease-in-out;
+}
+
+.login-form .links a {
+	color: rgb(63, 98, 160);
+	text-decoration: none;
+	margin: 0 5px;
+	transition: color 0.3s ease;
+}
+
+.login-form .links a:hover {
+	text-decoration: underline;
+	color: rgb(99, 60, 146);
+}
+
+.login-form h1 {
+	color: var(--app);
+	margin-bottom: 20px;
+	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	animation: textPopUp 1s ease;
+}
+
+.signup-link {
+	display: block;
+	color: var(--secondary);
+	text-decoration: none;
+	transition: color 0.3s ease, transform 0.2s ease;
+	font-weight: bold;
+}
+
+.signup-link:hover {
+	color: var(--secondary);
+	transform: scale(1.05);
+}
