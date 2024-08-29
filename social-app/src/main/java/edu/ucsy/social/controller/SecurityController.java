@@ -34,4 +34,17 @@ public class SecurityController extends Controller {
 	private void forwardToLoginPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		view(req, resp, "login");
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// get login data from request parameter
+		
+		// login using user service
+		
+		// login success -> home page
+		// 1. set login user in session
+		// 2. redirect to home
+		
+		// login fail -> redirect to login page with alert message
+	}
 }
