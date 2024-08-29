@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:url var="home" value="/home"></c:url>
-<c:url var="login" value="/login"></c:url>
 <c:url var="notifications" value="/notifications"></c:url>
 <c:url var="setting" value="/setting"></c:url>
 <c:url var="profile" value="/profile"></c:url>

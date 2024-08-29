@@ -341,3 +341,71 @@
 	height: 100%;
 	object-fit: cover;
 }
+
+.btn-login {
+	background-color: var(--app);
+	color: var(--text);
+	border: none;
+	outline: none;
+}
+
+.login-form h1 {
+	animation: textFadeIn 1.5s ease-in-out;
+	position: relative;
+	display: inline-block;
+	padding-bottom: 5px;
+	border-bottom: 2px solid rgba(63, 98, 160, 0.5);
+}
+
+.login-form h1::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -2px;
+	width: 0;
+	height: 2px;
+	background: var(--app);
+	transition: width 0.4s ease, left 0.4s ease;
+}
+
+.login-form h1:hover::after {
+	width: 100%;
+	left: 0;
+}
+
+.login-form .links {
+	margin-top: 20px;
+	animation: textFadeIn 2s ease-in-out;
+}
+
+.login-form .links a {
+	color: rgb(63, 98, 160);
+	text-decoration: none;
+	margin: 0 5px;
+	transition: color 0.3s ease;
+}
+
+.login-form .links a:hover {
+	text-decoration: underline;
+	color: rgb(99, 60, 146);
+}
+
+.login-form h1 {
+	color: var(--app);
+	margin-bottom: 20px;
+	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	animation: textPopUp 1s ease;
+}
+
+.signup-link {
+	display: block;
+	color: var(--secondary);
+	text-decoration: none;
+	transition: color 0.3s ease, transform 0.2s ease;
+	font-weight: bold;
+}
+
+.signup-link:hover {
+	color: var(--secondary);
+	transform: scale(1.05);
+}

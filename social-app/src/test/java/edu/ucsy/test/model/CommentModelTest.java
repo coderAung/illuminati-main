@@ -28,6 +28,8 @@ public class CommentModelTest {
 		// initiate connector from CustomConnectorFactory here
 		
 		di = new DatabaseInitializer(connector);
+		di.loadUser();
+		di.loadPost();
 		commentModel = ModelFactory.getModel(Comment.class, connector);
 	}
 	
