@@ -9,12 +9,8 @@ public interface Searchable<T> {
 
 	T searchOne(Criteria c);
 	
-	List<T> search(Criteria c, long limit);
-
-	List<T> searchLatest(long limit);
-	
-	List<T> searchLatest(Criteria c, long limit);
-	
+	List<T> search(Criteria c);
+		
 	void setConnection(Connection connection);
 
 }

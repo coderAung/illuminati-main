@@ -76,6 +76,7 @@ public class SecurityController extends Controller {
 		var loginUser = userService.login(loginForm);
 		
 		if(null != loginUser) {
+			
 			// login success -> home page	
 			// 1. set login user in session
 			// 2. redirect to home

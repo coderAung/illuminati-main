@@ -8,11 +8,13 @@ import edu.ucsy.social.model.entity.User.Role;
 public class LoginUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private long id;
 	private String email;
 	private String name;
 	private Role role;
+
+	private String profileImage;
 
 	public LoginUser(long id, String email, String name, Role role) {
 		super();
@@ -64,6 +66,14 @@ public class LoginUser implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
 }

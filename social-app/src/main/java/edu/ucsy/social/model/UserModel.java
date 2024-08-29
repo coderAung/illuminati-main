@@ -9,12 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
+import edu.ucsy.social.data.OneToOne;
+import edu.ucsy.social.model.entity.CoverImage;
+import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.social.model.entity.User.Status;
+import edu.ucsy.social.model.entity.type.ImageStatus;
 import edu.ucsy.social.utils.StringTool;
 
-public class UserModel extends AbstractModel<User> {
+public class UserModel extends AbstractModel<User> 
+						implements OneToOne {
 
 	@Override
 	public User save(User u) {
@@ -235,6 +240,78 @@ public class UserModel extends AbstractModel<User> {
 			e.printStackTrace();
 		}		
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getOne(Class<T> e, long id) {
+		if(e.equals(ProfileImage.class)) {
+			var profileImage = getOneProfileImage(id);
+			if(null != profileImage) {
+				return (T) profileImage;
+			}
+		}
+		
+		if(e.equals(CoverImage.class)) {
+			var coverImage = getOneCoverImage(id);
+			if(null != coverImage) {
+				return (T) coverImage;
+			}
+		}
+		return null;
+	}
+
+	private CoverImage getOneCoverImage(long id) {
+		var sql = "select * from cover_images where user_id = ? and status = ?";
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			stmt.setString(2, ImageStatus.ACTIVE.name());
+			var rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				var coverImage = new CoverImage(rs.getLong("id"),
+												rs.getString("name"),
+												rs.getLong("user_id"),
+												ImageStatus.valueOf(rs.getString("status")),
+												rs.getTimestamp("uploaded_at").toLocalDateTime());
+				return coverImage;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	private ProfileImage getOneProfileImage(long id) {
+		var sql = "select * from profile_image where user_id = ? and status = ?";
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			stmt.setString(2, ImageStatus.ACTIVE.name());
+			var rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				var profileImage = new ProfileImage(rs.getLong("id"),
+												rs.getString("name"),
+												rs.getLong("user_id"),
+												ImageStatus.valueOf(rs.getString("status")),
+												rs.getTimestamp("uploaded_at").toLocalDateTime());
+				return profileImage;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+
+	@Override
+	public <T> boolean deleteOne(Class<T> e, long id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

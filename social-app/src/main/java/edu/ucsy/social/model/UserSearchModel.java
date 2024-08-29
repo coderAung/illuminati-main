@@ -3,24 +3,23 @@ package edu.ucsy.social.model;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.SearchModel;
 import edu.ucsy.social.data.criteria.Criteria;
+import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.social.model.entity.User.Status;
 
 public class UserSearchModel extends SearchModel<User> {
 
-	public UserSearchModel(Connection connection) {
-		super(connection);
-	}
-
 	@Override
 	public User searchOne(Criteria c) {
 		var sql = "select * from users";
-		try(var stmt = connection.prepareStatement(c.generateStatement(sql))) {
+		sql = c.generateStatement(sql);
+		try(var stmt = connection.prepareStatement(sql)) {
 			var values = c.getValues();
 			
 			for(int i = 0; i < values.size(); i ++) {
@@ -54,24 +53,67 @@ public class UserSearchModel extends SearchModel<User> {
 	@Override
 	public List<User> search(Criteria c, long limit) {
 		var sql = "select * from users";
+		sql = c.limit(limit).generateStatement(sql);
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			var values = c.getValues();
+			for(int i = 0; i < values.size(); i ++) {
+				stmt.setObject(i + 1, values.get(i));
+			}
+			var rs = stmt.executeQuery();
+			var list = new ArrayList<User>();
+			
+			while(rs.next()) {
+				var user = userFrom(rs);
+				list.add(user);
+			}
+			
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public List<User> searchLatest(long limit) {
-		// TODO Auto-generated method stub
-		return null;
+		var criteria = new Criteria().orderBy("id", Type.DESC);
+		var list = search(criteria, limit);
+		return list;
 	}
 
 	@Override
 	public List<User> searchLatest(Criteria c, long limit) {
-		// TODO Auto-generated method stub
-		return null;
+		var criteria = c.orderBy("id", Type.DESC);
+		var list = search(criteria, limit);
+		return list;
 	}
 
 	@Override
 	public void setConnection(Connection connection) {
 		this.connection = connection;
+	}
+	@Override
+	public List<User> search(Criteria c) {
+		var sql = "select * from users";
+		sql = c.generateStatement(sql);
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			var values = c.getValues();
+			for(int i = 0; i < values.size(); i ++) {
+				stmt.setObject(i + 1, values.get(i));
+			}
+			var rs = stmt.executeQuery();
+			var list = new ArrayList<User>();
+			while(rs.next()) {
+				var user = userFrom(rs);
+				list.add(user);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

@@ -88,7 +88,7 @@ public class Criteria {
 	}
 	
 	public List<Object> getValues() {
-		return List.of(values);
+		return new ArrayList<Object>(values);
 	}
 	
 }

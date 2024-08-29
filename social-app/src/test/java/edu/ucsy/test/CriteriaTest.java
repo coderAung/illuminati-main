@@ -50,4 +50,14 @@ public class CriteriaTest {
 		System.out.println(criteria.generateStatement(sql));
 		assertEquals(result, criteria.generateStatement(sql));
 	}
+	
+	@Test
+	void test4() {
+		var sql = "select * from users";
+		
+		var criteria = new Criteria().limit(5).orderBy("id").limit(6).orderBy("created_at", Type.ASC);
+		var stmt = criteria.generateStatement(sql);
+		
+		System.out.println(stmt);
+	}
 }
