@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToOne;
-import edu.ucsy.social.data.Service;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
@@ -16,12 +15,13 @@ import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.UserDetail;
 import edu.ucsy.social.service.UserService;
 
-public class UserServiceImpl extends Service implements UserService {
+public class UserServiceImpl implements UserService {
 
+	private DatabaseConnector connector;
 	private Model<User> userModel;
 
 	public UserServiceImpl(DatabaseConnector connector) {
-		super(connector);
+		this.connector = connector;
 		userModel = ModelFactory.getModel(User.class);
 	}
 
@@ -117,12 +117,12 @@ public class UserServiceImpl extends Service implements UserService {
 	}
 
 	@Override
-	protected void initConnection(Connection connection) {
+	public void initConnection(Connection connection) {
 		userModel.setConnection(connection);
 	}
 
 	@Override
-	protected void destroyConnection() {
+	public void destroyConnection() {
 		userModel.setConnection(null);
 	}
 

@@ -2,11 +2,10 @@ package edu.ucsy.social.service;
 
 import java.util.List;
 
-import edu.ucsy.social.data.annotation.Service;
+import edu.ucsy.social.data.Service;
 import edu.ucsy.social.model.dto.view.FriendRequestView;
 
-@Service
-public interface FriendRequestService {
+public interface FriendRequestService extends Service {
 
 	List<FriendRequestView> getFriendRequestViews(int userId);
 

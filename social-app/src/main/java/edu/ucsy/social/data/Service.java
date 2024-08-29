@@ -2,17 +2,9 @@ package edu.ucsy.social.data;
 
 import java.sql.Connection;
 
-import edu.ucsy.social.data.db.DatabaseConnector;
-
-public abstract class Service {
+public interface Service {
 	
-	protected DatabaseConnector connector;
+	void initConnection(Connection connection);
 	
-	public Service(DatabaseConnector connector) {
-		this.connector = connector;
-	}
-	
-	protected abstract void initConnection(Connection connection);
-	
-	protected abstract void destroyConnection();
+	void destroyConnection();
 }
