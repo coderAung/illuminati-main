@@ -1,12 +1,12 @@
 package edu.ucsy.social.data;
 
-import edu.ucsy.social.data.db.DatabaseConnector;
+import java.sql.Connection;
 
 public abstract class SearchModel<T> implements Searchable<T> {
 
-	protected DatabaseConnector connector;
+	protected Connection connection;
 	
-	public SearchModel(DatabaseConnector connector) {
-		this.connector = connector;
+	public SearchModel(Connection connection) {
+		this.connection = connection;
 	}
 }

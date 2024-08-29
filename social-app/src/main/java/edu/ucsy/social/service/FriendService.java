@@ -7,10 +7,10 @@ import edu.ucsy.social.model.dto.view.FriendView;
 
 public interface FriendService extends Service {
 
-	List<FriendView> getFriendViews(int userid, int limit);
+	List<FriendView> getFriendViews(long userId, int limit);
 
 	boolean confirmFriendRequest(int friendRequestId);
 
-	boolean deleteFriend(int userId, int friendId);
+	boolean deleteFriend(long userId, long friendId);
 
 }

@@ -6,7 +6,12 @@ import java.sql.SQLException;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToOne;
+import edu.ucsy.social.data.Searchable;
+import edu.ucsy.social.data.criteria.Criteria;
+import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.data.db.DatabaseConnector;
+import edu.ucsy.social.model.dto.LoginUser;
+import edu.ucsy.social.model.dto.form.LoginForm;
 import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
 import edu.ucsy.social.model.entity.CoverImage;
@@ -19,14 +24,17 @@ public class UserServiceImpl implements UserService {
 
 	private DatabaseConnector connector;
 	private Model<User> userModel;
+	private Searchable<User> userSearchModel;
+	
 
 	public UserServiceImpl(DatabaseConnector connector) {
 		this.connector = connector;
 		userModel = ModelFactory.getModel(User.class);
+		userSearchModel = ModelFactory.getSearchModel(User.class);
 	}
 
 	@Override
-	public ProfileView getProfileView(int id) {
+	public ProfileView getProfileView(long id) {
 
 		try (var connection = connector.getConnection()) {
 			initConnection(connection);
@@ -65,7 +73,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ProfileDetailView getProfileDetailView(int userId) {
+	public ProfileDetailView getProfileDetailView(long userId) {
 
 		try (var connection = connector.getConnection()) {
 			initConnection(connection);
@@ -94,7 +102,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean changePassword(String newPassword, int userId) {
+	public boolean changePassword(String newPassword, long userId) {
 
 		try (var connection = connector.getConnection()) {
 			initConnection(connection);
@@ -119,11 +127,42 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void initConnection(Connection connection) {
 		userModel.setConnection(connection);
+		userSearchModel.setConnection(connection);
 	}
 
 	@Override
 	public void destroyConnection() {
 		userModel.setConnection(null);
+		userSearchModel.setConnection(null);
+	}
+
+	@Override
+	public LoginUser login(LoginForm loginForm) {
+		if(null == loginForm.getEmail() || null == loginForm.getPassword()) {
+			return null;
+		}
+		
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var criteria = new Criteria()
+								.where("email", Type.EQ, loginForm.getEmail())
+								.where("password", Type.EQ, loginForm.getPassword());
+			
+			var user = userSearchModel.searchOne(criteria);
+			
+			if(null != user) {
+				var loginUser = new LoginUser(user);
+				return loginUser;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		
+		return null;
 	}
 
 }

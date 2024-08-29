@@ -23,4 +23,31 @@ public class CriteriaTest {
 		System.out.println(statement);
 		assertEquals(result, statement);
 	}
+	
+	@Test
+	void test2() {
+		var result = "select * from posts where 1 = 1 and user_id = ? order by created_at desc limit 3";
+		
+		var sql = "select * from posts";
+		
+		var statement = new Criteria()
+							.where("user_id", Type.EQ, 2)
+							.limit(3)
+							.orderBy("created_at")
+							.generateStatement(sql);
+		
+		System.out.println(statement);
+		assertEquals(result, statement);
+	}
+	
+	@Test
+	void test3() {
+		var result = "select * from users where 1 = 1 and email = ? and password = ?";
+		var sql = "select * from users";
+		var criteria = new Criteria().where("email", Type.EQ, "aung aung")
+										.where("password", Type.EQ, "password");
+		
+		System.out.println(criteria.generateStatement(sql));
+		assertEquals(result, criteria.generateStatement(sql));
+	}
 }

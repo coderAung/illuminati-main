@@ -40,17 +40,12 @@ public class SettingController extends Controller {
 			forwardToSettingPage(req, resp);
 			break;
 		case CHANGE_PASSWORD:
-			forwardToChangePasswordPage(req, resp);
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void forwardToChangePasswordPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		view(req, resp, "change-password");
-	}
-	
 	private void forwardToSettingPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		view(req, resp, "setting");
 	}

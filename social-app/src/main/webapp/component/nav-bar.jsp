@@ -31,8 +31,8 @@
 		class="nav-links d-flex justify-content-evenly w-50 position-relative">
 		<a href="${home}" class="nav-link ${param.homeActive}">Home</a>
 		<a href="${profile}"
-			class="nav-link ${param.profileActive}">Profile</a> <a
-			href="${notifications}"
+			class="nav-link ${param.profileActive}">Profile</a>
+		<a href="${notifications}"
 			class="nav-link ${param.noificationActive}">Notifications</a>
 		<a href="${setting}"
 			class="nav-link ${param.settingActive}">Setting</a>

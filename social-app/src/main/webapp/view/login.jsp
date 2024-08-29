@@ -20,8 +20,6 @@
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
 <style>
-
-
 .login-form .social-icons {
 	display: flex;
 	justify-content: center;
@@ -54,9 +52,10 @@
 		<div class="row justify-content-center">
 			<div class="bg-card rounded login-form col-4 txt-text text-center py-3 px-4">
 				<h1 class="pointer h2">Login</h1>
-				<form action="#" method="post">
+				<c:url var="login" value="/login"></c:url>
+				<form action="${login}" method="post">
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar">
-						<input class="w-100 txt-text" type="text" name="username" placeholder="Email" required>
+						<input class="w-100 txt-text" type="text" name="email" placeholder="Email" required>
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar">
 						<input class="w-100 txt-text" type="password" name="password" placeholder="Password"
@@ -64,6 +63,8 @@
 					</div>
 					<button type="submit" class="btn-login w-100 rounded py-2 mb-3">Login</button>
 				</form>
+				
+				
 				<a href="#" class="signup-link">Don't have an account? Sign up</a>
 				
 				

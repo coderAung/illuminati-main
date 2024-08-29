@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>API Test</title>
-<jsp:include page="/css/bootstrap.jsp"></jsp:include>
+<jsp:include page="/resource/library/bootstrap.jsp"></jsp:include>
 </head>
 <body>
 	<div class="container-fluid mb-3">

@@ -1,14 +1,18 @@
 package edu.ucsy.social.service;
 
 import edu.ucsy.social.data.Service;
+import edu.ucsy.social.model.dto.LoginUser;
+import edu.ucsy.social.model.dto.form.LoginForm;
 import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
 
 public interface UserService extends Service {
 
-	ProfileView getProfileView(int id);
+	ProfileView getProfileView(long id);
 
-	ProfileDetailView getProfileDetailView(int userId);
+	ProfileDetailView getProfileDetailView(long userId);
 
-	boolean changePassword(String newPassword, int userId);
+	boolean changePassword(String newPassword, long userId);
+
+	LoginUser login(LoginForm loginForm);
 }

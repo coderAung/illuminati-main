@@ -2,23 +2,32 @@ package edu.ucsy.social.model.dto;
 
 import java.io.Serializable;
 
+import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 
 public class LoginUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int id;
+	private long id;
 	private String email;
 	private String name;
 	private Role role;
 
-	public LoginUser(int id, String email, String name, Role role) {
+	public LoginUser(long id, String email, String name, Role role) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.name = name;
 		this.role = role;
+	}
+
+	public LoginUser(User user) {
+		super();
+		this.id = user.id();
+		this.email = user.email();
+		this.name = user.name();
+		this.role = user.role();
 	}
 
 	public Role getRole() {
@@ -33,11 +42,11 @@ public class LoginUser implements Serializable {
 		return serialVersionUID;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

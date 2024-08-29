@@ -8,7 +8,7 @@ import edu.ucsy.social.model.dto.view.PostView;
 
 public interface PostService extends Service {
 
-	List<PostView> getPostViews(int userid, int limit);
+	List<PostView> getPostViews(long userId, int limit);
 
 	List<PostView> getRandomPostViews(int i);
 
