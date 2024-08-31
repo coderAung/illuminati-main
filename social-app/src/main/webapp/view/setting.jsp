@@ -37,6 +37,9 @@
 						<button type="button" data-bs-toggle="modal" data-bs-target="#change-password" class="btn change-password-btn shadow">Change Password</button>
 					</div>
 					<div class="bg-card setting-div rounded p-3 mb-3">
+						<span>Theme</span>
+					</div>
+					<div class="bg-card setting-div rounded p-3 mb-3">
 						<span>About Us</span>
 					</div>
 					<div class="bg-card setting-div rounded p-3 d-flex align-items-center justify-content-between">
