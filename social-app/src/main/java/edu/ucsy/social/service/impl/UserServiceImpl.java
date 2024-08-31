@@ -152,10 +152,11 @@ public class UserServiceImpl implements UserService {
 			var user = userSearchModel.searchOne(criteria);
 			
 			var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, user.id());
-			
 			if(null != user) {
 				var loginUser = new LoginUser(user);
-				loginUser.setProfileImage(profileImage.name());
+				if(null != profileImage) {
+					loginUser.setProfileImage(profileImage.name());					
+				}
 				return loginUser;
 			}
 			
