@@ -34,11 +34,10 @@ public class FriendView implements Serializable {
 		this.profileImage = profileImage;
 	}
 
-	public FriendView(int id, String name, String profileImage) {
+	public FriendView(long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.profileImage = profileImage;
 	}
 
 }

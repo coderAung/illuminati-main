@@ -7,12 +7,22 @@ public class FriendRequestView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
+	private long friendId;
 	private String friendName;
 	private String friendProfileImage;
 
-	public FriendRequestView(long id, String friendName) {
+	public FriendRequestView(long id, long friendId, String friendName) {
 		this.id = id;
 		this.friendName = friendName;
+		this.friendId = friendId;
+	}
+
+	public long getFriendId() {
+		return friendId;
+	}
+
+	public void setFriendId(long friendId) {
+		this.friendId = friendId;
 	}
 
 	public long getId() {

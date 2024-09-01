@@ -1,5 +1,6 @@
 package edu.ucsy.social.service.impl;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,4 +87,16 @@ public class CommentServiceImpl implements CommentService {
 
 	    return commentViews;
 }
+
+	@Override
+	public void initConnection(Connection connection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroyConnection() {
+		// TODO Auto-generated method stub
+		
+	}
 	}

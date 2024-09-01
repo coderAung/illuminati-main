@@ -30,7 +30,7 @@ public class UserDetailModelTest {
 		di = new DatabaseInitializer(connector);
 		di.loadUser();
 		di.truncate("user_details");
-		userDetailModel = ModelFactory.getModel(UserDetail.class, connector);
+		userDetailModel = ModelFactory.getModel(UserDetail.class);
 	}
 
 	

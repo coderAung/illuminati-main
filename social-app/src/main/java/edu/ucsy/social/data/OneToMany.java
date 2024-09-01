@@ -6,5 +6,7 @@ public interface OneToMany extends Relational {
 	
 	<T> List<T> getMany(Class<T> e, long id);
 	
+	<T> List<T> getMany(Class<T> e, long id, long limit);
+	
 	<T> boolean deleteMany(Class<T> e, long id);
 }

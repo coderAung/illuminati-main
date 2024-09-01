@@ -199,8 +199,7 @@ public class CommentModel extends  AbstractModel <Comment>{
 		var columns = StringTool.joinWithComma(cols);		
 		sql = sql.formatted(columns);
 		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();

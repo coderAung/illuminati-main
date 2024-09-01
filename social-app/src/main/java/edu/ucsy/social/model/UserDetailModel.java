@@ -4,14 +4,11 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.UserDetail;
 import edu.ucsy.social.model.entity.UserDetail.Gender;
 import edu.ucsy.social.model.entity.UserDetail.Occupation;
@@ -19,11 +16,7 @@ import edu.ucsy.social.model.entity.UserDetail.Relationship;
 import edu.ucsy.social.utils.StringTool;
 
 public class UserDetailModel extends AbstractModel<UserDetail>{
-
-	public UserDetailModel(DatabaseConnector connector) {
-		super(connector);
-	}
-
+	
 	@Override
 	public UserDetail save(UserDetail ud) {
 		var sql = """
@@ -32,8 +25,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 				""";
 		
 		
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)
+		try(var stmt = connection.prepareStatement(sql)
 				){
 			
 			stmt.setLong(1, ud.userId());
@@ -81,8 +73,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 	@Override
 	public UserDetail findOne(long id) {
 		var sql = "select * from user_details where user_id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -101,8 +92,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 		var columns = StringTool.joinWithComma(cols);
 		
 		sql = sql.formatted(columns);
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
@@ -117,8 +107,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 	@Override
 	public List<UserDetail> getAll() {
 		var sql ="select * from user_details";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql)){
+		try(var stmt = connection.prepareStatement(sql)){
 			
 			var rs = stmt.executeQuery();
 			var userdetails = new ArrayList<UserDetail>();
@@ -141,8 +130,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 	@Override
 	public UserDetail update(UserDetail ud) {
 		var sql = "select * from user_details where user_id = ?";
-		try(var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+		try(var stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 			
 			stmt.setLong(1, ud.userId());
 			
@@ -198,8 +186,7 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from user_details where id = ?";
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if (row == 0) {

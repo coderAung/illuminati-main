@@ -7,15 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.Friend;
 import edu.ucsy.social.utils.StringTool;
 
 public class FriendModel extends AbstractModel<Friend> {
-
-	public FriendModel(DatabaseConnector connector) {
-		super(connector);
-	}
 
 	@Override
 	public Friend save(Friend f) {
@@ -23,8 +18,7 @@ public class FriendModel extends AbstractModel<Friend> {
 				insert into friends(user_id , friend_id) values(?, ?)
 				""";
 
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			stmt.setLong(1, f.userId());
 			stmt.setLong(2, f.friendId());
@@ -49,8 +43,7 @@ public class FriendModel extends AbstractModel<Friend> {
 	@Override
 	public Friend findOne(long id) {
 		var sql = "select * from friends where id = ?";
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -69,7 +62,7 @@ public class FriendModel extends AbstractModel<Friend> {
 		var columns = StringTool.joinWithComma(cols);
 
 		sql = sql.formatted(columns);
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -84,7 +77,7 @@ public class FriendModel extends AbstractModel<Friend> {
 	@Override
 	public List<Friend> getAll() {
 		var sql = "select f.id, u.name from friends as f join users as u on f.user_id = u.id";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
 			var friends = new ArrayList<Friend>();
@@ -104,7 +97,7 @@ public class FriendModel extends AbstractModel<Friend> {
 	@Override
 	public List<Friend> get(long limit) {
 		var sql = "select f.id, u.name from friends as f join users as u on f.user_id = u.id limit ?";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
 			var friends = new ArrayList<Friend>();
@@ -134,7 +127,7 @@ public class FriendModel extends AbstractModel<Friend> {
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from friends where id = ?";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if (row == 0) {

@@ -1,79 +1,95 @@
 package edu.ucsy.social.service.impl;
 
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
-import edu.ucsy.social.model.ProfileImageModel;
+import edu.ucsy.social.data.OneToOne;
+import edu.ucsy.social.data.Searchable;
+import edu.ucsy.social.data.criteria.Criteria;
+import edu.ucsy.social.data.criteria.Criteria.Type;
+import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.view.FriendView;
 import edu.ucsy.social.model.entity.Friend;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.service.FriendService;
 
-public class FriendServiceImpl implements FriendService{
+public class FriendServiceImpl implements FriendService {
+
+	private DatabaseConnector connector;
 
 	private Model<Friend> friendModel;
-	private   Model<User> userModel;
+	private Model<User> userModel;
 	private Model<ProfileImage> profileImageModel;
-	public FriendServiceImpl() {
-		this.friendModel 	     = ModelFactory.getModel(Friend.class);
-		this.userModel			 = ModelFactory.getModel(User.class);
-		this.profileImageModel 	 = ModelFactory.getModel(ProfileImage.class);
+	private Searchable<Friend> friendSearchModel;
+
+	public FriendServiceImpl(DatabaseConnector connector) {
+
+		this.connector = connector;
+
+		this.friendModel = ModelFactory.getModel(Friend.class);
+		this.userModel = ModelFactory.getModel(User.class);
+		this.profileImageModel = ModelFactory.getModel(ProfileImage.class);
+
 	}
-	
+
 	@Override
-	public List<FriendView> getFriendViews(int userid, int limit) {
-
-		 List<Friend> allFriends = friendModel.get(limit);
-		    List<FriendView> friendViews = new ArrayList<>();
-
-		    int count = 0;
-		    for (Friend friend : allFriends) {
-		        if (friend.userId() == userid) {
-		            // Fetch user details for the current friend
-		            String name =getUserName(friend.friendId());
-		            String profileImage = getUserProfileImage(friend.friendId());
-
-		            // Create a FriendView and add it to the list
-		            FriendView friendView = new FriendView((int) friend.id(), name, profileImage);
-		            friendViews.add(friendView);
-
-		            count++;
-		            if (count >= limit) {
-		                break;
-		            }
-		        }
-		    }
-		    return friendViews;
+	public void initConnection(Connection connection) {
+		friendModel.setConnection(connection);
+		userModel.setConnection(connection);
+		profileImageModel.setConnection(connection);
 	}
 
-	private String getUserName(long userId) {
-        User user = userModel.findOne(userId);
-        return (user != null) ? user.name() : "Unknown";
-    }
+	@Override
+	public void destroyConnection() {
+		friendModel.setConnection(null);
+		userModel.setConnection(null);
+		profileImageModel.setConnection(null);
+	}
 
-    private String getUserProfileImage(long userId) {
-        User user = userModel.findOne(userId);
-        ProfileImage pi = profileImageModel.findOne(userId);
-        return (user != null) ? pi.name() : "defaultProfileImage.png";
-    }
+	@Override
+	public List<FriendView> getFriendViews(long userId, int limit) {
+		try (var connection = connector.getConnection()) {
+			initConnection(connection);
+
+			var friends = friendSearchModel.search(new Criteria().where("user_id", Type.EQ, userId).limit(limit));
+
+			var friendViews = friends.stream().map(f -> {
+
+								var friendUser = userModel.findOne(f.friendId());
+				
+								var friendView = new FriendView(f.id(), friendUser.name());
+				
+								var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, friendUser.id());
+				
+								if (null != friendView) {
+									friendView.setProfileImage(profileImage.name());
+								}
+
+								return friendView;})
+					.toList();
+			return friendViews;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
 
 	@Override
 	public boolean confirmFriendRequest(int friendRequestId) {
-		Friend friend= friendModel.findOne(friendRequestId);
-		
-		if(null != friend) {
-			friendModel.save(friend);
-			return true;
-		}
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean deleteFriend(int userId, int friendId) {
-		Friend friend = friendModel.findOne(userId);
+	public boolean deleteFriend(long userId, long friendId) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

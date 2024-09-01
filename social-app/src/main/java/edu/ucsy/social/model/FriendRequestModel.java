@@ -7,15 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.entity.FriendRequest;
 import edu.ucsy.social.utils.StringTool;
 
 public class FriendRequestModel extends AbstractModel<FriendRequest> {
-
-	public FriendRequestModel(DatabaseConnector connector) {
-		super(connector);
-	}
 
 	@Override
 	public FriendRequest save(FriendRequest fr) {
@@ -23,8 +18,7 @@ public class FriendRequestModel extends AbstractModel<FriendRequest> {
 				insert into friend_requests(request_to, request_by) values(?, ?)
 				""";
 
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 			stmt.setLong(1, fr.requestTo());
 			stmt.setLong(2, fr.requestBy());
@@ -49,8 +43,7 @@ public class FriendRequestModel extends AbstractModel<FriendRequest> {
 	@Override
 	public FriendRequest findOne(long id) {
 		var sql = "select fr.request_by as id , u.name as username , pi.name as profile from friend_requests as fr join users as u on fr.request_by = u.id join profile_images as pi on u.id = pi.user_id where id = ?";
-		try (var conn = connector.getConnection();
-				var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -70,7 +63,7 @@ public class FriendRequestModel extends AbstractModel<FriendRequest> {
 		var columns = StringTool.joinWithComma(cols);
 
 		sql = sql.formatted(columns);
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -85,7 +78,7 @@ public class FriendRequestModel extends AbstractModel<FriendRequest> {
 	@Override
 	public List<FriendRequest> getAll() {
 		var sql = "select fr.request_by as id , u.name as username , pi.name as profile from friend_requests as fr join users as u on fr.request_by = u.id join profile_images as pi on u.id = pi.user_id";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
 			var friendrequests = new ArrayList<FriendRequest>();
@@ -105,7 +98,7 @@ public class FriendRequestModel extends AbstractModel<FriendRequest> {
 	@Override
 	public List<FriendRequest> get(long limit) {
 		var sql = "select fr.request_by as id , u.name as username , pi.name as profile from friend_requests as fr join users as u on fr.request_by = u.id join profile_images as pi on u.id = pi.user_id limit ?";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 
 			var rs = stmt.executeQuery();
 			var friendrequests = new ArrayList<FriendRequest>();
@@ -135,7 +128,7 @@ public class FriendRequestModel extends AbstractModel<FriendRequest> {
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from friend_requests where id = ?";
-		try (var conn = connector.getConnection(); var stmt = conn.prepareStatement(sql)) {
+		try (var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
 			if (row == 0) {
