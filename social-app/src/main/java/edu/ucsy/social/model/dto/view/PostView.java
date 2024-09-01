@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import edu.ucsy.social.model.entity.Post;
+
 public class PostView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,6 +26,13 @@ public class PostView implements Serializable {
 		this.updatedAt = updatedAt;
 		this.userName = userName;
 		this.postImageList = postImageList;
+	}
+
+	public PostView(Post post) {
+		this.id = post.id();
+		this.content = post.content();
+		this.updatedAt = post.updatedAt();
+		this.userName = post.userName();
 	}
 
 	public long getId() {

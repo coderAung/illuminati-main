@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
+import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.model.entity.CoverImage;
+import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
@@ -19,7 +21,7 @@ import edu.ucsy.social.model.entity.type.ImageStatus;
 import edu.ucsy.social.utils.StringTool;
 
 public class UserModel extends AbstractModel<User> 
-						implements OneToOne {
+				implements OneToOne, OneToMany {
 
 	@Override
 	public User save(User u) {
@@ -310,8 +312,123 @@ public class UserModel extends AbstractModel<User>
 
 	@Override
 	public <T> boolean deleteOne(Class<T> e, long id) {
-		// TODO Auto-generated method stub
+		if(e.equals(ProfileImage.class)) {
+			var result = deleteOneProfileImage(id);
+			return result;
+		} else if(e.equals(CoverImage.class)) {
+			var result = deleteOneCoverImage(id);
+			return result;
+		}
 		return false;
 	}
 
+	private boolean deleteOneCoverImage(long id) {
+		var sql = "delete from cover_images where user_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var row = stmt.executeUpdate();
+			if(0 < row) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	private boolean deleteOneProfileImage(long id) {
+		var sql = "delete from profile_images where user_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var row = stmt.executeUpdate();
+			if(0 < row) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public <T> List<T> getMany(Class<T> e, long id) {
+		return getMany(e, id, 0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> getMany(Class<T> e, long id, long limit) {
+		
+		if(e.equals(Post.class)) {
+			var posts = getManyPosts(id, limit);
+			return posts.stream().map(post -> (T) post).toList();
+		}
+		
+		return null;
+	}
+
+	private List<Post> getManyPosts(long id, long limit) {
+		var sql = """
+				select id, content, created_at, updated_at user_id, user_name
+				from posts where user_id = ?
+				""";
+		if(0 < limit) {
+			sql = """
+					select id, content, created_at, updated_at user_id, user_name
+					from posts where user_id = ? limit ?
+					""";
+		}
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			stmt.setLong(2, limit);
+			
+			var rs = stmt.executeQuery();
+			var posts = new ArrayList<Post>();
+			while(rs.next()) {
+				var post = postFrom(rs);
+				posts.add(post);
+			}
+			
+			return posts;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private Post postFrom(ResultSet rs) throws SQLException {
+		
+		var post = new Post(
+				rs.getLong("id"),
+				rs.getString("content"), 
+				rs.getTimestamp("created_at").toLocalDateTime(),
+				rs.getTimestamp("updated_at").toLocalDateTime(),
+				rs.getLong("user_id"),
+				rs.getString("user_name"));	
+		return post;
+	}
+
+	@Override
+	public <T> boolean deleteMany(Class<T> e, long id) {
+		if(e.equals(Post.class)) {
+			var result = deleteManyPost(id);
+			return result;
+		}
+		return false;
+	}
+
+	private boolean deleteManyPost(long id) {
+		var sql = "delete from posts where user_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var row = stmt.executeUpdate();
+			if(0 < row) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

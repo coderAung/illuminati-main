@@ -10,7 +10,7 @@ public interface PostService extends Service {
 
 	List<PostView> getPostViews(long userId, int limit);
 
-	List<PostView> getRandomPostViews(int i);
+	List<PostView> getRandomPostViews(int limit);
 
 	PostDetailView getPostDetailView(int postId);
 

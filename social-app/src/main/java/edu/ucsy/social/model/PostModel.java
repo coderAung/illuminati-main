@@ -161,7 +161,6 @@ public class PostModel extends AbstractModel<Post> {
 
 	private Post postFrom(ResultSet rs) throws SQLException {
 		
-		
 		var post = new Post(
 				rs.getLong("id"),
 				rs.getString("content"), 
