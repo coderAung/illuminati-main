@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:url var="home" value="/home"></c:url>
+<c:url var="home" value="/welcome"></c:url>
 <c:url var="login" value="/login"></c:url>
 <c:url var="register" value="/register"></c:url>
 
@@ -22,7 +22,7 @@
 		<a href="${login}"
 			class="nav-link ${param.loginActive}">Login</a>
 		<a href="${register}"
-			class="nav-link ${param.registerActive}">Notifications</a>
+			class="nav-link ${param.registerActive}">Register</a>
 	</div>
 	<!-- nav-links end -->
 </div>

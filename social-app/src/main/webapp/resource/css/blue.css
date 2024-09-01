@@ -17,6 +17,9 @@
 	--text-reverse: #000000;
 }
 
+.txt-app {
+	color: var(--app);
+}
 
 .txt-text {
 	color: var(--text);

@@ -12,6 +12,7 @@ import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.LoginUser;
 import edu.ucsy.social.model.dto.form.LoginForm;
+import edu.ucsy.social.model.dto.form.RegisterForm;
 import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
 import edu.ucsy.social.model.entity.CoverImage;
@@ -167,6 +168,24 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public boolean createUser(RegisterForm registerForm) {
+		var user = buildUser(registerForm);
+		user = userModel.save(user);
+		if(null != user) {
+			return true;
+		}
+		return false;
+	}
+
+	private User buildUser(RegisterForm registerForm) {
+		var name = registerForm.getName();
+		var email = registerForm.getEmail();
+		var password = registerForm.getPassword();
+		
+		return new User(email, name, password);
 	}
 
 }

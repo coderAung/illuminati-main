@@ -13,6 +13,10 @@
 	--text-reverse: #ffffff;
 }
 
+.txt-app {
+	color: var(--app);
+}
+
 .txt-text {
 	color: var(--text);
 }

@@ -1,23 +1,22 @@
 @charset "UTF-8";
 
 :root {
-	--mainBg: #e4e5f1;
-	--card: #fafafa;
-	--text: #000000;
-	--secondary: #9394a5;
-	--card2: #d2d3db;
-	--app: #902bf5;
-	--hover: #d2d3db;
-	--hover2: #d2d3db;
-	--danger: #ce0018;
-	--text-reverse: #ffffff;
+	--mainBg: #000000;
+	--card: #161618;
+	--text: #ffffff;
+	--secondary: #818181;
+	--card2: #212124;
+	--app: #0088cc;
+	--hover: #282828;
+	--hover2: #212124;
+	--danger: #950606;
+}
+
+.txt-app {
+	color: var(--app);
 }
 
 .txt-text {
-	color: var(--text);
-}
-
-.navbar {
 	color: var(--text);
 }
 
@@ -36,7 +35,6 @@
 .bg-card-2 {
 	background-color: var(--card2);
 }
-
 
 .txt-white {
 	color: var(--text);
@@ -79,7 +77,7 @@
 	width: 100%; /* Underline shows on hover and active */
 }
 
-.nav-link-active {
+.nav-link.nav-link-active {
 	color: var(--text); /* Active link color */
 }
 
@@ -120,7 +118,6 @@
 	width: 4px;
 	background-color: var(--app); /* purple vertical line */
 }
-
 .menu-item:last-child {
 	border-bottom: none; /* Removes border from the last item */
 }
@@ -207,7 +204,7 @@
 .logout-btn, .logout-btn:hover {
 	background-color: var(--danger);
 	border: 1px solid var(--danger);
-	color: var(--text-reverse);
+	color: var(--text);
 }
 
 .txt-red {
@@ -274,6 +271,7 @@
 	background: transparent;
 }
 
+
 .left-side {
 	position: sticky;
 	top: 60px; /* Distance from the top to avoid the navbar */
@@ -300,7 +298,6 @@
 	transform: scale(1.05); /* Grows the card slightly on hover */
 }
 
-
 .link-hover:hover {
 	transform: scale(1.1); /* Slightly increase the size */
 	transition: transform 0.3s ease; /* Smooth transition */
@@ -321,12 +318,16 @@
 }
 
 .btn-deep, .btn-deep:hover {
-	background-color: var(--app);
-	color: var(--card);
+	border: 1px solid var(--text);
+	color: var(--text);
+}
+
+.btn-deep:hover {
+	background-color: var(--hover);
 }
 
 .bg-card-normal {
-	border: 1px solid var(--mainBg);
+	background-color: var(--card2);
 }
 
 .profile-photo {
@@ -344,7 +345,7 @@
 
 .btn-login {
 	background-color: var(--app);
-	color: var(--text-reverse);
+	color: var(--text);
 	border: none;
 	outline: none;
 }

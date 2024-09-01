@@ -54,18 +54,20 @@
 				<h1 class="pointer h2">Login</h1>
 				<c:url var="login" value="/login"></c:url>
 				<form action="${login}" method="post">
-					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar">
-						<input class="w-100 txt-text" type="text" name="email" placeholder="Email" required>
+					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
+						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<input class="w-100 txt-text ps-4" type="text" name="email" placeholder="Email" required>
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar">
-						<input class="w-100 txt-text" type="password" name="password" placeholder="Password"
+						<span class="position-absolute"><i class="fas fa-lock txt-app"></i></span>
+						<input class="w-100 txt-text ps-4" type="password" name="password" placeholder="Password"
 							required>
 					</div>
 					<button type="submit" class="btn-login w-100 rounded py-2 mb-3">Login</button>
 				</form>
 				
-				
-				<a href="#" class="signup-link">Don't have an account? Sign up</a>
+				<c:url var="register" value="/register"></c:url>
+				<a href="${register}" class="signup-link">Don't have an account? Sign up</a>
 				
 				
 				

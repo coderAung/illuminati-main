@@ -12,6 +12,10 @@
 	--danger: #950606;
 }
 
+.txt-app {
+	color: var(--app);
+}
+
 .txt-text {
 	color: var(--text);
 }
