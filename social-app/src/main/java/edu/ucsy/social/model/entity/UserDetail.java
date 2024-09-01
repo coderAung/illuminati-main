@@ -6,7 +6,7 @@ import edu.ucsy.social.data.annotation.Entity;
 
 @Entity
 public record UserDetail(
-		long userid,
+		long userId,
 		LocalDate birthDate,
 		String address,
 		String bio,

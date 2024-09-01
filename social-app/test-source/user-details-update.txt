@@ -1,0 +1,12 @@
+1	Shwepyithar	KE student	9123456	Male	Student
+2	Sanchaung	SE student	9123456	Male	Student
+3	Phaukan	SE student	9123456	Male	Student
+4	Shwepyithar	SE student	9123456	Female	Student
+5	Shwepyithar	SE student	9123456	Female	Student
+6	Hlaing Thar Ya	KE student	9123456	Female	Student
+7	Mingalardon	KE student	9123456	Female	Student
+8	North Okkala	SE student	9123456	Female	Student
+9	Thar Kay Ta	KE student	9123456	Female	Student
+10	North Okkala	SE student	9123456	Female	Student
+11	Shwepyithar	KE student	9123456	Female	Student
+12	New York	App Admin	9123456	Others	Student
