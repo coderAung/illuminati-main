@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.data.Service;
 import edu.ucsy.social.data.db.ConnectorFactory;
+import edu.ucsy.social.service.impl.PostServiceImpl;
 import edu.ucsy.social.service.impl.UserServiceImpl;
 
 public abstract class ServiceFactory {
@@ -15,7 +16,7 @@ public abstract class ServiceFactory {
 			return (T) new UserServiceImpl(ConnectorFactory.getConnector(dataSource));
 		}
 		if(t.equals(PostService.class)) {
-
+			return (T) new PostServiceImpl(ConnectorFactory.getConnector(dataSource));
 		}
 		
 		if(t.equals(CommentService.class)) {

@@ -1,14 +1,19 @@
 package edu.ucsy.social.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.model.dto.form.PostForm;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
 				"/post/delete",
 				"/post/comment"},
 		loadOnStartup = 1)
+@MultipartConfig
 public class PostController extends Controller {
 
 	private static final long serialVersionUID = 1L;
@@ -98,10 +104,9 @@ public class PostController extends Controller {
 		var path = req.getServletPath();
 		switch (path) {
 		case POST:
-			createPost(req, resp);
 			break;
 		case POST_CREATE:
-
+			createPost(req, resp);
 			break;
 		case POST_EDIT:
 
@@ -114,16 +119,59 @@ public class PostController extends Controller {
 		}
 	}
 
-	private void createPost(HttpServletRequest req, HttpServletResponse resp) {
+	private void createPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		// get user id from login user
-		
+		var userId = getLoginUser(req).getId();
 		// get from what page the request come
+		var content = req.getParameter("content");
+		var parts = req.getParts().stream().skip(1)
+									.filter(part -> !part.getSubmittedFileName().equals(""))
+									.toList();
 		
 		// build a create post form object by request parameter
-		
+		var postForm = new PostForm(userId, getLoginUser(req).getName(), content);
+		List<String> generatedPostImageNames = null;
+		if(0 < parts.size()) {
+			generatedPostImageNames = parts.stream()
+										.map(
+												part -> StringTool.generateImageName(part.getSubmittedFileName(), (int) userId, getLoginUser(req).getName()))
+										.toList();
+			postForm.setPostImages(generatedPostImageNames);
+		}
 		// ask post service to create the post
+		var result = postService.createPost(postForm);
 		
+		if(result) {
+			if(null != generatedPostImageNames) {
+				var i = 0;
+				for(var part : parts) {
+					var path = Path.of(getServletContext().getRealPath("photo"), "post", generatedPostImageNames.get(i));
+					i ++;
+					Files.copy(part.getInputStream(), path);
+					
+					// for test purpose
+					resp.setContentType("text/html");
+					var writer = resp.getWriter();
+					writer.append("""
+							<div style="display: flex;">
+							""");
+					
+					for(var image : generatedPostImageNames) {
+						var imagePath = getImagePath(image, ImageType.POST);
+						System.out.println(imagePath);
+						writer.append("""
+								<img src="%s" width="100px" style="margin-rigth: 10px"/>
+							""".formatted(imagePath));
+					}
+					
+					writer.append("""
+							</div>
+							""");
+				}
+			}
+		} 
 		// return to the page where the request come
+		
 	}
 
 	private void deletePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

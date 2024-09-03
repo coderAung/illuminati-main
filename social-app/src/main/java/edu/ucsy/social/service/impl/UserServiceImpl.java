@@ -152,6 +152,10 @@ public class UserServiceImpl implements UserService {
 			
 			var user = userSearchModel.searchOne(criteria);
 			
+			if(null == user) {
+				return null;
+			}
+			
 			var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, user.id());
 			if(null != user) {
 				var loginUser = new LoginUser(user);
@@ -172,10 +176,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean createUser(RegisterForm registerForm) {
-		var user = buildUser(registerForm);
-		user = userModel.save(user);
-		if(null != user) {
-			return true;
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			var user = buildUser(registerForm);
+			user = userModel.save(user);
+			if(null != user) {
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
 		}
 		return false;
 	}
@@ -186,6 +198,25 @@ public class UserServiceImpl implements UserService {
 		var password = registerForm.getPassword();
 		
 		return new User(email, name, password);
+	}
+
+	@Override
+	public boolean isEmailExist(String email) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var user = userSearchModel.searchOne(
+					new Criteria().where("email", Type.EQ, email)
+					);
+			if(null != user) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return false;
 	}
 
 }

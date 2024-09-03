@@ -1,8 +1,11 @@
 package edu.ucsy.social.utils;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class StringTool {
+	
+	private static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy_hh-mm-ss");
 
 	public static String joinWithComma(String [] array) {
 		var sb = new StringBuilder();
@@ -26,7 +29,7 @@ public class StringTool {
 	public static String generateImageName(String imageName, int userId, String userName) {
 		
 		var format = "%s_%s_%s_%s";
-		var dateString = LocalDateTime.now().toString();
+		var dateString = df.format(LocalDateTime.now());
 		return format.formatted(userId, userName, dateString, imageName);
 	}
 	

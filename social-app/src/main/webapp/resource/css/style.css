@@ -1,15 +1,20 @@
 @charset "UTF-8";
 
 :root {
-	--mainBg: #000000;
-	--card: #161618;
-	--text: #ffffff;
-	--secondary: #818181;
-	--card2: #212124;
-	--app: #0088cc;
-	--hover: #282828;
-	--hover2: #212124;
-	--danger: #950606;
+	--mainBg: #334756;
+	--card: #082032;
+	--text: #F7EFE5;
+	
+	--secondary: #9394a5;
+	--card2: #334756;
+	--app: #bf3900;
+	--hover: #334756;
+	
+	--hover2: #334756;
+	
+	--danger: #1B262C;
+	
+	--text-reverse: #000000;
 }
 
 .txt-app {
@@ -83,6 +88,7 @@
 
 .search-bar {
 	position: relative;
+	background-color: var(--mainBg);
 }
 
 .search-bar input {
@@ -196,7 +202,7 @@
 .change-password-btn, .change-password-btn:hover {
 	border: 1px solidvar(--app);
 	background-color: var(--app);
-	color: var(--mainBg);
+	color: var(--text);
 	font-weight: 500;
 }
 
@@ -318,12 +324,8 @@
 }
 
 .btn-deep, .btn-deep:hover {
-	border: 1px solid var(--text);
+	background-color: var(--card);
 	color: var(--text);
-}
-
-.btn-deep:hover {
-	background-color: var(--hover);
 }
 
 .bg-card-normal {
@@ -409,4 +411,24 @@
 .signup-link:hover {
 	color: var(--secondary);
 	transform: scale(1.05);
+}
+
+.post-input {
+	background-color: var(--card2);
+	color: var(--text);
+	outline: none;
+	border: none;
+	font-size: 1.3rem;
+}
+
+.btn-app {
+	outline: none;
+	background-color: var(--app);
+	color: var(--text);
+	border: none;
+}
+
+.remove-photo-btn {
+	color: var(--app);
+	border: 1px solid var(--app);
 }

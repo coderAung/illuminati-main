@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ public class HomeController extends Controller {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Resource(name = "social")
 	private DataSource dataSource;
 	private PostService postService;
 	

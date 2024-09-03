@@ -10,6 +10,7 @@ import edu.ucsy.social.model.dto.form.LoginForm;
 import edu.ucsy.social.model.dto.form.RegisterForm;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.service.UserService;
+import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -77,29 +78,45 @@ public class UserController extends Controller {
 	}
 
 	private void createUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		// create register form
-		var registerForm = getRegisterForm(req);
-
-		// ask user service to create user
-		if(null != registerForm) {
-			var result = userService.createUser(registerForm);
-			// need to create separate folder for user's
-			// profile, cover images
-			if(result) {
-				// consider user as logged in
-				
-				// redirect to home page with alert message SUCCESS
-				var loginUser = userService.login(new LoginForm(registerForm.getEmail(), registerForm.getPassword()));
-				if(null != loginUser) {
-					redirect(req, resp, "/home");
-				}
-			}
-		} else {
-			var alert = new Alert("Fail to register", AlertType.DANGER);
+		
+		if(isUserExist(req)) {
+			var alert = new Alert("User already exist.", AlertType.INFO);
 			req.getSession(true).setAttribute("alert", alert);
 			redirect(req, resp, "/register");
+		} else {
+			// create register form
+			var registerForm = getRegisterForm(req);
+
+			// ask user service to create user
+			if(null != registerForm) {
+				var result = userService.createUser(registerForm);
+				// need to create separate folder for user's
+				// profile, cover images
+				if(result) {
+					// consider user as logged in
+					
+					// redirect to home page with alert message SUCCESS
+					var loginUser = userService.login(new LoginForm(registerForm.getEmail(), registerForm.getPassword()));
+					if(null != loginUser) {
+						req.getSession(true).setAttribute("loginUser", loginUser);
+						redirect(req, resp, "/home");
+					}
+				}
+			} else {
+				var alert = new Alert("Fail to register", AlertType.DANGER);
+				req.getSession(true).setAttribute("alert", alert);
+				redirect(req, resp, "/register");
+			}
+			
 		}
-		
+	}
+
+	private boolean isUserExist(HttpServletRequest req) {
+		var email = req.getParameter("email");
+		if(!StringTool.isEmpty(email)) {
+			return userService.isEmailExist(email);			
+		}
+		return false;
 	}
 
 	private RegisterForm getRegisterForm(HttpServletRequest req) {

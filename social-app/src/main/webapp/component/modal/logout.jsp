@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="modal fade" id="logout">
 	<div class="modal-dialog">
@@ -10,7 +11,9 @@
 						class="float-end txt-white" data-bs-dismiss="modal"><i
 						class="bi bi-x-lg pointer"></i></span>
 				</div>
-				<form action="" method="post">
+				
+				<c:url var="logout" value="/logout"></c:url>
+				<form action="${logout}" method="post">
 					<div class="d-flex justify-content-center">
 						<button class="btn logout-btn" type="submit">Logout</button>
 					</div>

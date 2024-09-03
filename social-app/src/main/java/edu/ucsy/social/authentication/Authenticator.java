@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 				"/home", 
 				"/profile/*", 
 				"/post/*", 
-				"/user/*",
+				"/user/delete",
 				"/comment/*",
 				"/friend-request",
 				"/notifications/*",

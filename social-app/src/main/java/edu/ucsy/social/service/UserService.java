@@ -18,4 +18,6 @@ public interface UserService extends Service {
 	LoginUser login(LoginForm loginForm);
 
 	boolean createUser(RegisterForm registerForm);
+
+	boolean isEmailExist(String email);
 }

@@ -16,8 +16,8 @@
 					src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
 				</a>
 				<div class="d-flex flex-column">
-					<a href="#" class="text-decoration-none txt-white fw-bold">
-						Ko Ko </a> <small class="txt-grey">13 hours ago</small>
+					<a href="#" class="text-decoration-none txt-white fw-bold"> Ko
+						Ko </a> <small class="txt-grey">13 hours ago</small>
 				</div>
 			</div>
 			<!-- user info end -->
@@ -37,20 +37,21 @@
 			<!-- Post Images end -->
 
 			<!-- comment and share section -->
-			<div
-				class=" d-flex align-items-center pt-1 text-center">
+			<div class=" d-flex align-items-center pt-1 text-center">
 				<a
 					class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-					Comment <i class="bi bi-dot"></i> <small class="txt-grey">20 comments</small>
-					</a>
-				<span class="mx-2">|</span> <a
+					Comment <i class="bi bi-dot"></i> <small class="txt-grey">20
+						comments</small>
+				</a> <span class="mx-2">|</span> <a
 					class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-					Share <i class="bi bi-dot"></i> <small class="txt-grey">20 shares</small>
-					</a>
+					Share <i class="bi bi-dot"></i> <small class="txt-grey">20
+						shares</small>
+				</a>
 			</div>
 
 		</div>
 		<!-- new feed end -->
 	</c:forEach>
+
 
 </div>

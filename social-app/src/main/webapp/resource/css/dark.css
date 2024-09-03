@@ -410,3 +410,23 @@
 	color: var(--secondary);
 	transform: scale(1.05);
 }
+
+.post-input {
+	background-color: var(--card2);
+	color: var(--text);
+	outline: none;
+	border: none;
+	font-size: 1.3rem;
+}
+
+.btn-app {
+	outline: none;
+	background-color: var(--app);
+	color: var(--text);
+	border: none;
+}
+
+.remove-photo-btn {
+	color: var(--app);
+	border: 1px solid var(--app);
+}

@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
+import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.model.entity.Post;
+import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.utils.StringTool;
 
-public class PostModel extends AbstractModel<Post> {
+public class PostModel extends AbstractModel<Post>
+			implements OneToMany {
 
 	@Override
 	public Post save(Post p) {
@@ -187,6 +190,49 @@ public class PostModel extends AbstractModel<Post> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> getMany(Class<T> e, long id) {
+		if(e.equals(PostImage.class)) {
+			var postImages = getManyPostImages(id);
+			if(null != postImages) {
+				return postImages.stream().map(pi -> (T) pi).toList();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public <T> List<T> getMany(Class<T> e, long id, long limit) {
+		return null;
+	}
+
+	private List<PostImage> getManyPostImages(long id) {
+		var sql = """
+				select * from post_images where post_id = ?
+				""";
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rs = stmt.executeQuery();
+			var postImages = new ArrayList<PostImage>();
+			while(rs.next()) {
+				var postImage = new PostImage(rs.getLong("id"), rs.getString("name"), rs.getLong("post_id"));
+				postImages.add(postImage);
+			}
+			return postImages;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return null;
+	}
+
+	@Override
+	public <T> boolean deleteMany(Class<T> e, long id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

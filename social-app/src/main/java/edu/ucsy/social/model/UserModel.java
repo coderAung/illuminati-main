@@ -287,7 +287,7 @@ public class UserModel extends AbstractModel<User>
 	}
 
 	private ProfileImage getOneProfileImage(long id) {
-		var sql = "select * from profile_image where user_id = ? and status = ?";
+		var sql = "select * from profile_images where user_id = ? and status = ?";
 		
 		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
@@ -380,7 +380,9 @@ public class UserModel extends AbstractModel<User>
 		}
 		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
-			stmt.setLong(2, limit);
+			if(0 < limit) {
+				stmt.setLong(2, limit);
+			}
 			
 			var rs = stmt.executeQuery();
 			var posts = new ArrayList<Post>();

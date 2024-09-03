@@ -60,10 +60,19 @@ public class SecurityController extends Controller {
 		case LOG_IN:
 			login(req, resp);
 			break;
-
+		case LOG_OUT:
+			logout(req, resp);
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		var session = req.getSession(true);
+		session.removeAttribute("loginUser");
+		session.invalidate();
+		redirect(req, resp, LOG_IN);
 	}
 
 	private void login(HttpServletRequest req, HttpServletResponse resp) throws IOException {

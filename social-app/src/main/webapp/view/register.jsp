@@ -28,6 +28,12 @@
 			<div
 				class="bg-card rounded login-form col-4 txt-text text-center py-4 px-4">
 				<h1 class="pointer h2">Register</h1>
+				
+				<c:if test="${not empty alert}">
+					<div class="alert alert-info">${alert.message}</div>
+					<c:remove var="alert" scope="session"/>
+				</c:if>
+				
 				<c:url var="userCreate" value="/user/create"></c:url>
 				<form action="${userCreate}" method="post">
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar">
