@@ -34,6 +34,7 @@ public class FriendServiceImpl implements FriendService {
 		this.userModel = ModelFactory.getModel(User.class);
 		this.profileImageModel = ModelFactory.getModel(ProfileImage.class);
 
+		this.friendSearchModel = ModelFactory.getSearchModel(Friend.class);
 	}
 
 	@Override
@@ -41,6 +42,7 @@ public class FriendServiceImpl implements FriendService {
 		friendModel.setConnection(connection);
 		userModel.setConnection(connection);
 		profileImageModel.setConnection(connection);
+		friendSearchModel.setConnection(connection);
 	}
 
 	@Override
@@ -48,6 +50,7 @@ public class FriendServiceImpl implements FriendService {
 		friendModel.setConnection(null);
 		userModel.setConnection(null);
 		profileImageModel.setConnection(null);
+		friendSearchModel.setConnection(null);
 	}
 
 	@Override
@@ -70,7 +73,7 @@ public class FriendServiceImpl implements FriendService {
 								}
 
 								return friendView;})
-					.toList();
+								.toList();
 			return friendViews;
 
 		} catch (SQLException e) {

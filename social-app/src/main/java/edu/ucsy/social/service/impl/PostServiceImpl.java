@@ -3,12 +3,15 @@ package edu.ucsy.social.service.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToMany;
+import edu.ucsy.social.data.Searchable;
+import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.form.PostForm;
 import edu.ucsy.social.model.dto.view.CommentView;
@@ -29,6 +32,8 @@ public class PostServiceImpl implements PostService {
 	private Model<User> userModel;
 	private Model<PostImage> postImageModel;
 	private Model<Comment> commentModel;
+	
+	private Searchable<Post> postSearchModel;
 
 	public PostServiceImpl(DatabaseConnector connector) {
 
@@ -38,6 +43,7 @@ public class PostServiceImpl implements PostService {
 		this.userModel = ModelFactory.getModel(User.class);
 		this.postImageModel = ModelFactory.getModel(PostImage.class);
 		this.commentModel = ModelFactory.getModel(Comment.class);
+		this.postSearchModel = ModelFactory.getSearchModel(Post.class);
 	}
 
 	@Override
@@ -46,6 +52,8 @@ public class PostServiceImpl implements PostService {
 		userModel.setConnection(connection);
 		postImageModel.setConnection(connection);
 		commentModel.setConnection(connection);
+		
+		postSearchModel.setConnection(connection);
 	}
 
 	@Override
@@ -54,6 +62,8 @@ public class PostServiceImpl implements PostService {
 		userModel.setConnection(null);
 		postImageModel.setConnection(null);
 		commentModel.setConnection(null);
+		
+		postSearchModel.setConnection(null);
 	}
 
 	@Override
@@ -73,6 +83,8 @@ public class PostServiceImpl implements PostService {
 					var postImageList = postImages.stream().map(pi -> pi.name()).toList();
 					postView.setPostImageList(postImageList);
 				}
+				
+				postViews.add(postView);
 
 			}
 			return postViews;
@@ -88,39 +100,72 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<PostView> getRandomPostViews(int limit) {
-//		return null;
-
-		try (var connection = connector.getConnection()) {
+		
+		try(var connection = connector.getConnection()) {
 			initConnection(connection);
-
-			List<Post> posts = postModel.getAll();
-			List<Post> shuffledPosts = new ArrayList<>(posts);
-			java.util.Collections.shuffle(shuffledPosts, new Random());
-			List<Post> limitedPosts = shuffledPosts.subList(0, Math.min(limit, shuffledPosts.size()));
-			List<PostView> postViews = new ArrayList<>();
-
-			for (Post post : limitedPosts) {
-				List<PostImage> images = postModel.getRelational(OneToMany.class).getMany(PostImage.class,
-						post.id());
-				List<String> imageNames = new ArrayList<>();
-				if(null != images) {
-					for (PostImage image : images) {
-						imageNames.add(image.name());
+			
+			var posts = postSearchModel.search(
+					new Criteria().limit(limit).orderBy("updated_at")
+					);
+			if(null != posts) {
+				Collections.shuffle(posts, new Random());
+			
+				var postViews = posts.stream()
+										.map(post -> {
+											var postView = new PostView(post);
+											return postView;
+										}).toList();
+				for(var pv : postViews) {
+					var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, pv.getId());
+					if(null != postImages && 0 != postImages.size()) {
+						pv.setPostImageList(postImages.stream().map(pi -> pi.name()).toList());
 					}
-					
 				}
-				PostView postView = new PostView(post.id(), post.content(), post.updatedAt(), post.userName(),
-						imageNames);
-				postViews.add(postView);
+				
+				return postViews;
 			}
-			return postViews;
-
+			
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			destroyConnection();
 		}
+		
 		return null;
+
+//		try (var connection = connector.getConnection()) {
+//			initConnection(connection);
+//
+//			List<Post> posts = postModel.getAll();
+//			List<Post> shuffledPosts = new ArrayList<>(posts);
+//			java.util.Collections.shuffle(shuffledPosts, new Random());
+//			List<Post> limitedPosts = shuffledPosts.subList(0, Math.min(limit, shuffledPosts.size()));
+//			List<PostView> postViews = new ArrayList<>();
+//
+//			for (Post post : limitedPosts) {
+//				List<PostImage> images = postModel.getRelational(OneToMany.class).getMany(PostImage.class,
+//						post.id());
+//				List<String> imageNames = new ArrayList<>();
+//				if(null != images) {
+//					for (PostImage image : images) {
+//						imageNames.add(image.name());
+//					}
+//					
+//				}
+//				PostView postView = new PostView(post.id(), post.content(), post.updatedAt(), post.userName(),
+//						imageNames);
+//				postViews.add(postView);
+//			}
+//			return postViews;
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			destroyConnection();
+//		}
+//		return null;
 	}
 
 	@Override

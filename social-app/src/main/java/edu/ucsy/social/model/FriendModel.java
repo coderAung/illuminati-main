@@ -141,7 +141,7 @@ public class FriendModel extends AbstractModel<Friend> {
 		return false;
 	}
 
-	public Friend friendFrom(ResultSet rs) throws SQLException {
+	private Friend friendFrom(ResultSet rs) throws SQLException {
 		var friend = new Friend(rs.getLong("id"), 
 				rs.getLong("user_id"), 
 				rs.getLong("friend_id"),

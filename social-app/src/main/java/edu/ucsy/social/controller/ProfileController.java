@@ -110,11 +110,29 @@ public class ProfileController extends Controller {
 		
 		// get 5 friend views
 		var friendViews =  friendService.getFriendViews(userId, 5);
-		// set 5 friend cards to request scope
-		req.setAttribute("friendView", friendViews);
+		if(null != friendViews && 0 < friendViews.size()) {
+			
+			for(var fv : friendViews) {
+				var imagePath = getImagePath(fv.getProfileImage(), ImageType.PROFILE);
+				fv.setProfileImage(imagePath);
+			}
+			
+			// set 5 friend cards to request scope
+			req.setAttribute("friendView", friendViews);
+			
+		}
 
 		// get 30 post views
 		var postViews = postService.getPostViews(userId, 30);
+		
+		for(var pv : postViews) {
+			var postImageList = pv.getPostImageList();
+			if(null != postImageList && 0 < postImageList.size()) {
+				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+			}
+			pv.setPostImageList(postImageList);
+		}
+		
 		// set post views to request scope
 		req.setAttribute("postViews", postViews);
 		

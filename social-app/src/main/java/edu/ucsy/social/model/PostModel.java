@@ -92,7 +92,7 @@ public class PostModel extends AbstractModel<Post>
 
 	@Override
 	public List<Post> get(long limit) {
-		var sql = "select * from posts limit ?";
+		var sql = "select p.* , u.name as user_name from posts as p join users as u on u.id = p.user_id limit ?";
 		try(var stmt = connection.prepareStatement(sql)) {
 			
 			stmt.setLong(1, limit);

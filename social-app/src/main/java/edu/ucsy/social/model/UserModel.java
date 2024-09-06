@@ -369,13 +369,17 @@ public class UserModel extends AbstractModel<User>
 
 	private List<Post> getManyPosts(long id, long limit) {
 		var sql = """
-				select id, content, created_at, updated_at user_id, user_name
-				from posts where user_id = ?
+				select p.id, p.content, p.created_at, p.updated_at, p.user_id, u.name as user_name
+				from posts as p
+				join users as u on u.id = p.user_id
+				where p.user_id = ?
 				""";
 		if(0 < limit) {
 			sql = """
-					select id, content, created_at, updated_at user_id, user_name
-					from posts where user_id = ? limit ?
+				select p.id, p.content, p.created_at, p.updated_at, p.user_id, u.name as user_name
+					from posts as p
+					join users as u on u.id = p.user_id
+					where user_id = ? limit ?
 					""";
 		}
 		try(var stmt = connection.prepareStatement(sql)) {

@@ -23,7 +23,7 @@
 		</div>
 
 		<div>
-			<div class="h5">Khin Thaw Tar</div>
+			<div class="h5">${profileView.name}</div>
 			<i class="txt-grey">Life is Gift</i>
 		</div>
 	</div>

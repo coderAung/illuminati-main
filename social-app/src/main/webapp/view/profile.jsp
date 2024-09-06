@@ -30,19 +30,45 @@
 	<!-- main part start -->
 	<main>
 		<div class="container-fluid row">
-			
+
 			<!-- sidebar start -->
 			<div class="col-3 left-side mx-3">
 				<jsp:include page="/component/sidebar.jsp">
 					<jsp:param value="menu-item-active" name="profileActive" />
 				</jsp:include>
 			</div>
-			
-			
+
+
 			<div class="col-6 px-0">
 
 				<!-- Profile Card -->
-				<jsp:include page="/component/profile-card.jsp"></jsp:include>
+				<div
+					class="mb-2 bg-card txt-white position-relative rounded color-white">
+					<!-- Cover Image -->
+
+					<div class="cover-img rounded-top pointer w-100 p-1">
+						<img alt="" class="rounded-top"
+							src="https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/18943387/mark_85.jpg?quality=90&strip=all&crop=10.44921875,0,79.1015625,100">
+					</div>
+
+					<div class="profile-img position-absolute pointer">
+						<img alt=""
+							src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+					</div>
+
+					<!-- Profile Information -->
+					<div class="px-3 pb-3 mt-5">
+						<div class="w-50 d-flex float-end justify-content-end">
+							<a href="#" class="btn btn-normal w-25 me-3">Detail</a> <a
+								href="#" class="btn w-25 btn-normal">Edit</a>
+						</div>
+
+						<div>
+							<div class="h5">${profileView.name}</div>
+							<i class="txt-grey">Life is Gift</i>
+						</div>
+					</div>
+				</div>
 				<!-- Profile Card End -->
 
 				<!-- Friend Preview start -->
@@ -53,12 +79,88 @@
 				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
 				<!-- create post end -->
 
-				<!-- posts start -->
-				<jsp:include page="/component/posts.jsp"></jsp:include>
-				<!-- posts end -->
+				<!-- post start -->
+				<!-- real data -->
+				<c:choose>
+					<c:when test="${not empty postViews}">
+						<c:forEach var="pv" items="${postViews}">
+							<!-- new feed start -->
+							<div class="p-2 rounded mb-2 post-card">
+								<span class="float-end pointer"> <i
+									class="bi bi-three-dots-vertical"></i>
+								</span>
+								<!-- user info start -->
+								<div class="d-flex px-2">
+									<a href="#" class="me-3"> <img
+										style="width: 45px; height: 45px" class="rounded-circle"
+										src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+									</a>
+									<div class="d-flex flex-column">
+										<a href="#" class="text-decoration-none txt-white fw-bold">
+											${pv.userName} </a> <small class="txt-grey">${pv.updatedAt}</small>
+									</div>
+								</div>
+								<!-- user info end -->
+
+								<!-- caption start -->
+								<div class="mt-2 px-2">
+									<p>
+										<c:out value="${pv.content}"></c:out>
+									</p>
+								</div>
+								<!-- caption start -->
+
+								<!-- Post Images start -->
+								<c:if test="${not empty pv.postImageList}">
+								
+									<c:choose>
+										<c:when test="${pv.postImageList.size() eq 0}">
+										
+										</c:when>
+										
+										<c:when test="${pv.postImageList.size() eq 1}">
+											<div class="text-center post-image-container pointer">
+												<img
+													src="${pv.postImageList[0]}">
+											</div>
+										</c:when>
+
+										<c:when test="${pv.postImageList.size() gt 1}">
+											<div>carousel here</div>
+										</c:when>
+										
+									</c:choose>
+								
+								</c:if>
+								<!-- Post Images end -->
+
+								<!-- comment and share section -->
+								<div class=" d-flex align-items-center pt-1 text-center">
+									<a
+										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+										Comment <i class="bi bi-dot"></i> <small class="txt-grey">20
+											comments</small>
+									</a> <span class="mx-2">|</span> <a
+										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+										Share <i class="bi bi-dot"></i> <small class="txt-grey">20
+											shares</small>
+									</a>
+								</div>
+
+							</div>
+							<!-- new feed end -->
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<h2 class="bg-danger text-white">THERE IS NO POSTS</h2>
+					</c:otherwise>
+				</c:choose>
+				<!-- post end -->
 			</div>
 		</div>
 	</main>
 	<!-- main part end -->
+<c:url var="script" value="/resource/js/script.js"></c:url>
+<script type="text/javascript" src="${script}"></script>
 </body>
 </html>

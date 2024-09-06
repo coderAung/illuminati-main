@@ -33,6 +33,14 @@ public class HomeController extends Controller {
 		// get latest random post views from database with limit 10
 		var postViews = postService.getRandomPostViews(30);
 		
+		for(var pv : postViews) {
+			var postImageList = pv.getPostImageList();
+			if(null != postImageList && 0 < postImageList.size()) {
+				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+			}
+			pv.setPostImageList(postImageList);
+		}
+		
 		// set the post views to request scope
 		req.setAttribute("postViews", postViews);
 		view(req,resp,"home");

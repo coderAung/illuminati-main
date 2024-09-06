@@ -77,7 +77,7 @@
 										<c:when test="${pv.postImageList.size() eq 1}">
 											<div class="text-center post-image-container pointer">
 												<img
-													src="https://www.komar.de/media/catalog/product/cache/5/image/1230x/17f82f742ffe127f42dca9de82fb58b1/I/A/IADX4-079.jpg">
+													src="${pv.postImageList[0]}">
 											</div>
 										</c:when>
 
