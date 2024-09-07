@@ -9,7 +9,7 @@
 	<div class="d-flex">
 		<a href="#" class="me-3"> <img style="width: 45px; height: 45px"
 			class="rounded-circle"
-			src="${empty loginUser.profileImage ? 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png' : loginUser.profileImage }"
+			src="${loginUser.profileImage}"
 		>
 		</a>
 		<div onclick="goToCreatePostPage()"

@@ -4,9 +4,12 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.model.dto.OtherUserData;
+import edu.ucsy.social.service.FriendService;
 import edu.ucsy.social.service.OtherUserService;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.DefaultPicture;
 import edu.ucsy.social.utils.Limit;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -24,12 +27,14 @@ public class OtherUserController extends Controller {
 	@Resource(name = "social")
 	private DataSource dataSource;
 	private OtherUserService otherUserService;
+	private FriendService friendService;
 	private PostService postService;
 	
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		otherUserService = ServiceFactory.getService(OtherUserService.class, dataSource);
+		friendService = ServiceFactory.getService(FriendService.class, dataSource);
 		postService = ServiceFactory.getService(PostService.class, dataSource);
 	}
 	@Override
@@ -47,20 +52,52 @@ public class OtherUserController extends Controller {
 
 	private void forwardToOtherProfilePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get other user id from request parameter
-		var otherUserId = Integer.parseInt(req.getParameter("otherUserId"));
+		var otherUserId = Integer.parseInt(req.getParameter("userId"));
 		
 		// get user's profile view from other user service
 		var profileView = otherUserService.getProfileView(otherUserId);
+		
+		if(null == profileView.getProfileImage()) {
+			profileView.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+		} else {
+			profileView.setProfileImage(getImagePath(profileView.getProfileImage(), ImageType.PROFILE));
+		}
+		
+		if(null == profileView.getCoverImage()) {
+			profileView.setCoverImage(getImagePath(DefaultPicture.defaultCoverImage, ImageType.COVER));
+		} else {
+			profileView.setCoverImage(getImagePath(profileView.getCoverImage(), ImageType.COVER));
+		}
 		// set profile view to request scope
 		req.setAttribute("profileView", profileView);
 		// get 5 friend card view from other user service
-		var friendViews = otherUserService.getFriendViews(otherUserId, Limit.FRIEND_CARD);
+		var friendViews = friendService.getFriendViews(otherUserId, Limit.FRIEND_CARD);
 		// set profile view to request scope
 		req.setAttribute("friendViews", friendViews);
 		// get 30 post view from other user service
 		var postViews = postService.getPostViews(otherUserId, Limit.POST);
+		
+		for(var pv : postViews) {
+			var postImageList = pv.getPostImageList();
+			if(null != postImageList && 0 < postImageList.size()) {
+				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+			}
+			pv.setPostImageList(postImageList);
+		}
+
+		
 		// set profile view to request scope
 		req.setAttribute("postViews", postViews);
+		
+		// check if the other user is friend or not using friend service
+		var loginUserId = getLoginUser(req).getId();
+		var friendStatus = friendService.checkFriendStatus(loginUserId, otherUserId);
+		
+		// set result to other user data
+		var otherUserData = new OtherUserData();
+		otherUserData.setFriendStatus(friendStatus);
+		// set other user data to request scope
+		req.setAttribute("otherUserData", otherUserData);
 		// show the view of other user profile
 		view(req, resp, "other-profile");
 	}

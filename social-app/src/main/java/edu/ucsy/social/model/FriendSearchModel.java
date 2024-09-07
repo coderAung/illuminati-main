@@ -14,13 +14,39 @@ public class FriendSearchModel extends SearchModel<Friend> {
 
 	@Override
 	public Friend searchOne(Criteria c) {
-		// TODO Auto-generated method stub
+		var sql = """
+				select f.id, f.user_id as user_id, 
+						f.friend_id as friend_id, u.name as friend_name 
+				from friends as f
+				join users as u on u.id = f.friend_id
+				""";
+		var statement = c.generateStatement(sql);
+		var values = c.getValues();
+		
+		try(var stmt = connection.prepareStatement(statement)) {
+			for(int i = 0; i < values.size(); i ++) {
+				stmt.setObject(i + 1, values.get(i));
+			}
+			
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				var friend = friendFrom(rs);
+				return friend;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public List<Friend> search(Criteria c) {
-		var sql = "select f.id, u.name from friends as f join users as u on f.user_id = u.id";
+		var sql = """
+				select f.id, f.user_id as user_id, 
+						f.friend_id as friend_id, u.name as friend_name 
+				from friends as f
+				join users as u on u.id = f.friend_id
+				""";
 		var statement = c.generateStatement(sql);
 		var values = c.getValues();
 		
@@ -49,7 +75,7 @@ public class FriendSearchModel extends SearchModel<Friend> {
 		var friend = new Friend(rs.getLong("id"), 
 				rs.getLong("user_id"), 
 				rs.getLong("friend_id"),
-				rs.getString("name"));
+				rs.getString("friend_name"));
 		return friend;
 
 	}

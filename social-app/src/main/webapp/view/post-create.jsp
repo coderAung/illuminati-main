@@ -60,11 +60,12 @@
 					<div class="d-flex mb-3">
 						<a href="#" class="me-3"> <img
 							style="width: 45px; height: 45px; object-fit: cover;" class="rounded"
-							src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+							src="${loginUser.profileImage}">
 						</a>
 						<div class="d-flex flex-column">
 							<a href="#" class="text-decoration-none txt-white fw-bold">
-								Ko Ko </a>
+								${loginUser.name}
+							</a>
 							<small class="txt-grey">Creating new post</small>
 						</div>
 						<div class="d-flex flex-fill py-1 flex-row-reverse">

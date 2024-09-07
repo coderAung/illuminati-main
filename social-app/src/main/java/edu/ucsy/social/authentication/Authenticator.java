@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 				"/friend-request",
 				"/notifications/*",
 				"/setting/*",
+				"/other/*"
 				}
 		)
 public class Authenticator extends HttpFilter {

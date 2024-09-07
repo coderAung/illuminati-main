@@ -181,7 +181,7 @@ public class PostServiceImpl implements PostService {
 			imageNames.add(image.name());
 		}
 
-		PostView postView = new PostView(post.id(), post.content(), post.updatedAt(), post.userName(), imageNames);
+		PostView postView = new PostView(post.id(), post.content(), post.updatedAt(), post.userId(), post.userName(), imageNames);
 
 		List<Comment> comments = commentModel.getAll();
 		List<CommentView> commentViews = new ArrayList<>();

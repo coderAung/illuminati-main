@@ -8,6 +8,7 @@ import edu.ucsy.social.service.FriendService;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.service.UserService;
+import edu.ucsy.social.utils.DefaultPicture;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -105,6 +106,26 @@ public class ProfileController extends Controller {
 		
 		// get profile card view
 		var profileView = userService.getProfileView(userId);
+		
+		var profileImage = profileView.getProfileImage();
+		
+		if(null == profileImage) {
+			var img = getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE);
+			profileView.setProfileImage(img);
+		} else {
+			var img = getImagePath(profileImage, ImageType.PROFILE);
+			profileView.setProfileImage(img);
+		}
+		
+		var coverImage = profileView.getCoverImage();
+		
+		if(null == coverImage) {
+			var img = getImagePath(DefaultPicture.defaultCoverImage, ImageType.COVER);
+			profileView.setCoverImage(img);
+		} else {
+			var img = getImagePath(coverImage, ImageType.COVER);
+			profileView.setCoverImage(img);
+		}
 		// set profile card view to request scope
 		req.setAttribute("profileView", profileView);
 		

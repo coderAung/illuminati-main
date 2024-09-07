@@ -77,7 +77,8 @@
 					<span class="me-auto">Theme</span>
 
 					<!-- Theme Buttons -->
-					<form action="/setting/changeTheme" method="post"
+					<c:url var="changeTheme" value="/setting/change-theme"></c:url>
+					<form action="${changeTheme}" method="post"
 						class="d-flex gap-3">
 						<!-- Light Theme Button -->
 						<button type="submit" name="theme" value="light"

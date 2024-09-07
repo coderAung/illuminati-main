@@ -9,6 +9,7 @@ import edu.ucsy.social.model.dto.Alert.AlertType;
 import edu.ucsy.social.model.dto.form.LoginForm;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.service.UserService;
+import edu.ucsy.social.utils.DefaultPicture;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -90,6 +91,13 @@ public class SecurityController extends Controller {
 			// 1. set login user in session
 			// 2. redirect to home
 			req.getSession(true).setAttribute("loginUser", loginUser);
+			
+			if(null == loginUser.getProfileImage()) {
+				loginUser.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			} else {
+				loginUser.setProfileImage(getImagePath(loginUser.getProfileImage(), ImageType.PROFILE));
+			}
+			
 			redirect(req, resp, "/home");
 		} else {
 			// login fail -> redirect to login page with alert message

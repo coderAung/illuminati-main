@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:url var="image" value="/img/logo.jpg"></c:url>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Illuminati | Home</title>
+<title>Illuminati | Profile</title>
 
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
@@ -17,24 +18,78 @@
 		<jsp:param value="nav-link-active" name="homeActive" />
 	</jsp:include>
 	<!-- nav bar end -->
-	
-	<!-- main content start -->
+
+	<!-- main part start -->
 	<main>
 		<div class="container-fluid row">
 
 			<!-- sidebar start -->
 			<div class="col-3 left-side mx-3">
 				<jsp:include page="/component/sidebar.jsp">
-					<jsp:param name="homeActive" value="menu-item-active" />
+					<jsp:param value="menu-item-active" name="homeActive" />
 				</jsp:include>
 			</div>
-			<!-- sidebar end -->
+
+
 			<div class="col-6 px-0">
 
-				<!-- post form start -->
-				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
-				<!-- post form end -->
-				
+				<!-- Profile Card -->
+				<div
+					class="mb-2 bg-card txt-white position-relative rounded color-white">
+					<!-- Cover Image -->
+
+					<div class="cover-img rounded-top pointer w-100 p-1">
+						<img alt="" class="rounded-top"
+							src="${profileView.coverImage}">
+					</div>
+
+					<div class="profile-img position-absolute pointer">
+						<img alt=""
+							src="${profileView.profileImage}">
+					</div>
+
+					<!-- Profile Information -->
+					<div class="px-3 pb-3 mt-5">
+						<div class="w-50 d-flex float-end justify-content-end">
+						
+							<c:url var="friendRequestUrl" value="/api/friend-request"></c:url>
+							<span id="friendRequestUrl" class="d-none" url="${friendRequestUrl}"></span>
+							<c:url var="friendUrl" value="/api/friend"></c:url>
+							<span id="friendUrl" class="d-none" url="${friendUrl}"></span>
+						
+							<span id="userData" otherUserId="${profileView.userId}" class="d-none"></span>
+						
+							<c:choose>
+								<c:when test="${'IS_FRIEND' eq otherUserData.friendStatus.name()}">
+									<div id="is-friend-status" class="btn btn-normal w-auto me-3">Friend</div>
+									<button id="friend-btn" status="${otherUserData.friendStatus.name()}" type="button" class="btn btn-danger w-auto me-3">Unfriend</button>
+								</c:when>
+								<c:when test="${'NEED_TO_CONFIRM' eq otherUserData.friendStatus.name()}">
+									<button id="friend-btn" status="${otherUserData.friendStatus.name()}" type="button" class="btn btn-light w-auto me-3">Confirm</button>
+									<button id="delete-friend-btn" status="DELETE_FRIEND_REQUEST" type="button" class="btn btn-danger w-auto me-3">Delete</button>
+								</c:when>
+								<c:when test="${'REQUESTED' eq otherUserData.friendStatus.name()}">
+									<button id="friend-btn" status="${otherUserData.friendStatus.name()}" type="button" class="btn btn-danger w-auto me-3">Cancel Request</button>
+								</c:when>
+								<c:otherwise>
+									<button id="friend-btn" status="NOT_FRIEND" type="button" class="btn btn-normal w-auto me-3">Add Friend</button>
+								</c:otherwise>
+							</c:choose>
+							<a href="#" class="btn btn-normal w-25">Detail</a>
+						</div>
+
+						<div>
+							<div class="h5">${profileView.name}</div>
+							<i class="txt-grey">Life is Gift</i>
+						</div>
+					</div>
+				</div>
+				<!-- Profile Card End -->
+
+				<!-- Friend Preview start -->
+				<jsp:include page="/component/friend-preview.jsp"></jsp:include>
+				<!-- Friend Preview end -->
+
 				<!-- post start -->
 				<!-- real data -->
 				<c:choose>
@@ -52,15 +107,7 @@
 										src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
 									</a>
 									<div class="d-flex flex-column">
-										<c:choose>
-											<c:when test="${loginUser.id eq pv.userId}">
-												<c:url var="profile" value="/profile"></c:url>
-											</c:when>
-											<c:otherwise>
-												<c:url var="profile" value="/other/profile?userId=${pv.userId}"></c:url>
-											</c:otherwise>
-										</c:choose>
-										<a href="${profile}" class="text-decoration-none txt-white fw-bold">
+										<a href="#" class="text-decoration-none txt-white fw-bold">
 											${pv.userName} </a> <small class="txt-grey">${pv.updatedAt}</small>
 									</div>
 								</div>
@@ -123,9 +170,10 @@
 			</div>
 		</div>
 	</main>
-	<!-- main content end -->
-
-<c:url var="script" value="/resource/js/script.js"></c:url>
-<script type="text/javascript" src="${script}"></script>
+	<!-- main part end -->
+<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
+<script type="text/javascript" src="${jquery}"></script>
+<c:url var="friend" value="/resource/ajax/friend.js"></c:url>
+<script type="text/javascript" src="${friend}"></script>
 </body>
 </html>

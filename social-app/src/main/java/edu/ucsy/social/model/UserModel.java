@@ -372,14 +372,14 @@ public class UserModel extends AbstractModel<User>
 				select p.id, p.content, p.created_at, p.updated_at, p.user_id, u.name as user_name
 				from posts as p
 				join users as u on u.id = p.user_id
-				where p.user_id = ?
+				where p.user_id = ? order by created_at desc
 				""";
 		if(0 < limit) {
 			sql = """
 				select p.id, p.content, p.created_at, p.updated_at, p.user_id, u.name as user_name
 					from posts as p
 					join users as u on u.id = p.user_id
-					where user_id = ? limit ?
+					where user_id = ? order by updated_at desc limit ?
 					""";
 		}
 		try(var stmt = connection.prepareStatement(sql)) {

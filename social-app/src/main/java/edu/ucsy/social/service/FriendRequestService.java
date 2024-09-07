@@ -9,8 +9,8 @@ public interface FriendRequestService extends Service {
 
 	List<FriendRequestView> getFriendRequestViews(long userId);
 
-	boolean createFriendRequest(long userId, long requestToUserId);
+	long createFriendRequest(long userId, long requestToUserId);
 
-	boolean deleteFriendRequest(int friendRequestId);
+	boolean deleteFriendRequest(long userId, long requestTo);
 
 }

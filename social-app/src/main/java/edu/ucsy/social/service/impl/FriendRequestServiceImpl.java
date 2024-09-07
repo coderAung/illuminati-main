@@ -9,6 +9,9 @@ import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
+import edu.ucsy.social.data.Searchable;
+import edu.ucsy.social.data.criteria.Criteria;
+import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.view.FriendRequestView;
 import edu.ucsy.social.model.entity.FriendRequest;
@@ -22,23 +25,29 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 	
 	private Model<FriendRequest> friendRequestModel;
 	private Model<User> userModel;
+	private Searchable<FriendRequest> friendRequestSearchModel;
 	
 	public FriendRequestServiceImpl(DatabaseConnector connector) {
+		this.connector = connector;
+
 		this.friendRequestModel = ModelFactory.getModel(FriendRequest.class);
 		this.userModel = ModelFactory.getModel(User.class);
-		this.connector = connector;
+		
+		this.friendRequestSearchModel = ModelFactory.getSearchModel(FriendRequest.class);
 	}
 
 	@Override
 	public void initConnection(Connection connection) {
 		friendRequestModel.setConnection(connection);
 		userModel.setConnection(connection);
+		friendRequestSearchModel.setConnection(connection);
 	}
 
 	@Override
 	public void destroyConnection() {
 		friendRequestModel.setConnection(null);
 		userModel.setConnection(null);
+		friendRequestSearchModel.setConnection(null);
 	}
 
 	@Override
@@ -83,14 +92,42 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 	}
 
 	@Override
-	public boolean createFriendRequest(long userId, long requestToUserId) {
-		// TODO Auto-generated method stub
-		return false;
+	public long createFriendRequest(long userId, long requestToUserId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var friendRequest = new FriendRequest(requestToUserId, userId);
+			friendRequest = friendRequestModel.save(friendRequest);
+			if(null != friendRequest) {
+				return friendRequest.id();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return 0;
 	}
 
 	@Override
-	public boolean deleteFriendRequest(int friendRequestId) {
-		// TODO Auto-generated method stub
+	public boolean deleteFriendRequest(long userId, long requestToUseId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var friendRequest = friendRequestSearchModel.searchOne(
+										new Criteria().where("request_to", Type.EQ, requestToUseId)
+														.where("request_by", Type.EQ, userId)
+									);
+			
+			if(null != friendRequest) {
+				return friendRequestModel.delete(friendRequest.id());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
 		return false;
 	}
 

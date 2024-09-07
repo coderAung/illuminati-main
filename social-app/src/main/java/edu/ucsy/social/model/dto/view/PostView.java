@@ -13,25 +13,37 @@ public class PostView implements Serializable {
 	private long id;
 	private String content;
 	private LocalDateTime updatedAt;
+	private long userId;
 	private String userName;
 	private long commentCount;
 	private long shareCount;
 
 	private List<String> postImageList;
 
-	public PostView(long id, String content, LocalDateTime updatedAt, String userName, List<String> postImageList) {
+	public PostView(long id, String content, LocalDateTime updatedAt, long userId, String userName,
+			List<String> postImageList) {
 		super();
 		this.id = id;
 		this.content = content;
 		this.updatedAt = updatedAt;
+		this.userId = userId;
 		this.userName = userName;
 		this.postImageList = postImageList;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public PostView(Post post) {
 		this.id = post.id();
 		this.content = post.content();
 		this.updatedAt = post.updatedAt();
+		this.userId = post.userId();
 		this.userName = post.userName();
 	}
 

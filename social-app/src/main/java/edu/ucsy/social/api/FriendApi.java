@@ -61,26 +61,26 @@ public class FriendApi extends Api {
 		if (result) {
 			resp.setContentType("application/json");
 			var writer = resp.getWriter();
-			writer.append(JsonTool.jsonFromMap(Map.of("status", "success")));
+			writer.append(JsonTool.jsonFromMap(Map.of("result", "success")));
 			writer.flush();
 		}
 	}
 
 	private void createFriend(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		// get friend request id from request parameter
-		if (StringTool.isEmpty(req.getParameter("friendRequestId"))) {
+		if (StringTool.isEmpty(req.getParameter("userIdToConfrim"))) {
 			// fail
 		}
-		var friendRequestId = Integer.parseInt(req.getParameter("friendRequestId"));
+		var userIdToConfrim = Integer.parseInt(req.getParameter("userIdToConfrim"));
 
 		// confirm | create friends by friend service
-		var result = friendService.confirmFriendRequest(friendRequestId);
+		var result = friendService.confirmFriendRequest(getLoginUser(req).getId(), userIdToConfrim);
 
 		// respond an alert message for being friend
 		if (result) {
 			resp.setContentType("application/json");
 			var writer = resp.getWriter();
-			writer.append(JsonTool.jsonFromMap(Map.of("status", "success")));
+			writer.append(JsonTool.jsonFromMap(Map.of("result", "success")));
 			writer.flush();
 		}
 	}

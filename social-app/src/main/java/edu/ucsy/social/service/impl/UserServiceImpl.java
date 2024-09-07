@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 			var coverImage = userModel.getRelational(OneToOne.class).getOne(CoverImage.class, id);
 
 			// create profile view
-			var profileView = new ProfileView(user.name(), user.email());
+			var profileView = new ProfileView(user.id(), user.name(), user.email());
 
 			if (null != profileImage) {
 				profileView.setProfileImage(profileImage.name());

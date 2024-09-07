@@ -52,4 +52,5 @@ public class FriendRequestController extends Controller {
 		// forward to friend-request page
 		view(req, resp, "friend-request");
 	}
+	
 }

@@ -13,6 +13,7 @@ public class LoginUser implements Serializable {
 	private String email;
 	private String name;
 	private Role role;
+	private Theme theme;
 
 	private String profileImage;
 
@@ -22,6 +23,15 @@ public class LoginUser implements Serializable {
 		this.email = email;
 		this.name = name;
 		this.role = role;
+		this.theme = Theme.LIGHT;
+	}
+
+	public Theme getTheme() {
+		return theme;
+	}
+
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
 
 	public LoginUser(User user) {
@@ -74,6 +84,10 @@ public class LoginUser implements Serializable {
 
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
+	}
+
+	public enum Theme {
+		LIGHT, DARK, BLUE
 	}
 
 }

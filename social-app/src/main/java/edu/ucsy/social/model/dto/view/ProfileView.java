@@ -6,19 +6,22 @@ public class ProfileView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private long userId;
 	private String name;
 	private String email;
 	private String profileImage;
 	private String coverImage;
 
-	public ProfileView(String name, String email) {
+	public ProfileView(long userId, String name, String email) {
 		super();
+		this.userId = userId;
 		this.name = name;
 		this.email = email;
 	}
 
-	public ProfileView(String name, String email, String profileImage, String coverImage) {
+	public ProfileView(long userId, String name, String email, String profileImage, String coverImage) {
 		super();
+		this.userId = userId;
 		this.name = name;
 		this.email = email;
 		this.profileImage = profileImage;
@@ -35,6 +38,14 @@ public class ProfileView implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {

@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:url var="home" value="/home"></c:url>
-<c:url var="login" value="/login"></c:url>
-<c:url var="notifications" value="/notifications"></c:url>
-<c:url var="setting" value="/setting"></c:url>
-<c:url var="profile" value="/profile"></c:url>
 <c:url var="image" value="/img/logo.jpg"></c:url>
 
 <!DOCTYPE html>
@@ -15,9 +10,6 @@
 <title>Illuminati | Profile</title>
 
 <jsp:include page="/resource/style.jsp"></jsp:include>
-
-<c:url var="commonCss" value="/resource/css/common.css"></c:url>
-<link href="${commonCss}" rel="stylesheet">
 
 </head>
 <body class="main-bg">
@@ -48,12 +40,12 @@
 
 					<div class="cover-img rounded-top pointer w-100 p-1">
 						<img alt="" class="rounded-top"
-							src="https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/18943387/mark_85.jpg?quality=90&strip=all&crop=10.44921875,0,79.1015625,100">
+							src="${profileView.coverImage}">
 					</div>
 
 					<div class="profile-img position-absolute pointer">
 						<img alt=""
-							src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+							src="${profileView.profileImage}">
 					</div>
 
 					<!-- Profile Information -->
