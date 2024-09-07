@@ -40,19 +40,20 @@
 
 					<div class="cover-img rounded-top pointer w-100 p-1">
 						<img alt="" class="rounded-top"
-							src="${profileView.coverImage}">
+							src="${loginUser.coverImage}">
 					</div>
 
 					<div class="profile-img position-absolute pointer">
 						<img alt=""
-							src="${profileView.profileImage}">
+							src="${loginUser.profileImage}">
 					</div>
 
 					<!-- Profile Information -->
 					<div class="px-3 pb-3 mt-5">
 						<div class="w-50 d-flex float-end justify-content-end">
-							<a href="#" class="btn btn-normal w-25 me-3">Detail</a> <a
-								href="#" class="btn w-25 btn-normal">Edit</a>
+							<c:url var="profileDetail" value="/profile/detail"></c:url>
+							<a href="${profileDetail}" class="btn btn-normal w-auto me-3">Detail</a> <a
+								href="#" class="btn w-auto btn-normal">Edit</a>
 						</div>
 
 						<div>
@@ -85,7 +86,7 @@
 								<div class="d-flex px-2">
 									<a href="#" class="me-3"> <img
 										style="width: 45px; height: 45px" class="rounded-circle"
-										src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+										src="${pv.profileImage}">
 									</a>
 									<div class="d-flex flex-column">
 										<a href="#" class="text-decoration-none txt-white fw-bold">

@@ -1,20 +1,15 @@
 @charset "UTF-8";
 
 :root {
-	--mainBg: #334756;
-	--card: #082032;
-	--text: #F7EFE5;
-	
-	--secondary: #9394a5;
-	--card2: #334756;
-	--app: #bf3900;
-	--hover: #334756;
-	
-	--hover2: #334756;
-	
-	--danger: #1B262C;
-	
-	--text-reverse: #000000;
+	--mainBg: #000000;
+	--card: #161618;
+	--text: #ffffff;
+	--secondary: #818181;
+	--card2: #212124;
+	--app: #0088cc;
+	--hover: #282828;
+	--hover2: #212124;
+	--danger: #950606;
 }
 
 .txt-app {
@@ -88,7 +83,6 @@
 
 .search-bar {
 	position: relative;
-	background-color: var(--mainBg);
 }
 
 .search-bar input {
@@ -172,14 +166,10 @@
 
 .post-image-container {
 	height: 400px; /* Adjust the height to fit your design */
+	overflow: hidden;
 }
 
 .btn-normal, .btn-normal:hover {
-	background-color: var(--hover2);
-	color: var(--text);
-}
-
-.btn-normal:active {
 	background-color: var(--hover2);
 	color: var(--text);
 }
@@ -196,7 +186,7 @@
 .change-password-btn, .change-password-btn:hover {
 	border: 1px solidvar(--app);
 	background-color: var(--app);
-	color: var(--text);
+	color: var(--mainBg);
 	font-weight: 500;
 }
 
@@ -318,8 +308,12 @@
 }
 
 .btn-deep, .btn-deep:hover {
-	background-color: var(--card);
+	border: 1px solid var(--text);
 	color: var(--text);
+}
+
+.btn-deep:hover {
+	background-color: var(--hover);
 }
 
 .bg-card-normal {
@@ -425,4 +419,35 @@
 .remove-photo-btn {
 	color: var(--app);
 	border: 1px solid var(--app);
+}
+
+.user-info div:hover {
+	background-color: var(--hover);
+}
+
+.carousel-inner {
+    max-height: 400px; /* Limit image height to fit in the layout */
+    overflow: hidden;
+}
+
+.carousel-inner img {
+	width: 100%;
+	height: 100%;
+    object-fit: cover; /* Maintain aspect ratio and cover the available space */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for controls */
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Darken control icons on hover */
 }

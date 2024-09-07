@@ -433,3 +433,7 @@
 	color: var(--app);
 	border: 1px solid var(--app);
 }
+
+.user-info div:hover {
+	background-color: var(--hover);
+}

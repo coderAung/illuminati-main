@@ -10,6 +10,7 @@ import java.util.Random;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToMany;
+import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.data.Searchable;
 import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.data.db.DatabaseConnector;
@@ -20,6 +21,7 @@ import edu.ucsy.social.model.dto.view.PostView;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
+import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.SharedPost;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.service.PostService;
@@ -84,8 +86,13 @@ public class PostServiceImpl implements PostService {
 					postView.setPostImageList(postImageList);
 				}
 				
+				var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, postView.getUserId());
+				
+				if(null != profileImage) {
+					postView.setProfileImage(profileImage.name());
+				}
+				
 				postViews.add(postView);
-
 			}
 			return postViews;
 
@@ -117,8 +124,15 @@ public class PostServiceImpl implements PostService {
 										}).toList();
 				for(var pv : postViews) {
 					var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, pv.getId());
+					
 					if(null != postImages && 0 != postImages.size()) {
 						pv.setPostImageList(postImages.stream().map(pi -> pi.name()).toList());
+					}
+
+					var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, pv.getUserId());
+					
+					if(null != profileImage) {
+						pv.setProfileImage(profileImage.name());
 					}
 				}
 				
@@ -233,7 +247,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public boolean createPost(PostForm postForm) {
+	public long createPost(PostForm postForm) {
 		try(var connection = connector.getConnection()) {
 			try {
 				initConnection(connection);
@@ -253,7 +267,7 @@ public class PostServiceImpl implements PostService {
 				}
 				
 				connection.commit();
-				return true;
+				return post.id();
 			} catch (Exception e) {
 				connection.rollback();
 			}
@@ -263,7 +277,7 @@ public class PostServiceImpl implements PostService {
 		} finally {
 			destroyConnection();
 		}
-		return false;
+		return 0;
 	}
 
 }

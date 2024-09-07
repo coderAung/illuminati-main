@@ -157,10 +157,15 @@ public class UserServiceImpl implements UserService {
 			}
 			
 			var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, user.id());
+			var coverImage = userModel.getRelational(OneToOne.class).getOne(CoverImage.class, user.id());
+			
 			if(null != user) {
 				var loginUser = new LoginUser(user);
 				if(null != profileImage) {
 					loginUser.setProfileImage(profileImage.name());					
+				}
+				if(null != coverImage) {
+					loginUser.setCoverImage(coverImage.name());
 				}
 				return loginUser;
 			}

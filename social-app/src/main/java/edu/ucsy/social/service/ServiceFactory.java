@@ -6,6 +6,7 @@ import edu.ucsy.social.data.Service;
 import edu.ucsy.social.data.db.ConnectorFactory;
 import edu.ucsy.social.service.impl.FriendRequestServiceImpl;
 import edu.ucsy.social.service.impl.FriendServiceImpl;
+import edu.ucsy.social.service.impl.ImageServiceImpl;
 import edu.ucsy.social.service.impl.OtherUserServiceImpl;
 import edu.ucsy.social.service.impl.PostServiceImpl;
 import edu.ucsy.social.service.impl.UserServiceImpl;
@@ -36,6 +37,10 @@ public abstract class ServiceFactory {
 		
 		if(t.equals(OtherUserService.class)) {
 			return (T) new OtherUserServiceImpl(ConnectorFactory.getConnector(dataSource));
+		}
+		
+		if(t.equals(ImageService.class)) {
+			return (T) new ImageServiceImpl(ConnectorFactory.getConnector(dataSource));
 		}
 
 		return null;

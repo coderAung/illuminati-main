@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.DefaultPicture;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -39,6 +40,13 @@ public class HomeController extends Controller {
 				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
 			}
 			pv.setPostImageList(postImageList);
+			
+			var pi = pv.getProfileImage();
+			if(null != pi) {
+				pv.setProfileImage(getImagePath(pi, ImageType.PROFILE));
+			} else {
+				pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			}
 		}
 		
 		// set the post views to request scope

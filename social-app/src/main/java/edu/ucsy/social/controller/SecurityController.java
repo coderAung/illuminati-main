@@ -86,17 +86,23 @@ public class SecurityController extends Controller {
 		var loginUser = userService.login(loginForm);
 		
 		if(null != loginUser) {
+			if(null == loginUser.getProfileImage()) {
+				loginUser.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			} else {
+				loginUser.setProfileImage(getImagePath(loginUser.getProfileImage(), ImageType.PROFILE));
+			}
+			
+			if(null == loginUser.getCoverImage()) {
+				loginUser.setCoverImage(getImagePath(DefaultPicture.defaultCoverImage, ImageType.COVER));
+			} else {
+				loginUser.setCoverImage(getImagePath(loginUser.getCoverImage(), ImageType.COVER));
+			}
 			
 			// login success -> home page	
 			// 1. set login user in session
 			// 2. redirect to home
 			req.getSession(true).setAttribute("loginUser", loginUser);
 			
-			if(null == loginUser.getProfileImage()) {
-				loginUser.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
-			} else {
-				loginUser.setProfileImage(getImagePath(loginUser.getProfileImage(), ImageType.PROFILE));
-			}
 			
 			redirect(req, resp, "/home");
 		} else {

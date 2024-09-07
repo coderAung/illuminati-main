@@ -134,12 +134,20 @@ public class ProfileController extends Controller {
 		if(null != friendViews && 0 < friendViews.size()) {
 			
 			for(var fv : friendViews) {
-				var imagePath = getImagePath(fv.getProfileImage(), ImageType.PROFILE);
-				fv.setProfileImage(imagePath);
+				
+				if(null == fv.getProfileImage()) {
+					var imagePath = getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE);
+					fv.setProfileImage(imagePath);
+				} else {
+					var imagePath = getImagePath(fv.getProfileImage(), ImageType.PROFILE);
+					fv.setProfileImage(imagePath);
+				}				
 			}
+			var friendCount = friendService.getFriendCount(userId);
+			req.setAttribute("friendCount", friendCount);
 			
 			// set 5 friend cards to request scope
-			req.setAttribute("friendView", friendViews);
+			req.setAttribute("friendViews", friendViews);
 			
 		}
 
@@ -152,6 +160,13 @@ public class ProfileController extends Controller {
 				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
 			}
 			pv.setPostImageList(postImageList);
+			
+			var pi = pv.getProfileImage();
+			if(null != pi) {
+				pv.setProfileImage(getImagePath(pi, ImageType.PROFILE));
+			} else {
+				pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			}
 		}
 		
 		// set post views to request scope

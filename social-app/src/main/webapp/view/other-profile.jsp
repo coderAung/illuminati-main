@@ -75,7 +75,7 @@
 									<button id="friend-btn" status="NOT_FRIEND" type="button" class="btn btn-normal w-auto me-3">Add Friend</button>
 								</c:otherwise>
 							</c:choose>
-							<a href="#" class="btn btn-normal w-25">Detail</a>
+							<a href="#" class="btn btn-normal w-auto">Detail</a>
 						</div>
 
 						<div>
@@ -104,7 +104,7 @@
 								<div class="d-flex px-2">
 									<a href="#" class="me-3"> <img
 										style="width: 45px; height: 45px" class="rounded-circle"
-										src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+										src="${pv.profileImage}">
 									</a>
 									<div class="d-flex flex-column">
 										<a href="#" class="text-decoration-none txt-white fw-bold">
@@ -171,6 +171,7 @@
 		</div>
 	</main>
 	<!-- main part end -->
+
 <c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
 <script type="text/javascript" src="${jquery}"></script>
 <c:url var="friend" value="/resource/ajax/friend.js"></c:url>

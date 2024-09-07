@@ -235,4 +235,10 @@ public class PostModel extends AbstractModel<Post>
 		return false;
 	}
 
+	@Override
+	public <T> long countMany(Class<T> e, long userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

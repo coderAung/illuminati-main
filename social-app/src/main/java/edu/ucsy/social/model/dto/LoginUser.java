@@ -16,6 +16,7 @@ public class LoginUser implements Serializable {
 	private Theme theme;
 
 	private String profileImage;
+	private String coverImage;
 
 	public LoginUser(long id, String email, String name, Role role) {
 		super();
@@ -24,6 +25,14 @@ public class LoginUser implements Serializable {
 		this.name = name;
 		this.role = role;
 		this.theme = Theme.LIGHT;
+	}
+
+	public String getCoverImage() {
+		return coverImage;
+	}
+
+	public void setCoverImage(String coverImage) {
+		this.coverImage = coverImage;
 	}
 
 	public Theme getTheme() {

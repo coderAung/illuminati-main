@@ -17,7 +17,7 @@
 		<jsp:param value="nav-link-active" name="homeActive" />
 	</jsp:include>
 	<!-- nav bar end -->
-	
+
 	<!-- main content start -->
 	<main>
 		<div class="container-fluid row">
@@ -34,7 +34,7 @@
 				<!-- post form start -->
 				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
 				<!-- post form end -->
-				
+
 				<!-- post start -->
 				<!-- real data -->
 				<c:choose>
@@ -49,7 +49,7 @@
 								<div class="d-flex px-2">
 									<a href="#" class="me-3"> <img
 										style="width: 45px; height: 45px" class="rounded-circle"
-										src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp">
+										src="${pv.profileImage}">
 									</a>
 									<div class="d-flex flex-column">
 										<c:choose>
@@ -57,10 +57,12 @@
 												<c:url var="profile" value="/profile"></c:url>
 											</c:when>
 											<c:otherwise>
-												<c:url var="profile" value="/other/profile?userId=${pv.userId}"></c:url>
+												<c:url var="profile"
+													value="/other/profile?userId=${pv.userId}"></c:url>
 											</c:otherwise>
 										</c:choose>
-										<a href="${profile}" class="text-decoration-none txt-white fw-bold">
+										<a href="${profile}"
+											class="text-decoration-none txt-white fw-bold">
 											${pv.userName} </a> <small class="txt-grey">${pv.updatedAt}</small>
 									</div>
 								</div>
@@ -76,25 +78,36 @@
 
 								<!-- Post Images start -->
 								<c:if test="${not empty pv.postImageList}">
-								
 									<c:choose>
-										<c:when test="${pv.postImageList.size() eq 0}">
-										
-										</c:when>
-										
 										<c:when test="${pv.postImageList.size() eq 1}">
 											<div class="text-center post-image-container pointer">
-												<img
-													src="${pv.postImageList[0]}">
+												<img class="rounded mb-2" src="${pv.postImageList[0]}">
 											</div>
 										</c:when>
-
 										<c:when test="${pv.postImageList.size() gt 1}">
-											<div>carousel here</div>
+											<div id="carousel-${pv.id}" class="carousel slide"
+												data-bs-ride="carousel">
+												<div class="carousel-inner rounded">
+													<c:forEach var="pi" items="${pv.postImageList}"
+														varStatus="status">
+														<div class="carousel-item ${status.first ? 'active' : ''}">
+															<img class="d-block w-100 rounded" src="${pi}">
+														</div>
+													</c:forEach>
+												</div>
+												<button class="carousel-control-prev" type="button"
+													data-bs-target="#carousel-${pv.id}" data-bs-slide="prev">
+													<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+													<span class="visually-hidden">Previous</span>
+												</button>
+												<button class="carousel-control-next" type="button"
+													data-bs-target="#carousel-${pv.id}" data-bs-slide="next">
+													<span class="carousel-control-next-icon" aria-hidden="true"></span>
+													<span class="visually-hidden">Next</span>
+												</button>
+											</div>
 										</c:when>
-										
 									</c:choose>
-								
 								</c:if>
 								<!-- Post Images end -->
 
@@ -125,7 +138,12 @@
 	</main>
 	<!-- main content end -->
 
-<c:url var="script" value="/resource/js/script.js"></c:url>
-<script type="text/javascript" src="${script}"></script>
+	<c:url var="script" value="/resource/js/script.js"></c:url>
+	<script type="text/javascript" src="${script}"></script>
+
+	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
+	<script type="text/javascript" src="${jquery}"></script>
+	<c:url var="carousel" value="/resource/js/carousel.js"></c:url>
+	<script type="text/javascript" src="${carousel}"></script>
 </body>
 </html>

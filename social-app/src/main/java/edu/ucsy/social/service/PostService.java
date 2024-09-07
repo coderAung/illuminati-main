@@ -17,6 +17,6 @@ public interface PostService extends Service {
 
 	void deletePost(int postId);
 
-	boolean createPost(PostForm postForm);
+	long createPost(PostForm postForm);
 
 }

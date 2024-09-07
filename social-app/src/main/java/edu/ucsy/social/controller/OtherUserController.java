@@ -70,20 +70,46 @@ public class OtherUserController extends Controller {
 		}
 		// set profile view to request scope
 		req.setAttribute("profileView", profileView);
-		// get 5 friend card view from other user service
-		var friendViews = friendService.getFriendViews(otherUserId, Limit.FRIEND_CARD);
-		// set profile view to request scope
-		req.setAttribute("friendViews", friendViews);
+
+		var friendViews =  friendService.getFriendViews(otherUserId, 5);
+		if(null != friendViews && 0 < friendViews.size()) {
+			
+			for(var fv : friendViews) {
+				
+				if(null == fv.getProfileImage()) {
+					var imagePath = getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE);
+					fv.setProfileImage(imagePath);
+				} else {
+					var imagePath = getImagePath(fv.getProfileImage(), ImageType.PROFILE);
+					fv.setProfileImage(imagePath);
+				}				
+			}
+			var friendCount = friendService.getFriendCount(otherUserId);
+			req.setAttribute("friendCount", friendCount);
+			
+			// set 5 friend cards to request scope
+			req.setAttribute("friendViews", friendViews);
+			
+		}
+		
 		// get 30 post view from other user service
 		var postViews = postService.getPostViews(otherUserId, Limit.POST);
-		
+				
 		for(var pv : postViews) {
 			var postImageList = pv.getPostImageList();
 			if(null != postImageList && 0 < postImageList.size()) {
 				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
 			}
 			pv.setPostImageList(postImageList);
+			
+			var pi = pv.getProfileImage();
+			if(null != pi) {
+				pv.setProfileImage(getImagePath(pi, ImageType.PROFILE));
+			} else {
+				pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			}
 		}
+
 
 		
 		// set profile view to request scope

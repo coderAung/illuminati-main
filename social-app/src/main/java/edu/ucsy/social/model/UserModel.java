@@ -12,6 +12,7 @@ import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.model.entity.CoverImage;
+import edu.ucsy.social.model.entity.Friend;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.User;
@@ -323,7 +324,7 @@ public class UserModel extends AbstractModel<User>
 	}
 
 	private boolean deleteOneCoverImage(long id) {
-		var sql = "delete from cover_images where user_id = ?";
+		var sql = "delete from cover_images where id = ?";
 		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
@@ -337,7 +338,7 @@ public class UserModel extends AbstractModel<User>
 	}
 
 	private boolean deleteOneProfileImage(long id) {
-		var sql = "delete from profile_images where user_id = ?";
+		var sql = "delete from profile_images where id = ?";
 		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, id);
 			var row = stmt.executeUpdate();
@@ -435,6 +436,28 @@ public class UserModel extends AbstractModel<User>
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public <T> long countMany(Class<T> e, long userId) {
+		if(e.equals(Friend.class)) {
+			return countManyFriend(userId);
+		}
+		return 0;
+	}
+
+	private long countManyFriend(long userId) {
+		var sql = "select count(*) as friend_count from friends where user_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("friend_count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
 }

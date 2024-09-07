@@ -6,6 +6,7 @@ import java.util.List;
 
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
+import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.data.Searchable;
 import edu.ucsy.social.data.criteria.Criteria;
@@ -228,6 +229,21 @@ public class FriendServiceImpl implements FriendService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public long getFriendCount(long userId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var friendCount = userModel.getRelational(OneToMany.class).countMany(Friend.class, userId);
+			return friendCount;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return 0;
 	}
 
 }

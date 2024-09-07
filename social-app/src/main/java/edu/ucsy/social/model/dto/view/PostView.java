@@ -15,6 +15,7 @@ public class PostView implements Serializable {
 	private LocalDateTime updatedAt;
 	private long userId;
 	private String userName;
+	private String profileImage;
 	private long commentCount;
 	private long shareCount;
 
@@ -29,6 +30,14 @@ public class PostView implements Serializable {
 		this.userId = userId;
 		this.userName = userName;
 		this.postImageList = postImageList;
+	}
+
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	public long getUserId() {

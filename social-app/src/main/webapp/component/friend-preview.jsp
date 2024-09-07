@@ -5,8 +5,15 @@
 <c:if test="${not empty friendViews}">
 	<div class="bg-card txt-white mb-2 p-3 color-white rounded">
 		<div class="mb-3 d-flex justify-content-between">
-			<span class="fs-5"> Friends <i class="bi bi-dot"></i> <small
-				class="txt-grey fs-6">20 friends</small>
+			<span class="fs-5"> Friends <i class="bi bi-dot"></i> 
+			<c:choose>
+				<c:when test="${1 eq friendCount}">
+					<small class="txt-grey fs-6">${friendCount} friend</small>
+				</c:when>
+				<c:when test="${1 gt friendCount}">
+					<small class="txt-grey fs-6">${friendCount} friends</small>
+				</c:when>
+			</c:choose>
 			</span> <a href="#" class="text-decoration-none btn btn-normal"> <i
 				class="bi bi-search"></i> Find a friend
 			</a>
@@ -17,12 +24,20 @@
 				<div class="col pointer">
 					<div class="rounded text-center friend-card">
 						<img
-							src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNERpqjIW8laIlKLNkwOBewYyPx5bnz7PktmGBfHc63qKPkyzoxeZUX06Ooop0YHi67TI&usqp=CAU"
+							src="${fv.profileImage}"
 							alt="profile" class="img-fluid rounded-top">
 						<div class="fs-6 py-2">${fv.name}</div>
+						
 					</div>
 				</div>
 			</c:forEach>
+			<div class="col d-flex justify-content-center my-auto">
+			<c:url var="friends" value="/profile/friends"></c:url>
+			<a href="${friends}"
+				class="d-flex color-blue flex-column link-hover text-decoration-none align-items-center">
+				<i class="bi bi-arrow-right-circle fs-1"></i> <span>See All</span>
+			</a>
+		</div>
 		</div>
 	</div>
 </c:if>

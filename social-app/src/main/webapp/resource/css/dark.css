@@ -173,17 +173,6 @@
 	color: var(--text);
 }
 
-.btn-normal:active {
-	transform: translateY(0); /* Reset when clicked */
-	box-shadow: none;
-}
-
-.btn-normal:hover {
-	color: var(--text);
-	transform: translateY(-2px); /* Slight lift on hover */
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 .setting-div {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -429,4 +418,8 @@
 .remove-photo-btn {
 	color: var(--app);
 	border: 1px solid var(--app);
+}
+
+.user-info div:hover {
+	background-color: var(--hover);
 }

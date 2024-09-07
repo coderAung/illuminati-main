@@ -19,7 +19,7 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 	public ProfileImage save(ProfileImage pi) {
 		var sql = """
 				insert into profile_images (name, user_id, status, uploaded_at)
-				values(?, ?, ?, ?, ?)
+				values(?, ?, ?, ?)
 				""";
 		try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -128,7 +128,15 @@ public class ProfileImageModel extends AbstractModel<ProfileImage> {
 			if(!pi.name().equals(rs.getString("name"))) {
 				rs.updateString("content", pi.name());
 			}
-			// updateClone?
+			
+			// status update
+			if(!pi.status().name().equals(rs.getString("status"))) {
+				rs.updateLong("status", pi.status().ordinal() + 1);
+			}
+			
+			rs.updateRow();
+			// updateClone
+			return new ProfileImage(pi.id(), pi.name(), pi.userId(), pi.status(), pi.uploadedAt());
 		}
 		
 	} catch (SQLException e) {

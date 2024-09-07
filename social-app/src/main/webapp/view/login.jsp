@@ -12,11 +12,10 @@
 <c:url var="image" value="/img/logo.jpg"></c:url>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Illuminati | Login</title>
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
 <style>

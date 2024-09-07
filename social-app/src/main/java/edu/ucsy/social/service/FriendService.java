@@ -18,4 +18,6 @@ public interface FriendService extends Service {
 
 	FriendStatus checkFriendStatus(long loginUserId, int otherUserId);
 
+	long getFriendCount(long userId);
+
 }

@@ -141,7 +141,7 @@ public class PostController extends Controller {
 		// ask post service to create the post
 		var result = postService.createPost(postForm);
 		
-		if(result) {
+		if(result > 0) {
 			if(null != generatedPostImageNames) {
 				var i = 0;
 				for(var part : parts) {
@@ -149,25 +149,27 @@ public class PostController extends Controller {
 					i ++;
 					Files.copy(part.getInputStream(), path);
 					
-					// for test purpose
-					resp.setContentType("text/html");
-					var writer = resp.getWriter();
-					writer.append("""
-							<div style="display: flex;">
-							""");
-					
-					for(var image : generatedPostImageNames) {
-						var imagePath = getImagePath(image, ImageType.POST);
-						System.out.println(imagePath);
-						writer.append("""
-								<img src="%s" width="100px" style="margin-rigth: 10px"/>
-							""".formatted(imagePath));
-					}
-					
-					writer.append("""
-							</div>
-							""");
+//					// for test purpose
+//					resp.setContentType("text/html");
+//					var writer = resp.getWriter();
+//					writer.append("""
+//							<div style="display: flex;">
+//							""");
+//					
+//					for(var image : generatedPostImageNames) {
+//						var imagePath = getImagePath(image, ImageType.POST);
+//						System.out.println(imagePath);
+//						writer.append("""
+//								<img src="%s" width="100px" style="margin-rigth: 10px"/>
+//							""".formatted(imagePath));
+//					}
+//					
+//					writer.append("""
+//							</div>
+//							""");
 				}
+				redirect(req, resp, "/home");
+
 			}
 		} 
 		// return to the page where the request come
