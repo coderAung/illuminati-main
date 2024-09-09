@@ -365,8 +365,22 @@ public class UserModel extends AbstractModel<User>
 			return posts.stream().map(post -> (T) post).toList();
 		}
 		
+//		if(e.equals(FriendRequest.class)) {
+//			var friendRequests = getManyFriendRequests(id, limit);
+//			return friendRequests.stream().map(fr -> (T) fr).toList();
+//		}
+		
 		return null;
 	}
+//
+//	private List<FriendRequest> getManyFriendRequests(long id, long limit) {
+//		
+//		var sql = """
+//				select 
+//				""";
+//		
+//		return null;
+//	}
 
 	private List<Post> getManyPosts(long id, long limit) {
 		var sql = """

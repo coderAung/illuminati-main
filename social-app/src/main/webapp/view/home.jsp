@@ -57,8 +57,9 @@
 												<c:url var="profile" value="/profile"></c:url>
 											</c:when>
 											<c:otherwise>
-												<c:url var="profile"
-													value="/other/profile?userId=${pv.userId}"></c:url>
+												<c:url var="profile" value="/other/profile">
+													<c:param name="userId" value="${pv.userId}"></c:param>
+												</c:url>
 											</c:otherwise>
 										</c:choose>
 										<a href="${profile}"
@@ -87,7 +88,7 @@
 										<c:when test="${pv.postImageList.size() gt 1}">
 											<div id="carousel-${pv.id}" class="carousel slide"
 												data-bs-ride="carousel">
-												<div class="carousel-inner rounded">
+												<div class="carousel-inner rounded main-bg">
 													<c:forEach var="pi" items="${pv.postImageList}"
 														varStatus="status">
 														<div class="carousel-item ${status.first ? 'active' : ''}">
@@ -97,13 +98,19 @@
 												</div>
 												<button class="carousel-control-prev" type="button"
 													data-bs-target="#carousel-${pv.id}" data-bs-slide="prev">
-													<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-													<span class="visually-hidden">Previous</span>
+													<span
+														class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center"
+														aria-hidden="true"> <i
+														class="fa-solid fa-chevron-left color-app fs-4"></i>
+													</span> <span class="visually-hidden">Previous</span>
 												</button>
 												<button class="carousel-control-next" type="button"
 													data-bs-target="#carousel-${pv.id}" data-bs-slide="next">
-													<span class="carousel-control-next-icon" aria-hidden="true"></span>
-													<span class="visually-hidden">Next</span>
+													<span
+														class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center"
+														aria-hidden="true"> <i
+														class="fa-solid fa-chevron-right color-app fs-4"></i>
+													</span> <span class="visually-hidden">Next</span>
 												</button>
 											</div>
 										</c:when>

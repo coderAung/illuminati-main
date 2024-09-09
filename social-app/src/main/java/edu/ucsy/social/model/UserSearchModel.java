@@ -51,41 +51,9 @@ public class UserSearchModel extends SearchModel<User> {
 	}
 
 	@Override
-	public List<User> search(Criteria c, long limit) {
-		var sql = "select * from users";
-		sql = c.limit(limit).generateStatement(sql);
-		
-		try(var stmt = connection.prepareStatement(sql)) {
-			var values = c.getValues();
-			for(int i = 0; i < values.size(); i ++) {
-				stmt.setObject(i + 1, values.get(i));
-			}
-			var rs = stmt.executeQuery();
-			var list = new ArrayList<User>();
-			
-			while(rs.next()) {
-				var user = userFrom(rs);
-				list.add(user);
-			}
-			
-			return list;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<User> searchLatest(long limit) {
-		var criteria = new Criteria().orderBy("id", Type.DESC);
-		var list = search(criteria, limit);
-		return list;
-	}
-
-	@Override
-	public List<User> searchLatest(Criteria c, long limit) {
+	public List<User> searchLatest(Criteria c) {
 		var criteria = c.orderBy("id", Type.DESC);
-		var list = search(criteria, limit);
+		var list = search(criteria);
 		return list;
 	}
 
@@ -93,6 +61,7 @@ public class UserSearchModel extends SearchModel<User> {
 	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}
+
 	@Override
 	public List<User> search(Criteria c) {
 		var sql = "select * from users";

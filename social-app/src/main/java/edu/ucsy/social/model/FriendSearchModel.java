@@ -86,19 +86,7 @@ public class FriendSearchModel extends SearchModel<Friend> {
 	}
 
 	@Override
-	public List<Friend> search(Criteria c, long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Friend> searchLatest(long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Friend> searchLatest(Criteria c, long limit) {
+	public List<Friend> searchLatest(Criteria c) {
 		// TODO Auto-generated method stub
 		return null;
 	}

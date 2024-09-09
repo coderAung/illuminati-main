@@ -77,7 +77,7 @@ public class FriendServiceImpl implements FriendService {
 
 				var friendUser = userModel.findOne(f.friendId());
 
-				var friendView = new FriendView(f.id(), friendUser.name());
+				var friendView = new FriendView(f.id(), friendUser.id(), friendUser.name());
 
 				var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, friendUser.id());
 

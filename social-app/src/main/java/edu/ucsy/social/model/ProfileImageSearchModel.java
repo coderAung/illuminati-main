@@ -57,20 +57,9 @@ public class ProfileImageSearchModel extends SearchModel<ProfileImage> {
 		this.connection = connection;
 	}
 
-	@Override
-	public List<ProfileImage> search(Criteria c, long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public List<ProfileImage> searchLatest(long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ProfileImage> searchLatest(Criteria c, long limit) {
+	public List<ProfileImage> searchLatest(Criteria c) {
 		// TODO Auto-generated method stub
 		return null;
 	}

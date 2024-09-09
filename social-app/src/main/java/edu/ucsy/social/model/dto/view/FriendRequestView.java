@@ -17,6 +17,11 @@ public class FriendRequestView implements Serializable {
 		this.friendId = friendId;
 	}
 
+	public FriendRequestView(long id, long friendId) {
+		this.id = id;
+		this.friendId = friendId;
+	}
+
 	public long getFriendId() {
 		return friendId;
 	}

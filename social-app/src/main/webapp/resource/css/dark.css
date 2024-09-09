@@ -423,3 +423,18 @@
 .user-info div:hover {
 	background-color: var(--hover);
 }
+
+.carousel-inner img {
+	width: 100%;
+	height: 100%;
+    object-fit: cover; /* Maintain aspect ratio and cover the available space */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    padding: 10px;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease-in-out;
+}

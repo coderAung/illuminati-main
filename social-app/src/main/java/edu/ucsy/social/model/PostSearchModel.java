@@ -63,18 +63,7 @@ public class PostSearchModel extends SearchModel<Post> {
 	}
 
 	@Override
-	public List<Post> search(Criteria c, long limit) {
-		return null;
-	}
-
-	@Override
-	public List<Post> searchLatest(long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Post> searchLatest(Criteria c, long limit) {
+	public List<Post> searchLatest(Criteria c) {
 		// TODO Auto-generated method stub
 		return null;
 	}

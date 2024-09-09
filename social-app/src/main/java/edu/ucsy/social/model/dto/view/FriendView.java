@@ -7,6 +7,7 @@ public class FriendView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
+	private long friendId;
 	private String name;
 	private String profileImage;
 
@@ -34,10 +35,19 @@ public class FriendView implements Serializable {
 		this.profileImage = profileImage;
 	}
 
-	public FriendView(long id, String name) {
+	public FriendView(long id, long friendId, String name) {
 		super();
 		this.id = id;
+		this.friendId = friendId;
 		this.name = name;
+	}
+
+	public long getFriendId() {
+		return friendId;
+	}
+
+	public void setFriendId(long friendId) {
+		this.friendId = friendId;
 	}
 
 }

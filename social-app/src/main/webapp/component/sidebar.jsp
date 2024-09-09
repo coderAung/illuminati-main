@@ -5,7 +5,7 @@
 <c:url var="home" value="/home"></c:url>
 <c:url var="profile" value="/profile"></c:url>
 <c:url var="friends" value="/profile/friends"></c:url>
-<c:url var="friendRequests" value="/friend-requests"></c:url>
+<c:url var="friendRequests" value="/profile/friend-requests"></c:url>
 <c:url var="saved" value="/saved"></c:url>
 <c:url var="notifications" value="/notifications"></c:url>
 <c:url var="setting" value="/setting"></c:url>

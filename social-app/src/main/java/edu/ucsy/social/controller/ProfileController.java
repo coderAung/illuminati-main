@@ -93,6 +93,15 @@ public class ProfileController extends Controller {
 		var userId = getLoginUser(req).getId();
 		// get friend views of login user
 		var friendViews = friendService.getFriendViews(userId, 30);
+		
+		for(var fv : friendViews) {
+			if(null == fv.getProfileImage()) {
+				fv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			} else {
+				fv.setProfileImage(getImagePath(fv.getProfileImage(), ImageType.PROFILE));
+			}
+		}
+		
 		// set friend views request scope
 		req.setAttribute("friendViews", friendViews);
 		

@@ -112,14 +112,38 @@
 										</c:when>
 										
 										<c:when test="${pv.postImageList.size() eq 1}">
-											<div class="text-center post-image-container pointer">
+											<div class="text-center post-image-container pointer rounded">
 												<img
 													src="${pv.postImageList[0]}">
 											</div>
 										</c:when>
 
 										<c:when test="${pv.postImageList.size() gt 1}">
-											<div>carousel here</div>
+											<div id="carousel-${pv.id}" class="carousel slide"
+												data-bs-ride="carousel">
+												<div class="carousel-inner rounded main-bg">
+													<c:forEach var="pi" items="${pv.postImageList}"
+														varStatus="status">
+														<div class="carousel-item ${status.first ? 'active' : ''}">
+															<img class="d-block w-100 rounded" src="${pi}">
+														</div>
+													</c:forEach>
+												</div>
+												<button class="carousel-control-prev" type="button"
+													data-bs-target="#carousel-${pv.id}" data-bs-slide="prev">
+													<span class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center" aria-hidden="true">
+														<i class="fa-solid fa-chevron-left color-app fs-4"></i>
+													</span>
+													<span class="visually-hidden">Previous</span>
+												</button>
+												<button class="carousel-control-next" type="button"
+													data-bs-target="#carousel-${pv.id}" data-bs-slide="next">
+													<span class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center" aria-hidden="true">
+														<i class="fa-solid fa-chevron-right color-app fs-4"></i>
+													</span>
+													<span class="visually-hidden">Next</span>
+												</button>
+											</div>
 										</c:when>
 										
 									</c:choose>

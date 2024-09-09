@@ -55,20 +55,9 @@ public class CoverImageSearchModel extends SearchModel<CoverImage> {
 		this.connection = connection;
 	}
 
-	@Override
-	public List<CoverImage> search(Criteria c, long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public List<CoverImage> searchLatest(long limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CoverImage> searchLatest(Criteria c, long limit) {
+	public List<CoverImage> searchLatest(Criteria c) {
 		// TODO Auto-generated method stub
 		return null;
 	}
