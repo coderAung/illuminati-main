@@ -3,21 +3,25 @@ package edu.ucsy.social.model.dto.view;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import edu.ucsy.social.model.entity.Comment;
+
 public class CommentView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private long id;
 	private String content;
+	private long userId;
 	private String userName;
-	private LocalDateTime updatedAt;
+	private String profileImage;
+	private LocalDateTime createdAt;
 
-	public CommentView(long id, String content, String userName, LocalDateTime updatedAt) {
-		super();
-		this.id = id;
-		this.content = content;
-		this.userName = userName;
-		this.updatedAt = updatedAt;
+	public CommentView(Comment comment) {
+		this.id = comment.id();
+		this.content = comment.content();
+		this.userId = comment.userId();
+		this.userName = comment.userName();
+		this.createdAt = comment.updatedAt();
 	}
 
 	public long getId() {
@@ -44,12 +48,28 @@ public class CommentView implements Serializable {
 		this.userName = userName;
 	}
 
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 }

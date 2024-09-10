@@ -196,24 +196,13 @@ public class CommentApi extends Api {
 	@SuppressWarnings("unused")
 	private void commentTest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("application/json");
-		// test comment
-		var c1 = new CommentView(1, "some comment", "ywa", LocalDateTime.now());
-		var c2 = new CommentView(2, "some comment", "ywa", LocalDateTime.now());
-		var c3 = new CommentView(3, "some comment", "ywa", LocalDateTime.now());
-		var c4 = new CommentView(4, "some comment", "ywa", LocalDateTime.now());
-		var c5 = new CommentView(5, "some comment", "ywa", LocalDateTime.now());
-		
-		var writer = resp.getWriter();
-		writer.write(JsonTool.jsonFromList(List.of(c1, c2, c3, c4, c5)));
 	}
 	
 	@SuppressWarnings("unused")
 	private void oneCommentTest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("application/json");
 		// test comment
-		var c1 = new CommentView(1, "some comment", "ywa", LocalDateTime.now());
 		var writer = resp.getWriter();
-		writer.write(JsonTool.jsonFromMap(Map.of("comment", c1)));
 	}
 
 }

@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import edu.ucsy.social.model.dto.form.PostForm;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.DefaultPicture;
 import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -91,6 +92,31 @@ public class PostController extends Controller {
 		// set comment views
 		// comment views are in postDetailView
 		var postDetailView = postService.getPostDetailView(postId);
+		
+		var postView = postDetailView.getPostView();
+		if(null != postView.getProfileImage()) {
+			postView.setProfileImage(getImagePath(postView.getProfileImage(), ImageType.PROFILE));
+		} else {
+			postView.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+		}
+		
+		var postImages = postView.getPostImageList();
+		if(null != postImages && postImages.size() > 0) {
+			postImages = postImages.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+		}
+		
+		postView.setPostImageList(postImages);
+		
+		var commentViews = postDetailView.getCommentViews();
+		
+		for(var cv : commentViews) {
+			if(null != cv.getProfileImage()) {
+				cv.setProfileImage(getImagePath(cv.getProfileImage(), ImageType.PROFILE));
+			} else {
+				cv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			}
+		}
+		
 		
 		// set post detail view to request scope
 		req.setAttribute("postDetailView", postDetailView);

@@ -1,15 +1,16 @@
 @charset "UTF-8";
 
 :root {
-	--mainBg: #000000;
-	--card: #161618;
-	--text: #ffffff;
-	--secondary: #818181;
-	--card2: #212124;
-	--app: #0088cc;
-	--hover: #282828;
-	--hover2: #212124;
-	--danger: #950606;
+	--mainBg: #e4e5f1;
+	--card: #fafafa;
+	--text: #000000;
+	--secondary: #9394a5;
+	--card2: #d2d3db;
+	--app: #902bf5;
+	--hover: #d2d3db;
+	--hover2: #d2d3db;
+	--danger: #ce0018;
+	--text-reverse: #ffffff;
 }
 
 .txt-app {
@@ -17,6 +18,10 @@
 }
 
 .txt-text {
+	color: var(--text);
+}
+
+.navbar {
 	color: var(--text);
 }
 
@@ -35,6 +40,7 @@
 .bg-card-2 {
 	background-color: var(--card2);
 }
+
 
 .txt-white {
 	color: var(--text);
@@ -77,7 +83,7 @@
 	width: 100%; /* Underline shows on hover and active */
 }
 
-.nav-link.nav-link-active {
+.nav-link-active {
 	color: var(--text); /* Active link color */
 }
 
@@ -118,6 +124,7 @@
 	width: 4px;
 	background-color: var(--app); /* purple vertical line */
 }
+
 .menu-item:last-child {
 	border-bottom: none; /* Removes border from the last item */
 }
@@ -166,12 +173,22 @@
 
 .post-image-container {
 	height: 400px; /* Adjust the height to fit your design */
-	overflow: hidden;
 }
 
 .btn-normal, .btn-normal:hover {
 	background-color: var(--hover2);
 	color: var(--text);
+}
+
+.btn-normal:active {
+	transform: translateY(0); /* Reset when clicked */
+	box-shadow: none;
+}
+
+.btn-normal:hover {
+	color: var(--text);
+	transform: translateY(-2px); /* Slight lift on hover */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .setting-div {
@@ -194,7 +211,7 @@
 .logout-btn, .logout-btn:hover {
 	background-color: var(--danger);
 	border: 1px solid var(--danger);
-	color: var(--text);
+	color: var(--text-reverse);
 }
 
 .txt-red {
@@ -261,7 +278,6 @@
 	background: transparent;
 }
 
-
 .left-side {
 	position: sticky;
 	top: 60px; /* Distance from the top to avoid the navbar */
@@ -288,6 +304,7 @@
 	transform: scale(1.05); /* Grows the card slightly on hover */
 }
 
+
 .link-hover:hover {
 	transform: scale(1.1); /* Slightly increase the size */
 	transition: transform 0.3s ease; /* Smooth transition */
@@ -308,16 +325,12 @@
 }
 
 .btn-deep, .btn-deep:hover {
-	border: 1px solid var(--text);
-	color: var(--text);
-}
-
-.btn-deep:hover {
-	background-color: var(--hover);
+	background-color: var(--app);
+	color: var(--card);
 }
 
 .bg-card-normal {
-	background-color: var(--card2);
+	border: 1px solid var(--mainBg);
 }
 
 .profile-photo {
@@ -335,7 +348,7 @@
 
 .btn-login {
 	background-color: var(--app);
-	color: var(--text);
+	color: var(--text-reverse);
 	border: none;
 	outline: none;
 }
@@ -412,7 +425,7 @@
 .btn-app, .btn-app:hover {
 	outline: none;
 	background-color: var(--app);
-	color: var(--text);
+	color: var(--text-reverse);
 	border: none;
 }
 
@@ -425,13 +438,6 @@
 	background-color: var(--hover);
 }
 
-.carousel-inner {
-    max-height: 400px; /* Limit image height to fit in the layout */
-    min-height: 400px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
 
 .carousel-inner img {
 	width: 100%;
@@ -446,4 +452,34 @@
 
 .carousel-item {
     transition: transform 0.5s ease-in-out;
+}
+
+
+.search-bar textarea {
+	background: transparent;
+	border: none;
+	outline: none;
+}
+
+.search-bar textarea::placeholder {
+	color: var(--secondary);
+}
+
+
+.comment-form {
+	position: fixed; /* Stick it to the bottom */
+	bottom: 0; /* Align it to the bottom of the viewport */
+	left: 50%; /* Center horizontally */
+	transform: translateX(-50%) translateY(100%); /* Initially hidden */
+	transition: transform 0.3s ease; /* Smooth transition effect */
+	z-index: 1000; /* Ensure it stays above other content */
+	width: 60%; /* Width of the comment form */
+	display: flex;
+	justify-content: center;
+	padding: 20px 0;
+	/* Subtle shadow for better visibility */
+}
+
+.comment-form.show {
+	transform: translateX(-50%) translateY(0); /* Slide up into view */
 }

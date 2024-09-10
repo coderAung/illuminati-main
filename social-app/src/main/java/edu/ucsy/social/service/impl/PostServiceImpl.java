@@ -54,7 +54,6 @@ public class PostServiceImpl implements PostService {
 		userModel.setConnection(connection);
 		postImageModel.setConnection(connection);
 		commentModel.setConnection(connection);
-		
 		postSearchModel.setConnection(connection);
 	}
 
@@ -64,7 +63,6 @@ public class PostServiceImpl implements PostService {
 		userModel.setConnection(null);
 		postImageModel.setConnection(null);
 		commentModel.setConnection(null);
-		
 		postSearchModel.setConnection(null);
 	}
 
@@ -184,34 +182,58 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostDetailView getPostDetailView(int postId) {
-		Post post = postModel.findOne(postId);
-		if (post == null) {
-			return null;
-		}
-
-		List<PostImage> images = postImageModel.getRelational(OneToMany.class).getMany(PostImage.class, postId);
-		List<String> imageNames = new ArrayList<>();
-		for (PostImage image : images) {
-			imageNames.add(image.name());
-		}
-
-		PostView postView = new PostView(post.id(), post.content(), post.updatedAt(), post.userId(), post.userName(), imageNames);
-
-		List<Comment> comments = commentModel.getAll();
-		List<CommentView> commentViews = new ArrayList<>();
-		for (Comment comment : comments) {
-			if (comment.postId() == postId) { // Ensure the comment is for the correct post
-				CommentView commentView = new CommentView(comment.id(), comment.content(), comment.userName(),
-						comment.createdAt());
-				commentViews.add(commentView);
+		
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var post = postModel.findOne(postId);
+			if (post == null) {
+				return null;
 			}
-		}
-		// Create the PostDetailView object
-		PostDetailView postDetailView = new PostDetailView();
-		postDetailView.setPostView(postView);
-		postDetailView.setCommentViews(commentViews);
+			
+			var postDetailView = new PostDetailView();
+			var postView = new PostView(post);
+			
+			var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, postId);
 
-		return postDetailView;
+			if(null != postImages) {
+				postView.setPostImageList(postImages.stream().map(pi -> pi.name()).toList());;
+			}
+			
+			var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, post.userId());
+			if(null != profileImage) {
+				postView.setProfileImage(profileImage.name());
+			}
+			
+			postDetailView.setPostView(postView);
+			
+			
+			var comments = postModel.getRelational(OneToMany.class).getMany(Comment.class, postId, 30);
+			List<CommentView> commentViewList = null;
+			if(null != comments) {
+				commentViewList = comments.stream().map(CommentView::new).toList();
+			}
+			
+			if(null != commentViewList) {
+				commentViewList.forEach(cv -> {
+					var userProfileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, cv.getUserId());
+					if(null != userProfileImage) {
+						cv.setProfileImage(userProfileImage.name());
+					}
+				
+				});
+			}
+			
+			postDetailView.setCommentViews(commentViewList);
+			
+			return postDetailView;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
 	}
 
 	@Override

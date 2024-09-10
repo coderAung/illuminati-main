@@ -64,7 +64,13 @@
 										</c:choose>
 										<a href="${profile}"
 											class="text-decoration-none txt-white fw-bold">
-											${pv.userName} </a> <small class="txt-grey">${pv.updatedAt}</small>
+											${pv.userName} </a>
+											<c:url var="post" value="/post">
+												<c:param name="postId" value="${pv.id}"></c:param>
+											</c:url>
+											<a href="${post}" class="text-decoration-none">
+												<small class="txt-grey pointer">${pv.updatedAt}</small>
+											</a>
 									</div>
 								</div>
 								<!-- user info end -->
@@ -88,7 +94,7 @@
 										<c:when test="${pv.postImageList.size() gt 1}">
 											<div id="carousel-${pv.id}" class="carousel slide"
 												data-bs-ride="carousel">
-												<div class="carousel-inner rounded main-bg">
+												<div class="carousel-inner post-image-container rounded main-bg">
 													<c:forEach var="pi" items="${pv.postImageList}"
 														varStatus="status">
 														<div class="carousel-item ${status.first ? 'active' : ''}">

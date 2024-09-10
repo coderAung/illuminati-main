@@ -165,7 +165,9 @@
 }
 
 .post-image-container {
-	height: 400px; /* Adjust the height to fit your design */
+	min-height: 400px; /* Adjust the height to fit your design */
+	max-height: 400px;
+	overflow: hidden;
 }
 
 .btn-normal, .btn-normal:hover {
@@ -408,7 +410,7 @@
 	font-size: 1.3rem;
 }
 
-.btn-app {
+.btn-app, .btn-app:hover {
 	outline: none;
 	background-color: var(--app);
 	color: var(--text);
@@ -424,6 +426,14 @@
 	background-color: var(--hover);
 }
 
+.carousel-inner {
+    max-height: 400px; /* Limit image height to fit in the layout */
+    min-height: 400px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
 .carousel-inner img {
 	width: 100%;
 	height: 100%;
@@ -437,4 +447,33 @@
 
 .carousel-item {
     transition: transform 0.5s ease-in-out;
+}
+
+.search-bar textarea {
+	background: transparent;
+	border: none;
+	outline: none;
+}
+
+.search-bar textarea::placeholder {
+	color: var(--secondary);
+}
+
+
+.comment-form {
+	position: fixed; /* Stick it to the bottom */
+	bottom: 0; /* Align it to the bottom of the viewport */
+	left: 50%; /* Center horizontally */
+	transform: translateX(-50%) translateY(100%); /* Initially hidden */
+	transition: transform 0.3s ease; /* Smooth transition effect */
+	z-index: 1000; /* Ensure it stays above other content */
+	width: 60%; /* Width of the comment form */
+	display: flex;
+	justify-content: center;
+	padding: 20px 0;
+	/* Subtle shadow for better visibility */
+}
+
+.comment-form.show {
+	transform: translateX(-50%) translateY(0); /* Slide up into view */
 }

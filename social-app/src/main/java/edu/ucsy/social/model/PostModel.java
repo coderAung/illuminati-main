@@ -10,6 +10,7 @@ import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.OneToMany;
+import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.utils.StringTool;
@@ -204,10 +205,61 @@ public class PostModel extends AbstractModel<Post>
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> getMany(Class<T> e, long id, long limit) {
+		if(e.equals(Comment.class)) {
+			var comments = getManyComments(id, limit);
+			if(null != comments) {
+				return comments.stream().map(c -> (T) c).toList();
+			}
+		}
 		return null;
 	}
+
+	private List<Comment> getManyComments(long id, long limit) {
+		
+		var sql = """
+				select c.* , u.name as user_name 
+				from comments as c 
+				join users as u on c.user_id = u.id
+				where c.post_id = ?
+				order by c.created_at desc
+				limit ?
+				""";
+
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			stmt.setLong(2, limit);
+			
+			var rs = stmt.executeQuery();
+			List<Comment> comments = new ArrayList<>();
+			while(rs.next()) {
+				var comment = commentFrom(rs);
+				comments.add(comment);
+			}
+			
+			return comments;
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private Comment commentFrom(ResultSet rs) throws SQLException {
+		var comment = new Comment(
+				rs.getLong("id"),
+				rs.getString("content"), 
+				rs.getTimestamp("created_at").toLocalDateTime(),
+				rs.getTimestamp("updated_at").toLocalDateTime(),
+				rs.getLong("user_id"),
+				rs.getString("name"),
+				rs.getLong("post_id")
+				);
+		return comment;
+	}
+
 
 	private List<PostImage> getManyPostImages(long id) {
 		var sql = """

@@ -451,3 +451,32 @@
 .carousel-item {
     transition: transform 0.5s ease-in-out;
 }
+
+.search-bar textarea {
+	background: transparent;
+	border: none;
+	outline: none;
+}
+
+.search-bar textarea::placeholder {
+	color: var(--secondary);
+}
+
+
+.comment-form {
+	position: fixed; /* Stick it to the bottom */
+	bottom: 0; /* Align it to the bottom of the viewport */
+	left: 50%; /* Center horizontally */
+	transform: translateX(-50%) translateY(100%); /* Initially hidden */
+	transition: transform 0.3s ease; /* Smooth transition effect */
+	z-index: 1000; /* Ensure it stays above other content */
+	width: 60%; /* Width of the comment form */
+	display: flex;
+	justify-content: center;
+	padding: 20px 0;
+	/* Subtle shadow for better visibility */
+}
+
+.comment-form.show {
+	transform: translateX(-50%) translateY(0); /* Slide up into view */
+}

@@ -78,7 +78,7 @@
 					<c:otherwise>
 
 						<div class="mb-3 d-flex justify-content-between">
-							<span class="txt-grey">No Friend Requests</span>
+							<span class="txt-grey">No Friend Request</span>
 						</div>
 						<div
 							class="text-center my-auto">

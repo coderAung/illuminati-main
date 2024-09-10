@@ -34,10 +34,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	private CommentView convertToView(Comment comment) {
-		return new CommentView(comment.id(), 
-				comment.content(), 
-				comment.userName(), 
-				comment.updatedAt());
+		return new CommentView(comment);
 	}
 
 	@Override
