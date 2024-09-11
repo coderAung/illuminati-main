@@ -182,17 +182,6 @@
 	color: var(--text);
 }
 
-.btn-normal:active {
-	transform: translateY(0); /* Reset when clicked */
-	box-shadow: none;
-}
-
-.btn-normal:hover {
-	color: var(--text);
-	transform: translateY(-2px); /* Slight lift on hover */
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 .setting-div {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -485,3 +474,30 @@
 .comment-form.show {
 	transform: translateX(-50%) translateY(0); /* Slide up into view */
 }
+
+.control-panel {
+	z-index: 1050;
+}
+
+.control-panel div:hover {
+	border-radius: 5px;
+	background-color: var(--hover);
+}
+
+.carousel-inner {
+	z-index: 1000;
+}
+
+
+.control-panel {
+  transform-origin: top right; /* Start transformation from top-right corner */
+  transform: scale(0); /* Initially, the panel is fully shrunk */
+  opacity: 0; /* Initially, the panel is invisible */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transition effect */
+}
+
+.control-panel.open {
+  transform: scale(1); /* Grow to its full size */
+  opacity: 1; /* Fully visible */
+}
+

@@ -87,7 +87,7 @@
 								<c:if test="${not empty pv.postImageList}">
 									<c:choose>
 										<c:when test="${pv.postImageList.size() eq 1}">
-											<div class="text-center post-image-container pointer">
+											<div class="text-center post-image-container pointer rounded">
 												<img class="rounded mb-2" src="${pv.postImageList[0]}">
 											</div>
 										</c:when>
@@ -127,7 +127,7 @@
 
 								<!-- comment and share section -->
 								<div class=" d-flex align-items-center pt-1 text-center">
-									<a
+									<a href="${post}#comments"
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 										Comment <i class="bi bi-dot"></i> <c:choose>
 											<c:when test="${pv.commentCount gt 0}">

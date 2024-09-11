@@ -41,10 +41,27 @@
 				</c:if>
 
 				<div
-					class="post-content bg-card txt-text p-2 rounded mb-5 post-card">
-					<span class="float-end pointer"> <i
+					class="post-content bg-card position-relative txt-text p-2 rounded mb-5 post-card">
+					<span class="float-end pointer" id="control-btn"> <i
 						class="bi bi-three-dots-vertical"></i>
 					</span>
+					
+					<div class="bg-card shadow w-25 px-2 py-1 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3"
+					>
+						<div id="save-btn" postId="${pv.id}" class="border-bottom px-2 py-2 pointer">
+							<span class="txt-text">Save</span>
+						</div>
+						<div id="share-btn" postId="${pv.id}" class="border-bottom px-2 py-2 pointer">
+							<span class="txt-text">Share</span>
+						</div>
+						<div class="border-bottom px-2 py-2 pointer">
+							<a href="#" class="text-decoration-none">Edit</a>
+						</div>
+						<div class="px-2 py-2 pointer">
+							<a href="#" class="text-decoration-none">Delete</a>
+						</div>
+					</div>
+					
 					<!-- user info start -->
 					<div class="d-flex px-2">
 						<a href="#" class="me-3"> <img
@@ -228,5 +245,9 @@
 	<!-- JavaScript for Scroll Effect -->
 	<c:url var="commentForm" value="/resource/js/comment-form.js"></c:url>
 	<script type="text/javascript" src="${commentForm}"></script>
+
+	<c:url var="controlPanelDisplay" value="/resource/js/control-panel-display.js"></c:url>
+	<script type="text/javascript" src="${controlPanelDisplay}"></script>
+
 </body>
 </html>

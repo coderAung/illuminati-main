@@ -49,6 +49,7 @@
 							</div>
 						</div>
 						<c:url var="friendUrl" value="/api/friend"></c:url>
+						<c:url var="friendRequestUrl" value="/api/friend-request"></c:url>
 						<c:forEach var="frv" items="${friendRequestViews}">
 							<div
 								class="mb-3 rounded d-flex justify-content-between align-items-center px-3 py-2 txt-text bg-card-normal">
@@ -57,8 +58,13 @@
 										<img src="${frv.friendProfileImage}">
 									</div>
 									<div class="ms-3 d-flex flex-column">
+									
+										<c:url var="otherProfile" value="/other/profile">
+											<c:param name="userId" value="${frv.friendId}"></c:param>
+										</c:url>
+
 										<a class="text-decoration-none pointer txt-text fw-bold"
-											href="#">${frv.friendName}</a> <small class="txt-grey">3
+											href="${otherProfile}">${frv.friendName}</a> <small class="txt-grey">3
 											mutual friends</small>
 									</div>
 								</div>
@@ -67,7 +73,7 @@
 									<button type="button" url="${friendUrl}"
 										otherUserId="${frv.friendId}"
 										class="btn btn-deep me-3 confirm-friend-request">Confirm</button>
-									<button type="button" url="${friendUrl}"
+									<button type="button" url="${friendRequestUrl}"
 										otherUserId="${frv.friendId}"
 										class="btn logout-btn delete-friend-request">Delete</button>
 								</div>

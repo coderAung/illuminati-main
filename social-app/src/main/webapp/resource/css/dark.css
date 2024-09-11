@@ -477,3 +477,29 @@
 .comment-form.show {
 	transform: translateX(-50%) translateY(0); /* Slide up into view */
 }
+
+.control-panel {
+	background-color: var(--card2) !important;
+	z-index: 1050;
+}
+
+.control-panel div:hover {
+	background-color: var(--hover);
+}
+
+.carousel-inner {
+	z-index: 1000;
+}
+
+
+.control-panel {
+  transform-origin: top right; /* Start transformation from top-right corner */
+  transform: scale(0); /* Initially, the panel is fully shrunk */
+  opacity: 0; /* Initially, the panel is invisible */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transition effect */
+}
+
+.control-panel.open {
+  transform: scale(1); /* Grow to its full size */
+  opacity: 1; /* Fully visible */
+}

@@ -19,9 +19,31 @@ $("document").ready(() => {
 				el.addEventListener("click", () => {
 					console.log("delete friend")
 					console.log(`${el.getAttribute("url")}/delete`)
+
+					const url = el.getAttribute("url").concat("/delete")
+					const otherUserId = el.getAttribute("otherUserId")
+					deleteFriendRequest(el, url, otherUserId)
 				})
 			})
 })
+
+function deleteFriendRequest(el, url, otherUserId) {
+	console.log("deleting friend request")
+	$.post(url,
+		{
+			"requestBy": otherUserId
+		},
+		(data) => {
+			if (data.result === "success") {
+				if(el instanceof HTMLElement) {
+					el.previousElementSibling.remove()
+					el.remove()
+				}
+			}
+		},
+		"json")
+
+}
 
 function confrimFriendRequest(el, url, otherUserId) {
 	console.log("accepting friend request")

@@ -49,6 +49,7 @@ public class FriendRequestApi extends Api {
 			break;
 		case FRIEND_REQUEST_CANCEL:
 			cancelFriendRequest(req, resp);
+			break;
 		case FRIEND_REQUEST_DELETE:
 			deleteFriendRequest(req, resp);
 			break;
