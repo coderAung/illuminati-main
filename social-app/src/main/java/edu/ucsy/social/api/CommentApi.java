@@ -1,16 +1,16 @@
 package edu.ucsy.social.api;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.controller.Controller.ImageType;
 import edu.ucsy.social.model.dto.form.CommentForm;
-import edu.ucsy.social.model.dto.view.CommentView;
 import edu.ucsy.social.service.CommentService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.DefaultPicture;
 import edu.ucsy.social.utils.JsonTool;
 import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
@@ -126,17 +126,18 @@ public class CommentApi extends Api {
 		// get form data from request parameter
 		// postId, userId, commentContent
 		if(StringTool.isEmpty(req.getParameter("postId")) ||
-				StringTool.isEmpty(req.getParameter("userId")) ||
-				StringTool.isEmpty(req.getParameter("comment"))) {
+				StringTool.isEmpty(req.getParameter("commentContent"))) {
 			// fail
 		}
 		
 		var postId = Integer.parseInt(req.getParameter("postId"));
-		var userId = Integer.parseInt(req.getParameter("userId"));
-		var commentContent = req.getParameter("comment");
+		var loginUser = getLoginUser(req);
+		var userId = loginUser.getId();
+		var userName = loginUser.getName();
+		var commentContent = req.getParameter("commentContent");
 
 		// create comment form object
-		var commentForm = new CommentForm(postId, userId, commentContent);
+		var commentForm = new CommentForm(postId, userId, userName, commentContent);
 		// ask comment service to create comment using above form
 		var commentView = commentService.updateComment(commentForm);
 
@@ -169,25 +170,38 @@ public class CommentApi extends Api {
 		// get form data from request parameter
 		// postId, userId, commentContent
 		if(StringTool.isEmpty(req.getParameter("postId")) ||
-				StringTool.isEmpty(req.getParameter("userId")) ||
-				StringTool.isEmpty(req.getParameter("comment"))) {
+				StringTool.isEmpty(req.getParameter("commentContent"))) {
 			// fail
 		}
 		
+		var loginUser = getLoginUser(req);
+		
 		var postId = Integer.parseInt(req.getParameter("postId"));
-		var userId = Integer.parseInt(req.getParameter("userId"));
-		var commentContent = req.getParameter("comment");
+		var userId = loginUser.getId();
+		var userName = loginUser.getName();
+		var commentContent = req.getParameter("commentContent");
 
 		// create comment form object
-		var commentForm = new CommentForm(postId, userId, commentContent);
+		var commentForm = new CommentForm(postId, userId, userName, commentContent);
 		// ask comment service to create comment using above form
 		var commentView = commentService.createComment(commentForm);
 
 		// respond comment view of the created comment as json
 		resp.setContentType("application/json");
 		if(null != commentView) {
+			
+			if(null != commentView.getProfileImage()) {
+				commentView.setProfileImage(getImagePath(commentView.getProfileImage(), ImageType.PROFILE));
+			} else {
+				commentView.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+			}
+			
 			var writer = resp.getWriter();
-			writer.write(JsonTool.jsonFromSingleObject(commentView));
+			var data = JsonTool.jsonFromMap(Map.of(
+					"result", "success",
+					"commentView", commentView
+					));
+			writer.write(data);
 			writer.flush();
 		}
 		

@@ -90,6 +90,9 @@ public class PostServiceImpl implements PostService {
 					postView.setProfileImage(profileImage.name());
 				}
 				
+				var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, post.id());
+				postView.setCommentCount(commentCount);
+				
 				postViews.add(postView);
 			}
 			return postViews;
@@ -132,6 +135,9 @@ public class PostServiceImpl implements PostService {
 					if(null != profileImage) {
 						pv.setProfileImage(profileImage.name());
 					}
+					var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, pv.getId());
+					pv.setCommentCount(commentCount);
+
 				}
 				
 				return postViews;

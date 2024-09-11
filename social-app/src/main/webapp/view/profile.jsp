@@ -39,21 +39,19 @@
 					<!-- Cover Image -->
 
 					<div class="cover-img rounded-top pointer w-100 p-1">
-						<img alt="" class="rounded-top"
-							src="${loginUser.coverImage}">
+						<img alt="" class="rounded-top" src="${loginUser.coverImage}">
 					</div>
 
 					<div class="profile-img position-absolute pointer">
-						<img alt=""
-							src="${loginUser.profileImage}">
+						<img alt="" src="${loginUser.profileImage}">
 					</div>
 
 					<!-- Profile Information -->
 					<div class="px-3 pb-3 mt-5">
 						<div class="w-50 d-flex float-end justify-content-end">
 							<c:url var="profileDetail" value="/profile/detail"></c:url>
-							<a href="${profileDetail}" class="btn btn-normal w-auto me-3">Detail</a> <a
-								href="#" class="btn w-auto btn-normal">Edit</a>
+							<a href="${profileDetail}" class="btn btn-normal w-auto me-3">Detail</a>
+							<a href="#" class="btn w-auto btn-normal">Edit</a>
 						</div>
 
 						<div>
@@ -90,7 +88,14 @@
 									</a>
 									<div class="d-flex flex-column">
 										<a href="#" class="text-decoration-none txt-white fw-bold">
-											${pv.userName} </a> <small class="txt-grey">${pv.updatedAt}</small>
+											${pv.userName} </a>
+										<c:url var="post" value="/post">
+											<c:param name="postId" value="${pv.id}"></c:param>
+										</c:url>
+										<a href="${post}" class="text-decoration-none"> <small
+											class="txt-grey pointer">${pv.updatedAt}</small>
+										</a>
+
 									</div>
 								</div>
 								<!-- user info end -->
@@ -105,23 +110,25 @@
 
 								<!-- Post Images start -->
 								<c:if test="${not empty pv.postImageList}">
-								
+
 									<c:choose>
 										<c:when test="${pv.postImageList.size() eq 0}">
-										
+
 										</c:when>
-										
+
 										<c:when test="${pv.postImageList.size() eq 1}">
-											<div class="text-center post-image-container pointer rounded">
-												<img
-													src="${pv.postImageList[0]}">
+											<div class="post-image-container pointer rounded">
+												<div class="inner-image-container rounded">
+													<img src="${pv.postImageList[0]}">
+												</div>
 											</div>
 										</c:when>
 
 										<c:when test="${pv.postImageList.size() gt 1}">
 											<div id="carousel-${pv.id}" class="carousel slide"
 												data-bs-ride="carousel">
-												<div class="carousel-inner rounded main-bg">
+												<div
+													class="carousel-inner post-image-container rounded main-bg">
 													<c:forEach var="pi" items="${pv.postImageList}"
 														varStatus="status">
 														<div class="carousel-item ${status.first ? 'active' : ''}">
@@ -131,32 +138,42 @@
 												</div>
 												<button class="carousel-control-prev" type="button"
 													data-bs-target="#carousel-${pv.id}" data-bs-slide="prev">
-													<span class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center" aria-hidden="true">
-														<i class="fa-solid fa-chevron-left color-app fs-4"></i>
-													</span>
-													<span class="visually-hidden">Previous</span>
+													<span
+														class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center"
+														aria-hidden="true"> <i
+														class="fa-solid fa-chevron-left color-app fs-4"></i>
+													</span> <span class="visually-hidden">Previous</span>
 												</button>
 												<button class="carousel-control-next" type="button"
 													data-bs-target="#carousel-${pv.id}" data-bs-slide="next">
-													<span class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center" aria-hidden="true">
-														<i class="fa-solid fa-chevron-right color-app fs-4"></i>
-													</span>
-													<span class="visually-hidden">Next</span>
+													<span
+														class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center"
+														aria-hidden="true"> <i
+														class="fa-solid fa-chevron-right color-app fs-4"></i>
+													</span> <span class="visually-hidden">Next</span>
 												</button>
 											</div>
 										</c:when>
-										
+
 									</c:choose>
-								
+
 								</c:if>
 								<!-- Post Images end -->
 
 								<!-- comment and share section -->
 								<div class=" d-flex align-items-center pt-1 text-center">
-									<a
+
+									<a href="${post}#comments"
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-										Comment <i class="bi bi-dot"></i> <small class="txt-grey">20
-											comments</small>
+										Comment <i class="bi bi-dot"></i>
+										<c:choose>
+											<c:when test="${pv.commentCount gt 0}">
+												<small class="txt-grey">${pv.commentCount} comments</small>
+											</c:when>
+											<c:otherwise>
+												<small class="txt-grey">${pv.commentCount} comment</small>
+											</c:otherwise>
+										</c:choose>
 									</a> <span class="mx-2">|</span> <a
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 										Share <i class="bi bi-dot"></i> <small class="txt-grey">20
@@ -177,7 +194,7 @@
 		</div>
 	</main>
 	<!-- main part end -->
-<c:url var="script" value="/resource/js/script.js"></c:url>
-<script type="text/javascript" src="${script}"></script>
+	<c:url var="script" value="/resource/js/script.js"></c:url>
+	<script type="text/javascript" src="${script}"></script>
 </body>
 </html>

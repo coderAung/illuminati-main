@@ -171,7 +171,9 @@
 }
 
 .post-image-container {
-	height: 400px; /* Adjust the height to fit your design */
+	min-height: 400px; /* Adjust the height to fit your design */
+	max-height: 400px;
+	overflow: hidden;
 }
 
 .btn-normal, .btn-normal:hover {

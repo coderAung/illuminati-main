@@ -65,12 +65,12 @@
 										<a href="${profile}"
 											class="text-decoration-none txt-white fw-bold">
 											${pv.userName} </a>
-											<c:url var="post" value="/post">
-												<c:param name="postId" value="${pv.id}"></c:param>
-											</c:url>
-											<a href="${post}" class="text-decoration-none">
-												<small class="txt-grey pointer">${pv.updatedAt}</small>
-											</a>
+										<c:url var="post" value="/post">
+											<c:param name="postId" value="${pv.id}"></c:param>
+										</c:url>
+										<a href="${post}" class="text-decoration-none"> <small
+											class="txt-grey pointer">${pv.updatedAt}</small>
+										</a>
 									</div>
 								</div>
 								<!-- user info end -->
@@ -94,7 +94,8 @@
 										<c:when test="${pv.postImageList.size() gt 1}">
 											<div id="carousel-${pv.id}" class="carousel slide"
 												data-bs-ride="carousel">
-												<div class="carousel-inner post-image-container rounded main-bg">
+												<div
+													class="carousel-inner post-image-container rounded main-bg">
 													<c:forEach var="pi" items="${pv.postImageList}"
 														varStatus="status">
 														<div class="carousel-item ${status.first ? 'active' : ''}">
@@ -128,8 +129,14 @@
 								<div class=" d-flex align-items-center pt-1 text-center">
 									<a
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-										Comment <i class="bi bi-dot"></i> <small class="txt-grey">20
-											comments</small>
+										Comment <i class="bi bi-dot"></i> <c:choose>
+											<c:when test="${pv.commentCount gt 0}">
+												<small class="txt-grey">${pv.commentCount} comments</small>
+											</c:when>
+											<c:otherwise>
+												<small class="txt-grey">${pv.commentCount} comment</small>
+											</c:otherwise>
+										</c:choose>
 									</a> <span class="mx-2">|</span> <a
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 										Share <i class="bi bi-dot"></i> <small class="txt-grey">20

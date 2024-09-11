@@ -8,12 +8,14 @@ public class CommentForm implements Serializable {
 
 	private long postId;
 	private long userId;
+	private String userName;
 	private String commentContent;
 
-	public CommentForm(long postId, long userId, String commentContent) {
+	public CommentForm(long postId, long userId, String userName, String commentContent) {
 		super();
 		this.postId = postId;
 		this.userId = userId;
+		this.userName = userName;
 		this.commentContent = commentContent;
 	}
 
@@ -39,5 +41,13 @@ public class CommentForm implements Serializable {
 
 	public void setCommentContent(String commentContent) {
 		this.commentContent = commentContent;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

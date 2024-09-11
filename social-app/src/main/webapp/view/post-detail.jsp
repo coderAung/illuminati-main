@@ -33,15 +33,15 @@
 			<!-- sidebar end -->
 
 			<!-- Center Column Start -->
-			<div class="col-6">
+			<div class="col-6 px-0 pb-5 mb-3">
 				<!-- Post Container Start -->
-				
+
 				<c:if test="${not empty postDetailView}">
 					<c:set var="pv" value="${postDetailView.postView}"></c:set>
 				</c:if>
-				
+
 				<div
-					class="post-content bg-card txt-text p-2 rounded mb-5 pb-5 post-card">
+					class="post-content bg-card txt-text p-2 rounded mb-5 post-card">
 					<span class="float-end pointer"> <i
 						class="bi bi-three-dots-vertical"></i>
 					</span>
@@ -81,14 +81,15 @@
 					<c:if test="${not empty pv.postImageList}">
 						<c:choose>
 							<c:when test="${pv.postImageList.size() eq 1}">
-								<div class="text-center post-image-container pointer">
-									<img class="rounded mb-2" src="${pv.postImageList[0]}">
+								<div class="text-center post-image-container rounded pointer">
+									<img class="rounded" src="${pv.postImageList[0]}">
 								</div>
 							</c:when>
 							<c:when test="${pv.postImageList.size() gt 1}">
 								<div id="carousel-${pv.id}" class="carousel slide"
 									data-bs-ride="carousel">
-									<div class="carousel-inner post-image-container rounded main-bg">
+									<div
+										class="carousel-inner post-image-container rounded main-bg">
 										<c:forEach var="pi" items="${pv.postImageList}"
 											varStatus="status">
 											<div class="carousel-item ${status.first ? 'active' : ''}">
@@ -118,11 +119,18 @@
 					</c:if>
 					<!-- Post Images end -->
 					<!-- comment and share section -->
-					<div class=" d-flex align-items-center pt-1 text-center">
+					<div class=" d-flex align-items-center py-1 text-center">
 						<a
 							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-							Comment <i class="bi bi-dot"></i> <small class="txt-grey">20
-								comments</small>
+							Comment <i class="bi bi-dot"></i> 
+							<c:choose>
+								<c:when test="${empty postDetailView.commentViews}">
+									<small id="comment-count" count="0" class="txt-grey">no comment</small>
+								</c:when>
+								<c:otherwise>
+									<small id="comment-count" count="${postDetailView.commentViews.size()}" class="txt-grey">${postDetailView.commentViews.size()} comments</small>
+								</c:otherwise>
+							</c:choose>
 						</a> <span class="mx-2">|</span> <a
 							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 							Share <i class="bi bi-dot"></i> <small class="txt-grey">20
@@ -130,32 +138,54 @@
 						</a>
 					</div>
 
+					<div class="p-2 mb-2 border-top" id="comments">
+						<span class="fs-5">Comments</span>
+					</div>
+
 					<!-- Comments Section Start -->
-					<div class="comments-section mt-3">
-						<!-- Example Comments -->
-						<c:forEach begin="1" end="20" step="1">
-							<div class="d-flex txt-text mb-3">
-								<a href="#" class="me-3"> <img
-									style="width: 40px; height: 40px" class="rounded-circle"
-									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNERpqjIW8laIlKLNkwOBewYyPx5bnz7PktmGBfHc63qKPkyzoxeZUX06Ooop0YHi67TI&usqp=CAU"
-									alt="Commenter Profile Picture">
-								</a>
-								<div class="flex-grow-1">
-									<div class="bg-card-2 py-2 px-3 rounded">
-										<div class="d-flex justify-content-between mb-2">
-											<div>
-												<a class="text-decoration-none fw-bold txt-text" href="#">Anya
-													Taylor Joy</a> <small class="txt-grey ms-3">Just now</small>
+					<div class="comments-section">
+
+						<c:choose>
+							<c:when test="${not empty postDetailView.commentViews}">
+								<c:set var="commentViews" value="${postDetailView.commentViews}" scope="page"></c:set>
+								<div class="bg-card-2 p-3 rounded" id="comment-container">
+									<!-- Example Comments -->
+									<c:forEach var="cv" items="${commentViews}">
+										<div class="d-flex txt-text mb-3">
+											<a href="#" class="me-3"> <img
+												style="width: 40px; height: 40px" class="rounded-circle"
+												src="${cv.profileImage}"
+												alt="Commenter Profile Picture">
+											</a>
+											<div class="flex-grow-1">
+												<div class="bg-card py-2 px-3 rounded">
+													<div class="d-flex justify-content-between mb-2">
+														<div>
+															<a class="text-decoration-none fw-bold txt-text" href="#">${cv.userName}</a>
+															<small class="txt-grey ms-3">${cv.createdAt}</small>
+														</div>
+														<span class="pointer"> <i
+															class="bi bi-three-dots-vertical"></i>
+														</span>
+													</div>
+													<p>
+														<c:out value="${cv.content}"></c:out>
+													</p>
+												</div>
 											</div>
-											<span class="pointer"> <i
-												class="bi bi-three-dots-vertical"></i>
-											</span>
 										</div>
-										<p>Beautiful Flowers</p>
-									</div>
+									</c:forEach>
 								</div>
-							</div>
-						</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div
+									class="bg-card-2 p-3 rounded d-flex flex-column align-items-center">
+									<span class="txt-grey">No comment yet</span> <span
+										class="txt-grey">Be the first to comment here!</span> <span><i
+										class="fa-regular fa-comment-dots txt-grey fa-5x"></i></span>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<!-- Comments Section End -->
 				</div>
@@ -164,19 +194,23 @@
 				<!-- Comment Form Start -->
 				<div id="commentForm" class="comment-form">
 					<div
-						class="d-flex justify-content-center align-items-center w-100 bg-card rounded px-5 py-3">
+						class="d-flex justify-content-center shadow-lg align-items-center w-100 bg-card rounded px-5 py-3">
 
-						<a href="#"> <img style="width: 45px; height: 45px"
+						<c:url var="profile" value="/profile"></c:url>
+						<a href="${profile}"> <img style="width: 45px; height: 45px"
 							class="rounded-circle"
-							src="https://i.ebayimg.com/images/g/42YAAOSwtupiTgU7/s-l1200.webp"
+							src="${loginUser.profileImage}"
 							alt="User Profile Picture">
 						</a>
 
 						<div class="search-bar bg-card-2 rounded p-2 w-50 mx-3">
-							<textarea type="text" class="w-100 h-100 txt-text" rows="1"
-								placeholder="Write a comment..."></textarea>
+							<textarea type="text" class="w-100 h-100 txt-text" name="comment"
+								id="commentContent" rows="1" placeholder="Write a comment..."></textarea>
 						</div>
-						<button class="btn btn-primary">Post</button>
+						<input id="post-id" type="hidden" class="d-none" value="${pv.id}" />
+						<c:url var="commentCreate" value="/api/comment/create"></c:url>
+						<button url="${commentCreate}" id="comment-btn"
+							class="btn btn-primary">Post</button>
 					</div>
 				</div>
 				<!-- Comment Form End -->
@@ -186,28 +220,13 @@
 	</main>
 	<!-- main part end -->
 
+	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
+	<script type="text/javascript" src="${jquery}"></script>
+	<c:url var="comment" value="/resource/ajax/comment.js"></c:url>
+	<script type="text/javascript" src="${comment}"></script>
+
 	<!-- JavaScript for Scroll Effect -->
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			const commentForm = document.getElementById('commentForm');
-			let lastScrollTop = window.pageYOffset
-					|| document.documentElement.scrollTop;
-
-			window.addEventListener('scroll', function() {
-				let currentScrollTop = window.pageYOffset
-						|| document.documentElement.scrollTop;
-
-				if (currentScrollTop > lastScrollTop) {
-					// Scrolling down
-					commentForm.classList.add('show');
-				} else {
-					// Scrolling up
-					commentForm.classList.remove('show');
-				}
-
-				lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll
-			});
-		});
-	</script>
+	<c:url var="commentForm" value="/resource/js/comment-form.js"></c:url>
+	<script type="text/javascript" src="${commentForm}"></script>
 </body>
 </html>

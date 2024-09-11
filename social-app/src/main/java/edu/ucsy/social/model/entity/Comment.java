@@ -18,6 +18,10 @@ public record Comment(
 		this(0, content, null, null, userId, userName, postId);
 	}
 	
+	public Comment(String content, long userId, long postId) {
+		this(0, content, null, null, userId, null, postId);
+	}
+
 	public Comment perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		return new Comment(id, content, createdAt, updatedAt, userId, userName, postId);
 	}

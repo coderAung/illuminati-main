@@ -10,6 +10,19 @@
 <c:url var="notifications" value="/notifications"></c:url>
 <c:url var="setting" value="/setting"></c:url>
 
+		<div class="bg-card rounded mb-2 p-3">
+			<a href="${profile}" class="me-3 text-decoration-none">
+				<img style="width: 50px; height: 50px"
+					class="rounded"
+					src="${loginUser.profileImage}">
+			</a>
+			<a href="${profile}" class="text-decoration-none txt-text">
+				<span>
+					${loginUser.name}
+				</span>			
+			</a>
+			
+		</div>
 
 	<!-- ==========================side bar start ======================================-->
 	<div class="sidebar bg-card rounded mb-2 p-2">

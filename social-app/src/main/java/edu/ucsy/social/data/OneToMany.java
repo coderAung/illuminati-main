@@ -10,5 +10,5 @@ public interface OneToMany extends Relational {
 	
 	<T> boolean deleteMany(Class<T> e, long id);
 
-	<T> long countMany(Class<T> e, long userId);
+	<T> long countMany(Class<T> e, long id);
 }

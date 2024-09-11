@@ -254,7 +254,7 @@ public class PostModel extends AbstractModel<Post>
 				rs.getTimestamp("created_at").toLocalDateTime(),
 				rs.getTimestamp("updated_at").toLocalDateTime(),
 				rs.getLong("user_id"),
-				rs.getString("name"),
+				rs.getString("user_name"),
 				rs.getLong("post_id")
 				);
 		return comment;
@@ -288,8 +288,26 @@ public class PostModel extends AbstractModel<Post>
 	}
 
 	@Override
-	public <T> long countMany(Class<T> e, long userId) {
-		// TODO Auto-generated method stub
+	public <T> long countMany(Class<T> e, long postId) {
+		if(e.equals(Comment.class)) {
+			return countManyComments(postId);
+		}
+		return 0;
+	}
+
+	private long countManyComments(long postId) {
+		var sql = "select count(*) as commentCount from comments where post_id = ?";
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, postId);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("commentCount");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return 0;
 	}
 
