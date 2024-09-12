@@ -503,3 +503,31 @@
   transform: scale(1); /* Grow to its full size */
   opacity: 1; /* Fully visible */
 }
+
+.carousel-control-prev,
+.carousel-control-next {
+	z-index: 1000;
+}
+
+.comment-control-panel {
+	background-color: var(--card2);
+	margin-right: 30px;
+}
+
+.comment-control-panel:hover {
+	background-color: var(--hover);
+}
+
+.comment-control-panel {
+  transform-origin: top right; /* Start transformation from top-right corner */
+  transform: scale(0); /* Initially, the panel is fully shrunk */
+  opacity: 0; /* Initially, the panel is invisible */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transition effect */
+}
+
+.comment-control-panel.comment-control-open {
+  transform: scale(1); /* Grow to its full size */
+  opacity: 1; /* Fully visible */
+}
+
+

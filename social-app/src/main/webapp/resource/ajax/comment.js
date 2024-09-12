@@ -31,11 +31,31 @@ function createComment() {
 						const commentCount = parseInt(count) + 1
 						
 						$("#comment-count").attr("count", commentCount)
+						$("#comment-count-display").text(`( ${commentCount} )`)
 						if(commentContent > 1) {
 							$("#comment-count").text(`${commentCount} comment`)
 						} else {
 							$("#comment-count").text(`${commentCount} comments`)
 						}
+						
+						const loginUserId = $("#login-user").val()
+						
+						let commentControlPanel = ""
+						if(cv.userId == loginUserId || postId == loginUserId) {
+							commentControlPanel = `
+							<span class="pointer comment-control-btn">
+								<i class="bi bi-three-dots-vertical"></i>
+							</span>
+							<div
+								class="shadow w-25 p-2 rounded position-absolute comment-control-panel float-end top-0 end-0 mt-2">
+								<div commentId="${cv.id}"
+									class="pointer rounded text-danger">
+									<span class="text-decoration-none">Delete</span>
+								</div>
+							</div>
+							`
+						}
+						
 
 						$("#comment-container").prepend(`
 					
@@ -47,15 +67,15 @@ function createComment() {
 							alt="Commenter Profile Picture">
 						</a>
 						<div class="flex-grow-1">
-							<div class="bg-card py-2 px-3 rounded">
+							<div class="bg-card py-2 px-3 rounded position-relative">
 								<div class="d-flex justify-content-between mb-2">
 									<div>
 										<a class="text-decoration-none fw-bold txt-text" href="#">${cv.userName}</a>
 											<small class="txt-grey ms-3">${cv.createdAt}</small>
 									</div>
-									<span class="pointer">
-										<i class="bi bi-three-dots-vertical"></i>
-									</span>
+									
+									${commentControlPanel}
+									
 								</div>
 								<p>
 									${cv.content}

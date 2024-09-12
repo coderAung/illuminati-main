@@ -41,10 +41,31 @@
 					<c:when test="${not empty postViews}">
 						<c:forEach var="pv" items="${postViews}">
 							<!-- new feed start -->
-							<div class="p-2 rounded mb-2 post-card">
-								<span class="float-end pointer"> <i
+							<div class="p-2 rounded position-relative mb-2 post-card">
+								<span class="float-end pointer control-btn"> <i
 									class="bi bi-three-dots-vertical"></i>
 								</span>
+
+								<div
+									class="bg-card control-panel shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
+									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+										<span class="txt-text">Save</span>
+									</div>
+									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+										<span class="txt-text">Share</span>
+									</div>
+
+									<c:if test="${pv.userId eq loginUser.id}">
+										<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+											<span class="txt-text">Edit</span>
+										</div>
+										<div postId="${pv.id}"
+											class="px-2 py-2 pointer rounded text-danger">
+											<span class="text-decoration-none">Delete</span>
+										</div>
+									</c:if>
+
+								</div>
 								<!-- user info start -->
 								<div class="d-flex px-2">
 									<a href="#" class="me-3"> <img
@@ -165,5 +186,9 @@
 	<script type="text/javascript" src="${jquery}"></script>
 	<c:url var="carousel" value="/resource/js/carousel.js"></c:url>
 	<script type="text/javascript" src="${carousel}"></script>
+
+	<c:url var="controlPanelDisplay"
+		value="/resource/js/control-panel-display-home.js"></c:url>
+	<script type="text/javascript" src="${controlPanelDisplay}"></script>
 </body>
 </html>

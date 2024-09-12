@@ -165,7 +165,7 @@
 	padding: 15px;
 }
 
-.inner-image-container img {
+.post-image-container img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
@@ -175,28 +175,11 @@
 	min-height: 400px; /* Adjust the height to fit your design */
 	max-height: 400px;
 	overflow: hidden;
-	background-color: var(--card2);
-}
-
-.inner-image-container {
-	max-height: 100%;
-	overflow: hidden;
 }
 
 .btn-normal, .btn-normal:hover {
 	background-color: var(--hover2);
 	color: var(--text);
-}
-
-.btn-normal:active {
-	transform: translateY(0); /* Reset when clicked */
-	box-shadow: none;
-}
-
-.btn-normal:hover {
-	color: var(--text);
-	transform: translateY(-2px); /* Slight lift on hover */
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .setting-div {
@@ -492,6 +475,18 @@
 	transform: translateX(-50%) translateY(0); /* Slide up into view */
 }
 
+.control-panel {
+	z-index: 1050;
+}
+
+.control-panel div:hover {
+	background-color: var(--hover);
+}
+
+.carousel-inner {
+	z-index: 1000;
+}
+
 
 .control-panel {
   transform-origin: top right; /* Start transformation from top-right corner */
@@ -501,6 +496,33 @@
 }
 
 .control-panel.open {
+  transform: scale(1); /* Grow to its full size */
+  opacity: 1; /* Fully visible */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+	z-index: 1000;
+}
+
+
+.comment-control-panel {
+	background-color: var(--card);
+	margin-right: 30px;
+}
+
+.comment-control-panel:hover {
+	background-color: var(--hover);
+}
+
+.comment-control-panel {
+  transform-origin: top right; /* Start transformation from top-right corner */
+  transform: scale(0); /* Initially, the panel is fully shrunk */
+  opacity: 0; /* Initially, the panel is invisible */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transition effect */
+}
+
+.comment-control-panel.comment-control-open {
   transform: scale(1); /* Grow to its full size */
   opacity: 1; /* Fully visible */
 }

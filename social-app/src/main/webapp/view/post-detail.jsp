@@ -45,23 +45,28 @@
 					<span class="float-end pointer" id="control-btn"> <i
 						class="bi bi-three-dots-vertical"></i>
 					</span>
-					
-					<div class="bg-card shadow w-25 px-2 py-1 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3"
-					>
-						<div id="save-btn" postId="${pv.id}" class="border-bottom px-2 py-2 pointer">
+
+					<div
+						class="bg-card shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
+						<div id="save-btn" postId="${pv.id}"
+							class="px-2 py-2 pointer rounded">
 							<span class="txt-text">Save</span>
 						</div>
-						<div id="share-btn" postId="${pv.id}" class="border-bottom px-2 py-2 pointer">
+						<div id="share-btn" postId="${pv.id}"
+							class="px-2 py-2 pointer rounded">
 							<span class="txt-text">Share</span>
 						</div>
-						<div class="border-bottom px-2 py-2 pointer">
-							<a href="#" class="text-decoration-none">Edit</a>
-						</div>
-						<div class="px-2 py-2 pointer">
-							<a href="#" class="text-decoration-none">Delete</a>
-						</div>
+						<c:if test="${pv.userId eq loginUser.id}">
+							<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+								<span class="txt-text">Edit</span>
+							</div>
+							<div postId="${pv.id}"
+								class="px-2 py-2 pointer rounded text-danger">
+								<span class="text-decoration-none">Delete</span>
+							</div>
+						</c:if>
 					</div>
-					
+
 					<!-- user info start -->
 					<div class="d-flex px-2">
 						<a href="#" class="me-3"> <img
@@ -139,13 +144,15 @@
 					<div class=" d-flex align-items-center py-1 text-center">
 						<a
 							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-							Comment <i class="bi bi-dot"></i> 
-							<c:choose>
+							Comment <i class="bi bi-dot"></i> <c:choose>
 								<c:when test="${empty postDetailView.commentViews}">
-									<small id="comment-count" count="0" class="txt-grey">no comment</small>
+									<small id="comment-count" count="0" class="txt-grey">no
+										comment</small>
 								</c:when>
 								<c:otherwise>
-									<small id="comment-count" count="${postDetailView.commentViews.size()}" class="txt-grey">${postDetailView.commentViews.size()} comments</small>
+									<small id="comment-count"
+										count="${postDetailView.commentViews.size()}" class="txt-grey">${postDetailView.commentViews.size()}
+										comments</small>
 								</c:otherwise>
 							</c:choose>
 						</a> <span class="mx-2">|</span> <a
@@ -156,7 +163,7 @@
 					</div>
 
 					<div class="p-2 mb-2 border-top" id="comments">
-						<span class="fs-5">Comments</span>
+						<span class="fs-5">Comments <small id="comment-count-display" class="txt-grey">( ${postDetailView.commentViews.size()} )</small></span>
 					</div>
 
 					<!-- Comments Section Start -->
@@ -164,26 +171,40 @@
 
 						<c:choose>
 							<c:when test="${not empty postDetailView.commentViews}">
-								<c:set var="commentViews" value="${postDetailView.commentViews}" scope="page"></c:set>
+								<c:set var="commentViews" value="${postDetailView.commentViews}"
+									scope="page"></c:set>
 								<div class="bg-card-2 p-3 rounded" id="comment-container">
 									<!-- Example Comments -->
 									<c:forEach var="cv" items="${commentViews}">
 										<div class="d-flex txt-text mb-3">
 											<a href="#" class="me-3"> <img
 												style="width: 40px; height: 40px" class="rounded-circle"
-												src="${cv.profileImage}"
-												alt="Commenter Profile Picture">
+												src="${cv.profileImage}" alt="Commenter Profile Picture">
 											</a>
 											<div class="flex-grow-1">
-												<div class="bg-card py-2 px-3 rounded">
+												<div class="bg-card py-2 px-3 rounded position-relative">
 													<div class="d-flex justify-content-between mb-2">
 														<div>
 															<a class="text-decoration-none fw-bold txt-text" href="#">${cv.userName}</a>
 															<small class="txt-grey ms-3">${cv.createdAt}</small>
 														</div>
-														<span class="pointer"> <i
-															class="bi bi-three-dots-vertical"></i>
-														</span>
+														<!-- Comment control panel start -->
+														<c:if
+															test="${(cv.userId eq loginUser.id) or (pv.userId eq loginUser.id)}">
+															<span class="pointer comment-control-btn"> <i
+																class="bi bi-three-dots-vertical"></i>
+															</span>
+															<div
+																class="shadow w-25 p-2 rounded position-absolute comment-control-panel float-end top-0 end-0 mt-2">
+																<div commentId="${cv.id}"
+																	class="pointer rounded text-danger">
+																	<span class="text-decoration-none">Delete</span>
+																</div>
+															</div>
+														</c:if>
+														<!-- Comment control panel start -->
+
+
 													</div>
 													<p>
 														<c:out value="${cv.content}"></c:out>
@@ -215,8 +236,7 @@
 
 						<c:url var="profile" value="/profile"></c:url>
 						<a href="${profile}"> <img style="width: 45px; height: 45px"
-							class="rounded-circle"
-							src="${loginUser.profileImage}"
+							class="rounded-circle" src="${loginUser.profileImage}"
 							alt="User Profile Picture">
 						</a>
 
@@ -224,6 +244,9 @@
 							<textarea type="text" class="w-100 h-100 txt-text" name="comment"
 								id="commentContent" rows="1" placeholder="Write a comment..."></textarea>
 						</div>
+						
+						<input type="hidden" class="d-none" id="login-user" value="${loginUser.id}"/>
+						
 						<input id="post-id" type="hidden" class="d-none" value="${pv.id}" />
 						<c:url var="commentCreate" value="/api/comment/create"></c:url>
 						<button url="${commentCreate}" id="comment-btn"
@@ -246,7 +269,8 @@
 	<c:url var="commentForm" value="/resource/js/comment-form.js"></c:url>
 	<script type="text/javascript" src="${commentForm}"></script>
 
-	<c:url var="controlPanelDisplay" value="/resource/js/control-panel-display.js"></c:url>
+	<c:url var="controlPanelDisplay"
+		value="/resource/js/control-panel-display.js"></c:url>
 	<script type="text/javascript" src="${controlPanelDisplay}"></script>
 
 </body>
