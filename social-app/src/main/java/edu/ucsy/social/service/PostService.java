@@ -5,6 +5,7 @@ import java.util.List;
 import edu.ucsy.social.data.Service;
 import edu.ucsy.social.model.dto.form.PostForm;
 import edu.ucsy.social.model.dto.view.PostDetailView;
+import edu.ucsy.social.model.dto.view.PostEditView;
 import edu.ucsy.social.model.dto.view.PostView;
 
 public interface PostService extends Service {
@@ -21,4 +22,7 @@ public interface PostService extends Service {
 
 	PostView getPostView(int postId);
 
+	PostEditView getPostEditView(int postId);
+
+	boolean editPost(int postId, PostForm postForm);
 }

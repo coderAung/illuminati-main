@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Illuminati | Profile</title>
+<title>Illuminati | Other</title>
 
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
@@ -31,7 +31,7 @@
 			</div>
 
 
-			<div class="col-6 px-0">
+			<div class="col-6 px-0 mb-5">
 
 				<!-- Profile Card -->
 				<div
@@ -39,40 +39,49 @@
 					<!-- Cover Image -->
 
 					<div class="cover-img rounded-top pointer w-100 p-1">
-						<img alt="" class="rounded-top"
-							src="${profileView.coverImage}">
+						<img alt="" class="rounded-top" src="${profileView.coverImage}">
 					</div>
 
 					<div class="profile-img position-absolute pointer">
-						<img alt=""
-							src="${profileView.profileImage}">
+						<img alt="" src="${profileView.profileImage}">
 					</div>
 
 					<!-- Profile Information -->
 					<div class="px-3 pb-3 mt-5">
 						<div class="w-50 d-flex float-end justify-content-end">
-						
+
 							<c:url var="friendRequestUrl" value="/api/friend-request"></c:url>
-							<span id="friendRequestUrl" class="d-none" url="${friendRequestUrl}"></span>
+							<span id="friendRequestUrl" class="d-none"
+								url="${friendRequestUrl}"></span>
 							<c:url var="friendUrl" value="/api/friend"></c:url>
-							<span id="friendUrl" class="d-none" url="${friendUrl}"></span>
-						
-							<span id="userData" otherUserId="${profileView.userId}" class="d-none"></span>
-						
+							<span id="friendUrl" class="d-none" url="${friendUrl}"></span> <span
+								id="userData" otherUserId="${profileView.userId}" class="d-none"></span>
+
 							<c:choose>
-								<c:when test="${'IS_FRIEND' eq otherUserData.friendStatus.name()}">
-									<div id="is-friend-status" class="btn btn-normal w-auto me-3">Friend</div>
-									<button id="friend-btn" status="${otherUserData.friendStatus.name()}" type="button" class="btn btn-danger w-auto me-3">Unfriend</button>
+								<c:when
+									test="${'IS_FRIEND' eq otherUserData.friendStatus.name()}">
+									<div id="is-friend-status" class="btn btn-app w-auto me-3">Friend</div>
+									<button id="friend-btn"
+										status="${otherUserData.friendStatus.name()}" type="button"
+										class="btn btn-outline-danger w-auto me-3">Unfriend</button>
 								</c:when>
-								<c:when test="${'NEED_TO_CONFIRM' eq otherUserData.friendStatus.name()}">
-									<button id="friend-btn" status="${otherUserData.friendStatus.name()}" type="button" class="btn btn-light w-auto me-3">Confirm</button>
-									<button id="delete-friend-btn" status="DELETE_FRIEND_REQUEST" type="button" class="btn btn-danger w-auto me-3">Delete</button>
+								<c:when
+									test="${'NEED_TO_CONFIRM' eq otherUserData.friendStatus.name()}">
+									<button id="friend-btn"
+										status="${otherUserData.friendStatus.name()}" type="button"
+										class="btn btn-app w-auto me-3">Confirm</button>
+									<button id="delete-friend-btn" status="DELETE_FRIEND_REQUEST"
+										type="button" class="btn btn-danger w-auto me-3">Delete</button>
 								</c:when>
-								<c:when test="${'REQUESTED' eq otherUserData.friendStatus.name()}">
-									<button id="friend-btn" status="${otherUserData.friendStatus.name()}" type="button" class="btn btn-danger w-auto me-3">Cancel Request</button>
+								<c:when
+									test="${'REQUESTED' eq otherUserData.friendStatus.name()}">
+									<button id="friend-btn"
+										status="${otherUserData.friendStatus.name()}" type="button"
+										class="btn btn-danger w-auto me-3">Cancel Request</button>
 								</c:when>
 								<c:otherwise>
-									<button id="friend-btn" status="NOT_FRIEND" type="button" class="btn btn-normal w-auto me-3">Add Friend</button>
+									<button id="friend-btn" status="NOT_FRIEND" type="button"
+										class="btn btn-app w-auto me-3">Add Friend</button>
 								</c:otherwise>
 							</c:choose>
 							<a href="#" class="btn btn-normal w-auto">Detail</a>
@@ -87,7 +96,9 @@
 				<!-- Profile Card End -->
 
 				<!-- Friend Preview start -->
-				<jsp:include page="/component/friend-preview.jsp"></jsp:include>
+				<jsp:include page="/component/friend-preview.jsp">
+					<jsp:param value="${profileView.userId}" name="userId" />
+				</jsp:include>
 				<!-- Friend Preview end -->
 
 				<!-- post start -->
@@ -96,10 +107,49 @@
 					<c:when test="${not empty postViews}">
 						<c:forEach var="pv" items="${postViews}">
 							<!-- new feed start -->
-							<div class="p-2 rounded mb-2 post-card">
-								<span class="float-end pointer"> <i
+							<div class="p-2 rounded mb-2 position-relative post-card"
+								id="post-${pv.id}">
+								<span class="float-end pointer control-btn"> <i
 									class="bi bi-three-dots-vertical"></i>
 								</span>
+
+								<div
+									class="bg-card control-panel shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
+									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+										<span class="txt-text">Save</span>
+									</div>
+
+									<div postId="${pv.id}"
+										class="post-detail-btn px-2 py-2 pointer rounded">
+										<span class="txt-text">Detail</span>
+										<c:url var="post" value="/post">
+											<c:param name="postId" value="${pv.id}"></c:param>
+										</c:url>
+										<a href="${post}" class="d-none post-detail-link"></a>
+									</div>
+
+									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+										<span class="txt-text">Share</span>
+									</div>
+
+									<c:if test="${pv.userId eq loginUser.id}">
+										<div postId="${pv.id}"
+											class="edit-post-btn px-2 py-2 pointer rounded">
+											<span class="txt-text">Edit</span>
+											<c:url var="edit" value="/post/edit">
+												<c:param name="postId" value="${pv.id}"></c:param>
+											</c:url>
+											<a href="${edit}" class="d-none edit-post-link"></a>
+										</div>
+
+										<c:url var="postDeleteUrl" value="/api/post/delete"></c:url>
+										<div postId="${pv.id}" url="${postDeleteUrl}"
+											class="post-delete-btn px-2 py-2 pointer rounded text-danger">
+											<span class="text-decoration-none">Delete</span>
+										</div>
+									</c:if>
+
+								</div>
 								<!-- user info start -->
 								<div class="d-flex px-2">
 									<a href="#" class="me-3"> <img
@@ -108,7 +158,11 @@
 									</a>
 									<div class="d-flex flex-column">
 										<a href="#" class="text-decoration-none txt-white fw-bold">
-											${pv.userName} </a> <small class="txt-grey">${pv.updatedAt}</small>
+											${pv.userName} </a> <a href="${post}"
+											class="text-decoration-none post-detail-link"> <small
+											class="txt-grey pointer">${pv.updatedAt}</small>
+										</a>
+
 									</div>
 								</div>
 								<!-- user info end -->
@@ -123,34 +177,69 @@
 
 								<!-- Post Images start -->
 								<c:if test="${not empty pv.postImageList}">
-								
+
 									<c:choose>
 										<c:when test="${pv.postImageList.size() eq 0}">
-										
+
 										</c:when>
-										
+
 										<c:when test="${pv.postImageList.size() eq 1}">
-											<div class="text-center post-image-container pointer">
-												<img
-													src="${pv.postImageList[0]}">
+											<div class="post-image-container pointer rounded">
+												<div class="inner-image-container rounded">
+													<img class="rounded" src="${pv.postImageList[0]}">
+												</div>
 											</div>
 										</c:when>
 
 										<c:when test="${pv.postImageList.size() gt 1}">
-											<div>carousel here</div>
+											<div id="carousel-${pv.id}" class="carousel slide"
+												data-bs-ride="carousel">
+												<div
+													class="carousel-inner post-image-container rounded main-bg">
+													<c:forEach var="pi" items="${pv.postImageList}"
+														varStatus="status">
+														<div class="carousel-item ${status.first ? 'active' : ''}">
+															<img class="d-block w-100 rounded" src="${pi}">
+														</div>
+													</c:forEach>
+												</div>
+												<button class="carousel-control-prev" type="button"
+													data-bs-target="#carousel-${pv.id}" data-bs-slide="prev">
+													<span
+														class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center"
+														aria-hidden="true"> <i
+														class="fa-solid fa-chevron-left color-app fs-4"></i>
+													</span> <span class="visually-hidden">Previous</span>
+												</button>
+												<button class="carousel-control-next" type="button"
+													data-bs-target="#carousel-${pv.id}" data-bs-slide="next">
+													<span
+														class="bg-card rounded px-2 py-1 d-flex justify-content-center align-items-center"
+														aria-hidden="true"> <i
+														class="fa-solid fa-chevron-right color-app fs-4"></i>
+													</span> <span class="visually-hidden">Next</span>
+												</button>
+											</div>
 										</c:when>
-										
+
 									</c:choose>
-								
+
 								</c:if>
 								<!-- Post Images end -->
 
 								<!-- comment and share section -->
 								<div class=" d-flex align-items-center pt-1 text-center">
-									<a
+
+									<a href="${post}#comments"
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-										Comment <i class="bi bi-dot"></i> <small class="txt-grey">20
-											comments</small>
+										Comment <i class="bi bi-dot"></i> <c:choose>
+											<c:when test="${pv.commentCount gt 0}">
+												<small class="txt-grey">${pv.commentCount} comments</small>
+											</c:when>
+											<c:otherwise>
+												<small class="txt-grey">${pv.commentCount} comment</small>
+											</c:otherwise>
+										</c:choose>
 									</a> <span class="mx-2">|</span> <a
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 										Share <i class="bi bi-dot"></i> <small class="txt-grey">20
@@ -172,9 +261,18 @@
 	</main>
 	<!-- main part end -->
 
-<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
-<script type="text/javascript" src="${jquery}"></script>
-<c:url var="friend" value="/resource/ajax/friend.js"></c:url>
-<script type="text/javascript" src="${friend}"></script>
+	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
+	<script type="text/javascript" src="${jquery}"></script>
+	<c:url var="friend" value="/resource/ajax/friend.js"></c:url>
+	<script type="text/javascript" src="${friend}"></script>
+
+	<c:url var="controlPanelDisplay"
+		value="/resource/js/control-panel-display-home.js"></c:url>
+	<script type="text/javascript" src="${controlPanelDisplay}"></script>
+	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
+	<script type="text/javascript" src="${editPost}"></script>
+	<c:url var="friendPreview" value="/resource/js/friend-preview.js"></c:url>
+	<script type="text/javascript" src="${friendPreview}"></script>
+
 </body>
 </html>

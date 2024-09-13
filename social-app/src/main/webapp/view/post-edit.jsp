@@ -64,11 +64,11 @@
 					</a>
 					<div class="d-flex flex-column">
 						<a href="#" class="text-decoration-none txt-white fw-bold">
-							${loginUser.name} </a> <small class="txt-grey">Creating new
+							${loginUser.name} </a> <small class="txt-grey">Editing the
 							post</small>
 					</div>
 					<div class="d-flex flex-fill py-1 flex-row-reverse">
-						<button id="post-create-btn" class="btn-app w-50 rounded">Post</button>
+						<button id="post-create-btn" class="btn-app w-50 rounded">Save</button>
 					</div>
 				</div>
 				<!-- user info end -->
@@ -81,6 +81,7 @@
 							<div id="photo-input-btn" class="btn btn-primary">Upload
 								Image</div>
 						</div>
+						<input type="hidden" class="d-none" name="postId" value="${postView.id}">
 						<textarea name="content"
 							class="w-100 px-3 py-2 rounded post-input"
 							placeholder="Write Something..." rows="3" value="" required>${postView.content}</textarea>
@@ -94,17 +95,18 @@
 								</div>
 							</c:when>
 							<c:otherwise>
+								<c:url var="deletePhotoUrl" value="/api/post-image/delete"></c:url>
+								<span class="d-none" id="delete-photo-url"
+									url="${deletePhotoUrl}"></span>
 								<div id="photo-preview"
 									class="bg-card-2 d-flex mx-auto py-2 overflow-auto rounded w-100">
-
 									<c:forEach var="postImage" items="${postView.postImageList}">
 
-										<div class="photo mx-2">
-											<span class="remove-photo-btn pointer"> <i
-												class="bi bi-dash"></i>
+										<div class="photo mx-2 original-photo">
+											<span class="remove-photo-btn pointer"
+												postImageId="${postImage.id}"> <i class="bi bi-dash"></i>
 											</span> <img class="img-fluid w-100 h-100 rounded"
-														src="${postImage}"
-												alt="image" />
+												src="${postImage.imageName}" alt="image" />
 										</div>
 
 									</c:forEach>
@@ -118,6 +120,9 @@
 			</div>
 		</div>
 	</main>
+
+	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
+	<script type="text/javascript" src="${jquery}"></script>
 	<c:url var="editProcess" value="/resource/js/edit-post-process.js"></c:url>
 	<script type="text/javascript" src="${editProcess}"></script>
 </body>

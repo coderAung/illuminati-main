@@ -17,6 +17,7 @@ import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.form.PostForm;
 import edu.ucsy.social.model.dto.view.CommentView;
 import edu.ucsy.social.model.dto.view.PostDetailView;
+import edu.ucsy.social.model.dto.view.PostEditView;
 import edu.ucsy.social.model.dto.view.PostView;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
@@ -332,6 +333,68 @@ public class PostServiceImpl implements PostService {
 			destroyConnection();
 		}
 		return null;
+	}
+
+	@Override
+	public PostEditView getPostEditView(int postId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var post = postModel.findOne(postId);
+			if(null != post) {
+				var postEditView = new PostEditView(post);
+				var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, postId);
+			
+				if(null != postImages && postImages.size() > 0) {
+					var postImageNames = postImages.stream().map(pi -> {
+											var postEditImage = postEditView.new PostEditImage();
+											postEditImage.setId(pi.id());
+											postEditImage.setImageName(pi.name());
+											return postEditImage;
+											}).toList();
+					postEditView.setPostImageList(postImageNames);
+				}
+				
+				return postEditView;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean editPost(int postId, PostForm postForm) {
+		try(var connection = connector.getConnection()) {
+			try {
+				initConnection(connection);
+				
+				connection.setAutoCommit(false);
+				var post = new Post(postId, postForm.getContent(), postForm.getUserId(), postForm.getUserName());
+				post = postModel.update(post);
+				if(null != post) {
+					if(null != postForm.getPostImages()) {
+						for(var postImageName : postForm.getPostImages()) {
+							var postImage = new PostImage(postImageName, post.id());
+									postImageModel.save(postImage);
+						}
+					}				
+				}
+				
+				connection.commit();
+				return true;
+			} catch (Exception e) {
+				connection.rollback();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return false;
 	}
 
 }

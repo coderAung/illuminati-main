@@ -8,8 +8,6 @@
 <c:url var="faIcon" value="https://kit.fontawesome.com/3adf10d5eb.js"></c:url>
 <script src="${faIcon}"></script>
 
-<c:url var="bootStrap" value="/resource/library/bootstrap.min.js"></c:url>
-
 <c:choose>
 	<c:when test="${'LIGHT' eq loginUser.theme.name()}">
 		<c:url var="light" value="/resource/css/light.css"></c:url>

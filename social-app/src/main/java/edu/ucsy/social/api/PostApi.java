@@ -1,12 +1,15 @@
 package edu.ucsy.social.api;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.utils.DefaultPicture;
 import edu.ucsy.social.utils.JsonTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -58,7 +61,11 @@ public class PostApi extends Api {
 			var result = postService.deletePost(postId);
 			if (result) {
 				if (postImages != null) {
-					postImages.forEach(System.out::print);
+					var imageFolder = getServletContext().getRealPath("/photo");
+					for(var pi : postImages) {
+						var path = Path.of(imageFolder, DefaultPicture.postFolder, pi);
+						Files.deleteIfExists(path);
+					}
 				}
 				resp.setContentType("application/json");
 				var writer = resp.getWriter();

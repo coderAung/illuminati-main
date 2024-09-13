@@ -16,7 +16,12 @@ public record Post(
 	public Post(String content, long userId, String userName) {
 		this(0, content, null, null, userId, userName);
 	}
+
 	
+	public Post(int postId, String content, long userId, String userName) {
+		this(postId, content, null, null, userId, userName);
+	}
+
 	public Post perfectClone(long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		return new Post(id, content, createdAt, updatedAt, userId, userName);
 	}

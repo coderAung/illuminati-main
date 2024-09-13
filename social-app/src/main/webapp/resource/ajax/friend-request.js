@@ -17,8 +17,6 @@ $("document").ready(() => {
 	document.querySelectorAll(".delete-friend-request")
 			.forEach(el => {
 				el.addEventListener("click", () => {
-					console.log("delete friend")
-					console.log(`${el.getAttribute("url")}/delete`)
 
 					const url = el.getAttribute("url").concat("/delete")
 					const otherUserId = el.getAttribute("otherUserId")

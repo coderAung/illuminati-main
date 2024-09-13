@@ -63,30 +63,35 @@ public class PostController extends Controller {
 			throws ServletException, IOException {
 		// get post id from request parameter
 		if (StringTool.isEmpty(req.getParameter("postId"))) {
-			// show some errors
-			// forward to post not found page
-		}
-		var postId = Integer.parseInt(req.getParameter("postId"));
+			// redirect to profile
+			redirect(req, resp, "/profile");
+		} else {
+			var postId = Integer.parseInt(req.getParameter("postId"));
 
-		var postView = postService.getPostView(postId);
+			var postEditView = postService.getPostEditView(postId);
 
-		if (postView != null) {
+			if (postEditView != null) {
 
-			if (postView.getUserId() == getLoginUser(req).getId()) {
-				if (null != postView.getPostImageList()) {
-					var postImages = postView.getPostImageList();
-					postImages = postImages.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
-					postView.setPostImageList(postImages);
+				if (postEditView.getUserId() == getLoginUser(req).getId()) {
+					if (null != postEditView.getPostImageList()) {
+						var postImages = postEditView.getPostImageList();
+						postImages = postImages.stream().map(pi -> {
+							var postEditImage = postEditView.new PostEditImage();
+							postEditImage.setId(pi.getId());
+							postEditImage.setImageName(getImagePath(pi.getImageName(), ImageType.POST));
+							return postEditImage;
+						}).toList();
+						postEditView.setPostImageList(postImages);
+					}
+
+					req.setAttribute("postView", postEditView);
+					view(req, resp, "post-edit");
+				} else {
+					redirect(req, resp, "/post?postId=%s".formatted(postId));
 				}
 
-				req.setAttribute("postView", postView);
-				view(req, resp, "post-edit");
-			} else {
-				redirect(req, resp, "/post?postId=%s".formatted(postId));
 			}
-
 		}
-
 	}
 
 	private void forwardToPostCreatePage(HttpServletRequest req, HttpServletResponse resp)
@@ -152,10 +157,47 @@ public class PostController extends Controller {
 			createPost(req, resp);
 			break;
 		case POST_EDIT:
-
+			editPost(req, resp);
 			break;
 		default:
 			break;
+		}
+	}
+
+	private void editPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		// get user id from login user
+		var userId = getLoginUser(req).getId();
+		// get from what page the request come
+		var content = req.getParameter("content");
+		var postId = Integer.parseInt(req.getParameter("postId"));
+
+		var parts = req.getParts().stream().skip(2).filter(part -> !part.getSubmittedFileName().equals("")).toList();
+
+		// build a create post form object by request parameter
+		var postForm = new PostForm(userId, getLoginUser(req).getName(), content);
+		List<String> generatedPostImageNames = null;
+		if (0 < parts.size()) {
+			generatedPostImageNames = parts.stream().map(part -> StringTool
+					.generateImageName(part.getSubmittedFileName(), (int) userId, getLoginUser(req).getName()))
+					.toList();
+			postForm.setPostImages(generatedPostImageNames);
+		}
+		// ask post service to edit the post
+		var result = postService.editPost(postId, postForm);
+
+		if (result) {
+			if (null != generatedPostImageNames) {
+				var i = 0;
+				for (var part : parts) {
+					var path = Path.of(getServletContext().getRealPath("photo"), "post",
+							generatedPostImageNames.get(i));
+					i++;
+					Files.copy(part.getInputStream(), path);
+
+				}
+			}
+			redirect(req, resp, "/profile");
+
 		}
 	}
 

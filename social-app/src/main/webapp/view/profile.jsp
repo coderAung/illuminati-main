@@ -32,7 +32,7 @@
 			</div>
 
 
-			<div class="col-6 px-0">
+			<div class="col-6 px-0 mb-5">
 
 				<!-- Profile Card -->
 				<div
@@ -64,7 +64,9 @@
 				<!-- Profile Card End -->
 
 				<!-- Friend Preview start -->
-				<jsp:include page="/component/friend-preview.jsp"></jsp:include>
+				<jsp:include page="/component/friend-preview.jsp">
+					<jsp:param value="${loginUser.id}" name="userId"/>
+				</jsp:include>
 				<!-- Friend Preview end -->
 
 				<!-- create post start -->
@@ -244,6 +246,9 @@
 
 	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
 	<script type="text/javascript" src="${editPost}"></script>
+
+	<c:url var="friendPreview" value="/resource/js/friend-preview.js"></c:url>
+	<script type="text/javascript" src="${friendPreview}"></script>
 
 	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
 	<script type="text/javascript" src="${jquery}"></script>

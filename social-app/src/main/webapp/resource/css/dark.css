@@ -118,6 +118,7 @@
 	width: 4px;
 	background-color: var(--app); /* purple vertical line */
 }
+
 .menu-item:last-child {
 	border-bottom: none; /* Removes border from the last item */
 }
@@ -126,7 +127,8 @@
 	position: relative;
 	transition: background-color 0.3s;
 	color: var(--text); /* Keeps the default font color */
-	border-bottom: 1px solid var(--secondary); /* Light underline between items */
+	border-bottom: 1px solid var(--secondary);
+	/* Light underline between items */
 }
 
 .post-form {
@@ -175,12 +177,13 @@
 }
 
 .setting-div {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .setting-div:hover {
-    transform: scale(1.02); /* Slightly increase the size */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for more emphasis */
+	transform: scale(1.02); /* Slightly increase the size */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	/* Add a subtle shadow for more emphasis */
 }
 
 .change-password-btn, .change-password-btn:hover {
@@ -190,8 +193,7 @@
 	font-weight: 500;
 }
 
-.cancel-btn, .cancel-btn:hover,
-.logout-btn, .logout-btn:hover {
+.cancel-btn, .cancel-btn:hover, .logout-btn, .logout-btn:hover {
 	background-color: var(--danger);
 	border: 1px solid var(--danger);
 	color: var(--text);
@@ -261,7 +263,6 @@
 	background: transparent;
 }
 
-
 .left-side {
 	position: sticky;
 	top: 60px; /* Distance from the top to avoid the navbar */
@@ -308,7 +309,7 @@
 }
 
 .btn-deep, .btn-deep:hover {
-	border: 1px solid var(--text);
+	background-color: var(--app);
 	color: var(--text);
 }
 
@@ -409,14 +410,12 @@
 	font-size: 1.3rem;
 }
 
-.btn-app, .btn-app:hover {
-	outline: none;
+.btn-app, .btn-app:hover, .btn-app:active {
 	background-color: var(--app);
 	color: var(--text);
-	border: none;
 }
 
-.remove-photo-btn {
+.remove-photo-btn, .remove-original-photo-btn {
 	color: var(--app);
 	border: 1px solid var(--app);
 }
@@ -426,26 +425,26 @@
 }
 
 .carousel-inner {
-    max-height: 400px; /* Limit image height to fit in the layout */
-    min-height: 400px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+	max-height: 400px; /* Limit image height to fit in the layout */
+	min-height: 400px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
 }
 
 .carousel-inner img {
 	width: 100%;
 	height: 100%;
-    object-fit: cover; /* Maintain aspect ratio and cover the available space */
+	object-fit: cover;
+	/* Maintain aspect ratio and cover the available space */
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    padding: 10px;
+.carousel-control-prev-icon, .carousel-control-next-icon {
+	padding: 10px;
 }
 
 .carousel-item {
-    transition: transform 0.5s ease-in-out;
+	transition: transform 0.5s ease-in-out;
 }
 
 .search-bar textarea {
@@ -457,7 +456,6 @@
 .search-bar textarea::placeholder {
 	color: var(--secondary);
 }
-
 
 .comment-form {
 	position: fixed; /* Stick it to the bottom */
@@ -490,21 +488,21 @@
 	z-index: 1000;
 }
 
-
 .control-panel {
-  transform-origin: top right; /* Start transformation from top-right corner */
-  transform: scale(0); /* Initially, the panel is fully shrunk */
-  opacity: 0; /* Initially, the panel is invisible */
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transition effect */
+	transform-origin: top right;
+	/* Start transformation from top-right corner */
+	transform: scale(0); /* Initially, the panel is fully shrunk */
+	opacity: 0; /* Initially, the panel is invisible */
+	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+	/* Transition effect */
 }
 
 .control-panel.open {
-  transform: scale(1); /* Grow to its full size */
-  opacity: 1; /* Fully visible */
+	transform: scale(1); /* Grow to its full size */
+	opacity: 1; /* Fully visible */
 }
 
-.carousel-control-prev,
-.carousel-control-next {
+.carousel-control-prev, .carousel-control-next {
 	z-index: 1000;
 }
 
@@ -518,15 +516,15 @@
 }
 
 .comment-control-panel {
-  transform-origin: top right; /* Start transformation from top-right corner */
-  transform: scale(0); /* Initially, the panel is fully shrunk */
-  opacity: 0; /* Initially, the panel is invisible */
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transition effect */
+	transform-origin: top right;
+	/* Start transformation from top-right corner */
+	transform: scale(0); /* Initially, the panel is fully shrunk */
+	opacity: 0; /* Initially, the panel is invisible */
+	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+	/* Transition effect */
 }
 
 .comment-control-panel.comment-control-open {
-  transform: scale(1); /* Grow to its full size */
-  opacity: 1; /* Fully visible */
+	transform: scale(1); /* Grow to its full size */
+	opacity: 1; /* Fully visible */
 }
-
-

@@ -18,7 +18,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/other/profile" }, loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/other/profile", "/other/friends" }, loadOnStartup = 1)
 public class OtherUserController extends Controller {
 
 	private static final long serialVersionUID = 1L;
@@ -45,9 +45,17 @@ public class OtherUserController extends Controller {
 		case "/other/profile":
 			forwardToOtherProfilePage(req, resp);
 			break;
+		case "/other/friends":
+			forwardToOtherFriendsPage(req, resp);
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void forwardToOtherFriendsPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		view(req, resp, "other-friends");
 	}
 
 	private void forwardToOtherProfilePage(HttpServletRequest req, HttpServletResponse resp)

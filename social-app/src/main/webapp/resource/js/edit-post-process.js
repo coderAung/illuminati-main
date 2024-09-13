@@ -1,23 +1,46 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-	var photoId = 0
+	let photoIdToDelete = []
 
 	const loadPhoto = () => {
-		const loadedBtn = document.querySelectorAll(".remove-photo-btn")
-		if (loadedBtn) {
-			loadedBtn.forEach(btn => {
-				btn.addEventListener("click", function() {
-					btn.parentElement.remove()
+
+		const originalPhotos = document.querySelectorAll(".original-photo")
+		if (originalPhotos) {
+
+			originalPhotos.forEach(photo => {
+				const loadedBtn = photo.querySelector(".remove-photo-btn")
+				loadedBtn.addEventListener("click", event => {
+
+					let target = event.target
+
+					if (!target.classList.contains("remove-photo-btn")) {
+						target = target.parentElement
+					}
+					const postImageId = target.getAttribute("postImageId")
+					photoIdToDelete.push(postImageId)
+					loadedBtn.parentElement.remove()
 
 					if (0 === document.getElementById("photo-preview").childElementCount) {
 						document.getElementById("photo-preview").classList.add("d-none")
 					}
+					/*					$.post(
+											url,
+											{
+												"postImageId": postImageId
+											},
+											response => {
+												if(response.result === "success") {
+													loadedBtn.parentElement.remove()
+													console.log("deleted")
+												}
+											},
+											"json"
+											)
+					*/
 
 				})
 			})
 		}
-
-
 	}
 
 	loadPhoto()
@@ -33,7 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (postCreateBtn) {
 		postCreateBtn.addEventListener("click", function() {
 			var content = document.querySelector(".post-input").value
-			if (fileListArray.length === 0 && (content === '' || !content)) {
+			if (fileListArray.length === 0 &&
+			 (content === '' || !content) &&
+			 (photoIdToDelete.length === 0)) {
 			} else {
 
 				const dataTransfer = new DataTransfer()
@@ -43,6 +68,26 @@ document.addEventListener("DOMContentLoaded", () => {
 				} else {
 					fileListArray.forEach(file => dataTransfer.items.add(file))
 					photoUploadInput.files = dataTransfer.files
+				}
+
+				if (photoIdToDelete.length > 0) {
+					const url = document.querySelector("#delete-photo-url").getAttribute("url")
+					console.log("deleting image if exist")
+					$.ajax({
+						url: url,  // Replace with your actual servlet URL
+						type: 'POST',
+						contentType: 'application/json',  // Set content type to JSON
+						data: JSON.stringify({ "photoIds": photoIdToDelete }),  // Convert the array to JSON string
+						success: function(response) {
+							console.log('Data sent successfully:', response);
+							if(response.result === "success") {
+								console.log("photo are deleted")
+							}
+						},
+						error: function(xhr, status, error) {
+							console.error('Error sending data:', error);
+						}
+					})
 				}
 
 				postForm.submit();

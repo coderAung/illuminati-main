@@ -18,8 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 		})
 	}
-
-	document.querySelectorAll(".edit-post-btn").forEach(btn => {
+	
+	const editBtns = document.querySelectorAll(".edit-post-btn")
+	editBtns.forEach(btn => {
 		btn.addEventListener("click", e => {
 
 			let target = e.target

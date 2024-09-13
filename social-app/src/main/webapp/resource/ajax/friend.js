@@ -49,7 +49,7 @@ function deleteFriendRequest() {
 				btn.text("Add Friend")
 
 				btn.removeClass("btn-light")
-				btn.addClass("btn-normal")
+				btn.addClass("btn-app")
 				$("#delete-friend-btn").remove()
 			}
 		},
@@ -58,7 +58,6 @@ function deleteFriendRequest() {
 }
 
 function sendFriendRequest() {
-	console.log("sending friend request")
 
 	const url = $("#friendRequestUrl").attr("url").concat("/create")
 	const otherUserId = $("#userData").attr("otherUserId")
@@ -72,9 +71,8 @@ function sendFriendRequest() {
 				const btn = $("#friend-btn")
 				btn.attr("status", "REQUESTED")
 				btn.text("Cancel Request")
-				btn.removeClass("btn-normal")
+				btn.removeClass("btn-app")
 				btn.addClass("btn-danger")
-				console.log("successfully requested to user " + data.requestTo)
 			}
 		},
 		"json")
@@ -82,8 +80,6 @@ function sendFriendRequest() {
 }
 
 function cancelFriendRequest() {
-	console.log("canceling friend request")
-
 	const url = $("#friendRequestUrl").attr("url").concat("/cancel")
 	const otherUserId = $("#userData").attr("otherUserId")
 
@@ -98,7 +94,7 @@ function cancelFriendRequest() {
 				btn.text("Add Friend")
 
 				btn.removeClass("btn-danger")
-				btn.addClass("btn-normal")
+				btn.addClass("btn-app")
 
 				console.log("successfully canceled the friend request to user " + data.requestTo)
 			}

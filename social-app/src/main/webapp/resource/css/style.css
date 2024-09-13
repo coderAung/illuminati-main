@@ -413,13 +413,12 @@
 }
 
 .btn-app, .btn-app:hover {
-	outline: none;
 	background-color: var(--app);
 	color: var(--text-reverse);
 	border: none;
 }
 
-.remove-photo-btn {
+.remove-photo-btn, .remove-original-photo-btn {
 	color: var(--app);
 	border: 1px solid var(--app);
 }

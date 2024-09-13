@@ -412,14 +412,12 @@
 	font-size: 1.3rem;
 }
 
-.btn-app, .btn-app:hover {
-	outline: none;
+.btn-app, .btn-app:hover, .btn-app:active {
 	background-color: var(--app);
 	color: var(--text-reverse);
-	border: none;
 }
 
-.remove-photo-btn {
+.remove-photo-btn, .remove-original-photo-btn {
 	color: var(--app);
 	border: 1px solid var(--app);
 }

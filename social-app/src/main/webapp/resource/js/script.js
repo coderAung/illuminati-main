@@ -1,6 +1,5 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-	console.log("loaded")
 
 	const photoUploadBtn = document.querySelector("#photo-input-btn")
 	const photoUploadInput = document.querySelector("#photo-input")
