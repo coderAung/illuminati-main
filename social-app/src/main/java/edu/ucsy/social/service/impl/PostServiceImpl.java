@@ -243,7 +243,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void deletePost(int postId) {
+	public boolean deletePost(int postId) {
 		try (var connection = connector.getConnection()) {
 			try {
 				initConnection(connection);
@@ -261,7 +261,7 @@ public class PostServiceImpl implements PostService {
 				postModel.delete(postId);
 
 				connection.commit();
-
+				return true;
 			} catch (Exception e) {
 				connection.rollback();
 			}
@@ -271,6 +271,7 @@ public class PostServiceImpl implements PostService {
 		} finally {
 			destroyConnection();
 		}
+		return false;
 
 	}
 
@@ -306,6 +307,31 @@ public class PostServiceImpl implements PostService {
 			destroyConnection();
 		}
 		return 0;
+	}
+
+	@Override
+	public PostView getPostView(int postId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var post = postModel.findOne(postId);
+			if(null != post) {
+				var postView = new PostView(post);
+				var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, postId);
+			
+				if(null != postImages && postImages.size() > 0) {
+					var postImageNames = postImages.stream().map(pi -> pi.name()).toList();
+					postView.setPostImageList(postImageNames);
+				}
+				
+				return postView;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
 	}
 
 }

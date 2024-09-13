@@ -15,8 +15,10 @@ public interface PostService extends Service {
 
 	PostDetailView getPostDetailView(int postId);
 
-	void deletePost(int postId);
+	boolean deletePost(int postId);
 
 	long createPost(PostForm postForm);
+
+	PostView getPostView(int postId);
 
 }

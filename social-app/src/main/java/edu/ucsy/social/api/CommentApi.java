@@ -49,23 +49,6 @@ public class CommentApi extends Api {
 		switch (path) {
 		case COMMENT:
 			getComments(req, resp);
-			// testing
-//			var c1 = new CommentView(1, "some comment", "ywa", LocalDateTime.now());
-//			var c2 = new CommentView(2, "some comment", "ywa", LocalDateTime.now());
-//			var c3 = new CommentView(3, "some comment", "ywa", LocalDateTime.now());
-//			var c4 = new CommentView(4, "some comment", "ywa", LocalDateTime.now());
-//			var commentViews = List.of(c1, c2, c3, c4);
-//			// and respond it as comment view json to front end
-//			var jsonCommentViews = JsonTool.jsonFromList(List.of(commentViews));
-//			var jsonResponse = JsonTool.jsonFromMap(Map.of(
-//											"status", "success",
-//											"data", List.of(commentViews),
-//											"empty", 0
-//											));
-//			resp.setContentType("application/json");
-//			var writer = resp.getWriter();
-//			writer.write(jsonResponse);
-			// end testing
 			break;
 		default:
 			break;
@@ -159,11 +142,17 @@ public class CommentApi extends Api {
 		// delete the comment using comment id by commentService
 		var result = commentService.deleteComment(commentId);
 		
-		// respond success or fail message to front end
-		resp.setContentType("application/json");
-		var writer = resp.getWriter();
-		writer.write(JsonTool.jsonFromSingleObject(result));
-		writer.flush();
+		if(result) {
+			// respond success or fail message to front end
+			resp.setContentType("application/json");
+			var writer = resp.getWriter();
+			var data = JsonTool.jsonFromMap(Map.of(
+					"result", "success",
+					"commentId", commentId
+					));
+			writer.write(data);
+			writer.flush();
+		}
 	}
 
 	private void createComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {

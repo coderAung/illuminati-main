@@ -83,7 +83,7 @@
 						</div>
 						<textarea name="content"
 							class="w-100 px-3 py-2 rounded post-input"
-							placeholder="Write Something..." rows="3" required></textarea>
+							placeholder="Write Something..." rows="3" value='' required></textarea>
 						<input id="photo-input" type="file" name="photos" accept="image/*" class="d-none" multiple>
 						<div id="photo-preview" class="bg-card-2 d-none d-flex mx-auto py-2 overflow-auto rounded w-100">
 						</div>

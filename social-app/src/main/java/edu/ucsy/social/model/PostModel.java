@@ -283,7 +283,43 @@ public class PostModel extends AbstractModel<Post>
 
 	@Override
 	public <T> boolean deleteMany(Class<T> e, long id) {
-		// TODO Auto-generated method stub
+		
+		if(e.equals(PostImage.class)) {
+			return deleteManyPostImages(id);
+		}
+		
+		if(e.equals(Comment.class)) {
+			return deleteManyComments(id);
+		}
+
+		return false;
+	}
+
+	private boolean deleteManyComments(long id) {
+		var sql = "delete from comments where post_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rows = stmt.executeUpdate();
+			if(rows > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	private boolean deleteManyPostImages(long id) {
+		var sql = "delete from post_images where post_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rows = stmt.executeUpdate();
+			if(rows > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

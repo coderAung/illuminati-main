@@ -13,6 +13,7 @@
 
 </head>
 <body class="main-bg">
+
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
 		<jsp:param value="nav-link-active" name="profileActive" />
@@ -76,7 +77,8 @@
 					<c:when test="${not empty postViews}">
 						<c:forEach var="pv" items="${postViews}">
 							<!-- new feed start -->
-							<div class="p-2 rounded mb-2 position-relative post-card">
+							<div class="p-2 rounded mb-2 position-relative post-card"
+								id="post-${pv.id}">
 								<span class="float-end pointer control-btn"> <i
 									class="bi bi-three-dots-vertical"></i>
 								</span>
@@ -86,16 +88,33 @@
 									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
 										<span class="txt-text">Save</span>
 									</div>
+
+									<div postId="${pv.id}"
+										class="post-detail-btn px-2 py-2 pointer rounded">
+										<span class="txt-text">Detail</span>
+										<c:url var="post" value="/post">
+											<c:param name="postId" value="${pv.id}"></c:param>
+										</c:url>
+										<a href="${post}" class="d-none post-detail-link"></a>
+									</div>
+
 									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
 										<span class="txt-text">Share</span>
 									</div>
 
 									<c:if test="${pv.userId eq loginUser.id}">
-										<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
-											<span class="txt-text">Edit</span>
-										</div>
 										<div postId="${pv.id}"
-											class="px-2 py-2 pointer rounded text-danger">
+											class="edit-post-btn px-2 py-2 pointer rounded">
+											<span class="txt-text">Edit</span>
+											<c:url var="edit" value="/post/edit">
+												<c:param name="postId" value="${pv.id}"></c:param>
+											</c:url>
+											<a href="${edit}" class="d-none edit-post-link"></a>
+										</div>
+
+										<c:url var="postDeleteUrl" value="/api/post/delete"></c:url>
+										<div postId="${pv.id}" url="${postDeleteUrl}"
+											class="post-delete-btn px-2 py-2 pointer rounded text-danger">
 											<span class="text-decoration-none">Delete</span>
 										</div>
 									</c:if>
@@ -109,11 +128,8 @@
 									</a>
 									<div class="d-flex flex-column">
 										<a href="#" class="text-decoration-none txt-white fw-bold">
-											${pv.userName} </a>
-										<c:url var="post" value="/post">
-											<c:param name="postId" value="${pv.id}"></c:param>
-										</c:url>
-										<a href="${post}" class="text-decoration-none"> <small
+											${pv.userName} </a> <a href="${post}"
+											class="text-decoration-none post-detail-link"> <small
 											class="txt-grey pointer">${pv.updatedAt}</small>
 										</a>
 
@@ -140,7 +156,7 @@
 										<c:when test="${pv.postImageList.size() eq 1}">
 											<div class="post-image-container pointer rounded">
 												<div class="inner-image-container rounded">
-													<img src="${pv.postImageList[0]}">
+													<img class="rounded" src="${pv.postImageList[0]}">
 												</div>
 											</div>
 										</c:when>
@@ -212,6 +228,11 @@
 				<!-- post end -->
 			</div>
 		</div>
+
+		<div class="w-25 d-none me-3" style="position: sticky; bottom: 10px; margin-left: auto; z-index: 1000;">
+			<div class="alert alert-primary">A post is created!</div>
+		</div>
+
 	</main>
 	<!-- main part end -->
 	<c:url var="script" value="/resource/js/script.js"></c:url>
@@ -220,5 +241,14 @@
 	<c:url var="controlPanelDisplay"
 		value="/resource/js/control-panel-display-home.js"></c:url>
 	<script type="text/javascript" src="${controlPanelDisplay}"></script>
+
+	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
+	<script type="text/javascript" src="${editPost}"></script>
+
+	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>
+	<script type="text/javascript" src="${jquery}"></script>
+	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
+	<script type="text/javascript" src="${postDelete}"></script>
+
 </body>
 </html>

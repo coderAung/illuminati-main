@@ -77,11 +77,16 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public boolean deleteComment(int commentId) {
 
-		Comment comment = commentModel.findOne(commentId);
-		if (comment == null) {
-			return false;
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			return commentModel.delete(commentId);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
 		}
-		return commentModel.delete(commentId);
+		return false;
 	}
 
 	@Override

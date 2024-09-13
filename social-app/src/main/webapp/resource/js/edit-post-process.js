@@ -1,6 +1,26 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-	console.log("loaded")
+	var photoId = 0
+
+	const loadPhoto = () => {
+		const loadedBtn = document.querySelectorAll(".remove-photo-btn")
+		if (loadedBtn) {
+			loadedBtn.forEach(btn => {
+				btn.addEventListener("click", function() {
+					btn.parentElement.remove()
+
+					if (0 === document.getElementById("photo-preview").childElementCount) {
+						document.getElementById("photo-preview").classList.add("d-none")
+					}
+
+				})
+			})
+		}
+
+
+	}
+
+	loadPhoto()
 
 	const photoUploadBtn = document.querySelector("#photo-input-btn")
 	const photoUploadInput = document.querySelector("#photo-input")
@@ -82,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
 							photoPreview.classList.add("d-none")
 						}
 
-						console.log(fileListArray)
 					})
 
 					photoDiv.appendChild(removePhotoBtn)
@@ -103,3 +122,4 @@ function goToCreatePostPage() {
 function openImageUploadWindow() {
 	document.querySelector("#photo-input").click();
 }
+

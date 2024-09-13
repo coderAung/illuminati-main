@@ -57,8 +57,14 @@
 							<span class="txt-text">Share</span>
 						</div>
 						<c:if test="${pv.userId eq loginUser.id}">
-							<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+							<div postId="${pv.id}"
+								class="edit-post-btn px-2 py-2 pointer rounded">
 								<span class="txt-text">Edit</span>
+								<c:url var="edit" value="/post/edit">
+									<c:param name="postId" value="${pv.id}"></c:param>
+								</c:url>
+								<a href="${edit}" class="d-none edit-post-link"></a>
+
 							</div>
 							<div postId="${pv.id}"
 								class="px-2 py-2 pointer rounded text-danger">
@@ -163,7 +169,9 @@
 					</div>
 
 					<div class="p-2 mb-2 border-top" id="comments">
-						<span class="fs-5">Comments <small id="comment-count-display" class="txt-grey">( ${postDetailView.commentViews.size()} )</small></span>
+						<span class="fs-5">Comments <small
+							id="comment-count-display" class="txt-grey">(
+								${postDetailView.commentViews.size()} )</small></span>
 					</div>
 
 					<!-- Comments Section Start -->
@@ -174,9 +182,12 @@
 								<c:set var="commentViews" value="${postDetailView.commentViews}"
 									scope="page"></c:set>
 								<div class="bg-card-2 p-3 rounded" id="comment-container">
+									<c:url var="commentDeleteUrl" value="/api/comment/delete"></c:url>
+									<span id="commentDeleteUrl" class="d-none"
+										url="${commentDeleteUrl}"></span>
 									<!-- Example Comments -->
 									<c:forEach var="cv" items="${commentViews}">
-										<div class="d-flex txt-text mb-3">
+										<div class="d-flex txt-text mb-3" id="comment-${cv.id}">
 											<a href="#" class="me-3"> <img
 												style="width: 40px; height: 40px" class="rounded-circle"
 												src="${cv.profileImage}" alt="Commenter Profile Picture">
@@ -197,14 +208,12 @@
 															<div
 																class="shadow w-25 p-2 rounded position-absolute comment-control-panel float-end top-0 end-0 mt-2">
 																<div commentId="${cv.id}"
-																	class="pointer rounded text-danger">
+																	class="pointer rounded comment-delete-btn text-danger">
 																	<span class="text-decoration-none">Delete</span>
 																</div>
 															</div>
 														</c:if>
-														<!-- Comment control panel start -->
-
-
+														<!-- Comment control panel end -->
 													</div>
 													<p>
 														<c:out value="${cv.content}"></c:out>
@@ -244,10 +253,10 @@
 							<textarea type="text" class="w-100 h-100 txt-text" name="comment"
 								id="commentContent" rows="1" placeholder="Write a comment..."></textarea>
 						</div>
-						
-						<input type="hidden" class="d-none" id="login-user" value="${loginUser.id}"/>
-						
-						<input id="post-id" type="hidden" class="d-none" value="${pv.id}" />
+
+						<input type="hidden" class="d-none" id="login-user"
+							value="${loginUser.id}" /> <input id="post-id" type="hidden"
+							class="d-none" value="${pv.id}" />
 						<c:url var="commentCreate" value="/api/comment/create"></c:url>
 						<button url="${commentCreate}" id="comment-btn"
 							class="btn btn-primary">Post</button>
@@ -272,6 +281,9 @@
 	<c:url var="controlPanelDisplay"
 		value="/resource/js/control-panel-display.js"></c:url>
 	<script type="text/javascript" src="${controlPanelDisplay}"></script>
+
+	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
+	<script type="text/javascript" src="${editPost}"></script>
 
 </body>
 </html>

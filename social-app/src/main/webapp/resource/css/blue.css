@@ -171,7 +171,6 @@
 }
 
 .post-image-container {
-	min-height: 400px; /* Adjust the height to fit your design */
 	max-height: 400px;
 	overflow: hidden;
 }

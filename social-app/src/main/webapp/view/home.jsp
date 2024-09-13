@@ -51,14 +51,30 @@
 									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
 										<span class="txt-text">Save</span>
 									</div>
+
+									<div postId="${pv.id}"
+										class="post-detail-btn px-2 py-2 pointer rounded">
+										<span class="txt-text">Detail</span>
+										<c:url var="post" value="/post">
+											<c:param name="postId" value="${pv.id}"></c:param>
+										</c:url>
+										<a href="${post}" class="d-none post-detail-link"></a>
+									</div>
+
 									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
 										<span class="txt-text">Share</span>
 									</div>
 
 									<c:if test="${pv.userId eq loginUser.id}">
-										<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
+										<div postId="${pv.id}"
+											class="edit-post-btn px-2 py-2 pointer rounded">
 											<span class="txt-text">Edit</span>
+											<c:url var="edit" value="/post/edit">
+												<c:param name="postId" value="${pv.id}"></c:param>
+											</c:url>
+											<a href="${edit}" class="d-none edit-post-link"></a>
 										</div>
+
 										<div postId="${pv.id}"
 											class="px-2 py-2 pointer rounded text-danger">
 											<span class="text-decoration-none">Delete</span>
@@ -190,5 +206,9 @@
 	<c:url var="controlPanelDisplay"
 		value="/resource/js/control-panel-display-home.js"></c:url>
 	<script type="text/javascript" src="${controlPanelDisplay}"></script>
+
+	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
+	<script type="text/javascript" src="${editPost}"></script>
+
 </body>
 </html>
