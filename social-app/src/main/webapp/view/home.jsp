@@ -41,7 +41,7 @@
 					<c:when test="${not empty postViews}">
 						<c:forEach var="pv" items="${postViews}">
 							<!-- new feed start -->
-							<div class="p-2 rounded position-relative mb-2 post-card">
+							<div class="p-2 rounded position-relative mb-2 post-card" id="post-${pv.id}">
 								<span class="float-end pointer control-btn"> <i
 									class="bi bi-three-dots-vertical"></i>
 								</span>
@@ -75,8 +75,9 @@
 											<a href="${edit}" class="d-none edit-post-link"></a>
 										</div>
 
-										<div postId="${pv.id}"
-											class="px-2 py-2 pointer rounded text-danger">
+										<c:url var="postDeleteUrl" value="/api/post/delete"></c:url>
+										<div postId="${pv.id}" url="${postDeleteUrl}"
+											class="post-delete-btn px-2 py-2 pointer rounded text-danger">
 											<span class="text-decoration-none">Delete</span>
 										</div>
 									</c:if>
@@ -210,5 +211,7 @@
 	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
 	<script type="text/javascript" src="${editPost}"></script>
 
+	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
+	<script type="text/javascript" src="${postDelete}"></script>
 </body>
 </html>

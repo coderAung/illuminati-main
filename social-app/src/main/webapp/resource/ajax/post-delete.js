@@ -5,7 +5,40 @@ $("document").ready(() => {
 			btn.addEventListener("click", event => deletePost(event))
 		})
 	}
+	
+	const postDeleteBtn = document.querySelector(".post-delete")
+	if(postDeleteBtn) {
+		console.log("exist")
+		postDeleteBtn.addEventListener("click", event => deleteInPostDetail(event))
+	}
 })
+
+function deleteInPostDetail(event) {
+	console.log("clicked")
+	let target = event.target
+	if(target instanceof HTMLElement) {
+		if(!target.classList.contains("post-delete")) {
+			target = target.parentElement
+		}
+		
+		const url = target.getAttribute("url")
+		const postId = target.getAttribute("postId")
+
+		$.post(
+			url,
+			{
+				"postId": postId
+			},
+			response => {
+				if(response.result === "success") {
+					window.location.reload()
+				}
+			},
+			"json"
+		)
+		
+	}
+}
 
 function deletePost(event) {
 	let target = event.target

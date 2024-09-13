@@ -14,8 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/api/post/delete" },
-			loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/api/post/delete" }, loadOnStartup = 1)
 public class PostApi extends Api {
 
 	private static final long serialVersionUID = 1L;
@@ -25,12 +24,12 @@ public class PostApi extends Api {
 	@Resource(name = "social")
 	private DataSource dataSource;
 	private PostService postService;
-	
+
 	@Override
 	public void init() throws ServletException {
 		postService = ServiceFactory.getService(PostService.class, dataSource);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		var path = req.getServletPath();
@@ -43,7 +42,7 @@ public class PostApi extends Api {
 			break;
 		}
 	}
-	
+
 	private void deletePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		// get post id from request parameter
 		if (null == req.getParameter("postId")) {
@@ -51,16 +50,19 @@ public class PostApi extends Api {
 		} else {
 			var postId = Integer.parseInt(req.getParameter("postId"));
 
+			var postImages = postService.getPostView(postId).getPostImageList();
 			// delete all related data with the target post
 			// such as post images and post's comments
 			// by using post service
+
 			var result = postService.deletePost(postId);
-			if(result) {
+			if (result) {
+				if (postImages != null) {
+					postImages.forEach(System.out::print);
+				}
 				resp.setContentType("application/json");
 				var writer = resp.getWriter();
-				var data = JsonTool.jsonFromMap(Map.of(
-						"result", "success"
-						));
+				var data = JsonTool.jsonFromMap(Map.of("result", "success"));
 				writer.append(data);
 				writer.flush();
 			}
