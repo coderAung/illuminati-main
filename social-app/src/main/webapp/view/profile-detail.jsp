@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:url var="home" value="/home"></c:url>
-<c:url var="login" value="/login"></c:url>
-<c:url var="notifications" value="/notifications"></c:url>
-<c:url var="setting" value="/setting"></c:url>
-<c:url var="profile" value="/profile"></c:url>
-<c:url var="image" value="/img/logo.jpg"></c:url>
 
 <!DOCTYPE html>
 <html>
@@ -14,6 +8,15 @@
 <meta charset="UTF-8">
 <title>Illuminati | Detail</title>
 <jsp:include page="/resource/style.jsp"></jsp:include>
+
+<style type="text/css">
+select {
+	outline: none;
+	background: transparent;
+	border: none;
+}
+</style>
+
 </head>
 
 <body class="main-bg">
@@ -36,8 +39,11 @@
 			<!-- main content start -->
 			<div class="col-6 px-0 txt-white">
 				<div class="w-100">
-					<span class="float-end pointer">edit</span>
-					<h4 class="mb-3">Profile Detail</h4>
+					<button type="button" data-bs-toggle="modal" data-bs-target="#edit-form"
+						class="float-end pointer text-decoration-none btn btn-sm btn-app">
+						<i class="bi bi-pencil"></i>
+					</button>
+					<h4 class="mb-3">${loginUser.name}'s Details</h4>
 				</div>
 
 				<div class="bg-card p-3 rounded">
@@ -65,48 +71,78 @@
 						</div>
 
 						<div class="flex-fill p-2 user-info">
-							<div class="px-2 py-1 pointer">${profileDetailView.name}</div>
+							<div class="px-2 py-1 pointer rounded">
+								<i class="bi bi-person-circle me-2"></i>
+								<span>${profileDetailView.name}</span>
+							</div>
 							<div class="w-100 bg-card-2 my-1" style="height: 1px"></div>
 
-							<div class="px-2 py-1 pointer">${profileDetailView.email}</div>
+							<div class="px-2 py-1 pointer rounded">
+								<i class="bi bi-envelope-check-fill me-2"></i>
+								<span>${profileDetailView.email}</span>
+							</div>
 							<div class="w-100 bg-card-2 my-1" style="height: 1px"></div>
 
 							<c:choose>
 								<c:when test="${not empty profileDetailView.phoneNumber}">
-									<div class="px-2 py-1 pointer">${profileDetailView.phoneNumber}</div>
+									<div class="px-2 py-1 pointer rounded">
+										<i class="bi bi-telephone-fill me-2"></i>
+										<span>${profileDetailView.phoneNumber}</span>
+									</div>
 								</c:when>
 								<c:otherwise>
-									<div class="px-2 py-1 pointer txt-grey">Not defined</div>
+									<div class="px-2 py-1 pointer txt-grey rounded">
+										<i class="bi bi-telephone-fill me-2"></i>
+										<span>Phone number</span>
+									</div>
 								</c:otherwise>
 							</c:choose>
 							<div class="w-100 bg-card-2 my-1" style="height: 1px"></div>
 
 							<c:choose>
 								<c:when test="${not empty profileDetailView.address}">
-									<div class="px-2 py-1 pointer">${profileDetailView.address}</div>
+									<div class="px-2 py-1 pointer rounded">
+										<i class="bi bi-geo-alt-fill me-2"></i>
+										<span>${profileDetailView.address}</span>
+									</div>
 								</c:when>
 								<c:otherwise>
-									<div class="px-2 py-1 pointer txt-grey">Not defined</div>
+									<div class="px-2 py-1 pointer txt-grey rounded">
+										<i class="bi bi-geo-alt-fill me-2"></i>
+										<span>Address</span>
+									</div>
 								</c:otherwise>
 							</c:choose>
 							<div class="w-100 bg-card-2 my-1" style="height: 1px"></div>
 
 							<c:choose>
 								<c:when test="${not empty profileDetailView.birthDate}">
-									<div class="px-2 py-1 pointer">${profileDetailView.birthDate}</div>
+									<div class="px-2 py-1 pointer rounded">
+									<i class="bi bi-cake2-fill me-2"></i>
+									<span>${profileDetailView.birthDate}</span>
+									</div>
 								</c:when>
 								<c:otherwise>
-									<div class="px-2 py-1 pointer txt-grey">Not defined</div>
+									<div class="px-2 py-1 pointer txt-grey rounded">
+										<i class="bi bi-cake2-fill me-2"></i>
+										<span>Birthday</span>
+									</div>
 								</c:otherwise>
 							</c:choose>
 							<div class="w-100 bg-card-2 my-1" style="height: 1px"></div>
 
 							<c:choose>
 								<c:when test="${not empty profileDetailView.bio}">
-									<div class="px-2 py-1 pointer">${profileDetailView.bio}</div>
+									<div class="px-2 py-1 pointer rounded">
+										<i class="bi bi-journal-bookmark-fill me-2"></i>
+										<span>${profileDetailView.bio}</span>
+									</div>
 								</c:when>
 								<c:otherwise>
-									<div class="px-2 py-1 pointer txt-grey">Not defined</div>
+									<div class="px-2 py-1 pointer txt-grey rounded">
+										<i class="bi bi-journal-bookmark-fill me-2"></i>
+										<span>Bio</span>
+									</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -145,15 +181,15 @@
 
 					<div class="container-fluid">
 						<div class="row justify-content-evenly">
-							<div class="col-3 text-center bg-card-2 py-3 pointer rounded">
+							<div class="col-auto text-center bg-card-2 py-3 pointer rounded shadow">
 								<h4>Gender</h4>
 								<span>${empty profileDetailView.gender ? 'Not Defined': profileDetailView.gender}</span>
 							</div>
-							<div class="col-3 text-center bg-card-2 py-3 pointer rounded">
+							<div class="col-auto text-center bg-card-2 py-3 pointer rounded shadow">
 								<h4>Relationship</h4>
 								<span>${empty profileDetailView.relationship ? 'Not Defined': profileDetailView.relationship}</span>
 							</div>
-							<div class="col-3 text-center bg-card-2 py-3 pointer rounded">
+							<div class="col-auto text-center bg-card-2 py-3 pointer rounded shadow">
 								<h4>Occupation</h4>
 								<span>${empty profileDetailView.occupation ? 'Not Defined': profileDetailView.occupation}</span>
 							</div>
@@ -163,6 +199,9 @@
 			</div>
 			<!-- main content end -->
 		</div>
+		
+		<jsp:include page="/component/modal/detail-edit-form.jsp"></jsp:include>
+		
 	</main>
 	<!-- main content end -->
 	<c:url var="jquery" value="/resource/library/jquery.min.js"></c:url>

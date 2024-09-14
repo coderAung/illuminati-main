@@ -7,6 +7,8 @@ public class StringTool {
 	
 	private static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy_hh-mm-ss");
 
+	public static String DEFAULT_EMPTY_VALUE = "Empty";
+	
 	public static String joinWithComma(String [] array) {
 		var sb = new StringBuilder();
 		for(int i = 0; i < array.length; i ++) {

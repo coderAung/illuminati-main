@@ -1,14 +1,21 @@
 package edu.ucsy.social.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.model.dto.form.ProfileDetailForm;
+import edu.ucsy.social.model.entity.UserDetail.Gender;
+import edu.ucsy.social.model.entity.UserDetail.Occupation;
+import edu.ucsy.social.model.entity.UserDetail.Relationship;
 import edu.ucsy.social.service.FriendService;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.service.UserService;
+import edu.ucsy.social.utils.DateTimeUtil;
 import edu.ucsy.social.utils.DefaultPicture;
+import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -198,16 +205,53 @@ public class ProfileController extends Controller {
 
 	}
 
-	private void editProfile(HttpServletRequest req, HttpServletResponse resp) {
+	private void editProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
 		// get user id from login user
-		
+		var loginUser = getLoginUser(req);
+		var userId = loginUser.getId();
 		// get data from request | data come from front end by edit form
+		var name = req.getParameter("name");
+		var phoneNumber = req.getParameter("phoneNumber");
+		var address = req.getParameter("address");
 		
+		var birthDay = req.getParameter("birthDay");
+		LocalDate birthDate = null;
+		if(!StringTool.isEmpty(birthDay)) {
+			birthDate = DateTimeUtil.getBirthDateFromString(birthDay, DateTimeUtil.getDefaultBirthDateFormatter());
+		}
+		
+		var bio = req.getParameter("bio");
+		var gender = req.getParameter("gender");
+		var relationship = req.getParameter("relationship");
+		var occupation = req.getParameter("occupation");
+
 		// create a edit form dto object
+		var profileDetailForm = new ProfileDetailForm(userId);
+
+		profileDetailForm.setName(name);
+		profileDetailForm.setPhoneNumber(phoneNumber);
+		profileDetailForm.setAddress(address);
+		
+		profileDetailForm.setBirthDate(birthDate);
+		profileDetailForm.setBio(bio);
+		
+		if(!StringTool.DEFAULT_EMPTY_VALUE.equalsIgnoreCase(gender) && null != gender) {
+			profileDetailForm.setGender(Gender.valueOf(gender));
+		}
+		if(!StringTool.DEFAULT_EMPTY_VALUE.equalsIgnoreCase(relationship) && null != relationship) {
+			profileDetailForm.setRelationship(Relationship.valueOf(relationship));
+		}
+		if(!StringTool.DEFAULT_EMPTY_VALUE.equalsIgnoreCase(occupation) && null != occupation) {
+			profileDetailForm.setOccupation(Occupation.valueOf(occupation));
+		}
 		
 		// ask user service to edit using the above form
-		
+		var result = userService.editProfileDetail(profileDetailForm);
 		// after updating | editing profile go back to profile detail page with alert message
+		if(result) {
+			redirect(req, resp, "/profile/detail");
+		}
 	}
 
 }

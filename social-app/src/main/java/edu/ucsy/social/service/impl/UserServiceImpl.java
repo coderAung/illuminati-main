@@ -12,6 +12,7 @@ import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.data.db.DatabaseConnector;
 import edu.ucsy.social.model.dto.LoginUser;
 import edu.ucsy.social.model.dto.form.LoginForm;
+import edu.ucsy.social.model.dto.form.ProfileDetailForm;
 import edu.ucsy.social.model.dto.form.RegisterForm;
 import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
@@ -26,12 +27,14 @@ public class UserServiceImpl implements UserService {
 	private DatabaseConnector connector;
 	private Model<User> userModel;
 	private Searchable<User> userSearchModel;
+	private Model<UserDetail> userDetailModel;
 	
 
 	public UserServiceImpl(DatabaseConnector connector) {
 		this.connector = connector;
 		userModel = ModelFactory.getModel(User.class);
 		userSearchModel = ModelFactory.getSearchModel(User.class);
+		userDetailModel = ModelFactory.getModel(UserDetail.class);
 	}
 
 	@Override
@@ -84,7 +87,7 @@ public class UserServiceImpl implements UserService {
 			}
 			var profileDetailView = new ProfileDetailView(userId, user.email(), user.name());
 
-			var userDetail = userModel.getRelational(OneToOne.class).getOne(UserDetail.class, userId);
+			var userDetail = userDetailModel.findOne(userId);
 			if (null != userDetail) {
 				profileDetailView.setBirthDate(userDetail.birthDate());
 				profileDetailView.setAddress(userDetail.address());
@@ -92,6 +95,7 @@ public class UserServiceImpl implements UserService {
 				profileDetailView.setGender(userDetail.gender());
 				profileDetailView.setRelationship(userDetail.relationship());
 				profileDetailView.setOccupation(userDetail.occupation());
+				profileDetailView.setPhoneNumber(userDetail.phoneNumber());
 			}
 			return profileDetailView;
 		} catch (SQLException e) {
@@ -129,12 +133,14 @@ public class UserServiceImpl implements UserService {
 	public void initConnection(Connection connection) {
 		userModel.setConnection(connection);
 		userSearchModel.setConnection(connection);
+		userDetailModel.setConnection(connection);
 	}
 
 	@Override
 	public void destroyConnection() {
 		userModel.setConnection(null);
 		userSearchModel.setConnection(null);
+		userDetailModel.setConnection(null);
 	}
 
 	@Override
@@ -222,6 +228,70 @@ public class UserServiceImpl implements UserService {
 			destroyConnection();
 		}
 		return false;
+	}
+
+	@Override
+	public boolean editProfileDetail(ProfileDetailForm profileDetailForm) {
+		try(var connection = connector.getConnection()) {
+			
+			try {
+				initConnection(connection);
+				connection.setAutoCommit(false);
+				
+				var user = userModel.findOne(profileDetailForm.getUserId());
+				if(null != user) {
+					if(!user.name().equals(profileDetailForm.getName())) {
+						userModel.update(
+								new User(
+										user.id(), 
+										user.email(), 
+										profileDetailForm.getName(), 
+										user.password(), 
+										user.role(), 
+										user.status(), 
+										user.createdAt(), 
+										user.updatedAt())
+								);
+					}
+					
+					var userDetail = userDetailModel.findOne(profileDetailForm.getUserId());
+					if(null != userDetail) {
+						userDetail = getUserDetailFromProfileDetailForm(profileDetailForm);
+
+						userDetail = userDetailModel.update(userDetail);
+						
+					} else {
+						userDetail = getUserDetailFromProfileDetailForm(profileDetailForm);
+						userDetail = userDetailModel.save(userDetail);
+					}
+					
+					if(null != userDetail) {
+						connection.commit();
+						return true;
+					}
+				}
+			} catch (Exception e) {
+				connection.rollback();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return false;
+	}
+	
+	private UserDetail getUserDetailFromProfileDetailForm(ProfileDetailForm profileDetailForm) {
+		return new UserDetail(
+				profileDetailForm.getUserId(), 
+				profileDetailForm.getBirthDate(), 
+				profileDetailForm.getAddress(), 
+				profileDetailForm.getBio(), 
+				profileDetailForm.getPhoneNumber(), 
+				profileDetailForm.getGender(), 
+				profileDetailForm.getRelationship(), 
+				profileDetailForm.getOccupation());
 	}
 
 }

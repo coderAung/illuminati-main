@@ -141,6 +141,8 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 				var userDetail = userdetailFrom(rs);
 				if(null != ud.birthDate() && !ud.birthDate().equals(userDetail.birthDate())) {
 					rs.updateDate("birth_date", Date.valueOf(ud.birthDate()));
+				} else if(null == ud.birthDate()) {
+					rs.updateDate("birth_date", null);
 				}
 				
 				if(null != ud.address() && !ud.address().equals(userDetail.address())) {

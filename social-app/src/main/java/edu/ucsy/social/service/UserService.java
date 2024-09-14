@@ -3,6 +3,7 @@ package edu.ucsy.social.service;
 import edu.ucsy.social.data.Service;
 import edu.ucsy.social.model.dto.LoginUser;
 import edu.ucsy.social.model.dto.form.LoginForm;
+import edu.ucsy.social.model.dto.form.ProfileDetailForm;
 import edu.ucsy.social.model.dto.form.RegisterForm;
 import edu.ucsy.social.model.dto.view.ProfileDetailView;
 import edu.ucsy.social.model.dto.view.ProfileView;
@@ -20,4 +21,6 @@ public interface UserService extends Service {
 	boolean createUser(RegisterForm registerForm);
 
 	boolean isEmailExist(String email);
+
+	boolean editProfileDetail(ProfileDetailForm profileDetailForm);
 }

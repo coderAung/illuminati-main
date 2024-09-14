@@ -62,7 +62,6 @@
 					</div>
 				</div>
 				<!-- Profile Card End -->
-
 				<!-- Friend Preview start -->
 				<jsp:include page="/component/friend-preview.jsp">
 					<jsp:param value="${loginUser.id}" name="userId"/>

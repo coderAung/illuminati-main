@@ -5,11 +5,12 @@
 <c:if test="${not empty friendViews}">
 	<div class="bg-card txt-white mb-2 p-3 color-white rounded">
 		<div class="mb-3 d-flex justify-content-between">
-			<span class="fs-5"> Friends <i class="bi bi-dot"></i> <c:choose>
-					<c:when test="${1 eq friendCount}">
+			<span class="fs-5"> Friends <i class="bi bi-dot"></i> 
+				<c:choose>
+					<c:when test="${friendCount eq 1}">
 						<small class="txt-grey fs-6">${friendCount} friend</small>
 					</c:when>
-					<c:when test="${1 gt friendCount}">
+					<c:when test="${friendCount gt 1}">
 						<small class="txt-grey fs-6">${friendCount} friends</small>
 					</c:when>
 				</c:choose>

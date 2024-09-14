@@ -6,9 +6,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Illuminati | Profile</title>
+<jsp:include page="/resource/style.jsp"></jsp:include>
 </head>
-<body>
+<body class="main-bg">
+	<!-- nav bar start -->
+	<jsp:include page="/component/nav-bar.jsp">
+		<jsp:param value="nav-link-active" name="profileActive" />
+	</jsp:include>
+	<!-- nav bar end -->
 
+	<main>
+		<div class="container-fluid row">
+			<!-- side bar start -->
+			<div class="col-3 left-side mx-3">
+				<jsp:include page="/component/sidebar.jsp">
+					<jsp:param name="profileActive" value="menu-item-active" />
+				</jsp:include>
+			</div>
+
+			<div class="col-6 px-0 txt-white">
+				<h4 class="mb-3">Editing ${loginUser.name}'s Info</h4>
+				<div class="bg-card p-3 rounded">
+					
+				</div>
+			</div>
+		</div>
+	</main>
 </body>
 </html>
