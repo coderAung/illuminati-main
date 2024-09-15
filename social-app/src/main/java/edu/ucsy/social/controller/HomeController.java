@@ -32,7 +32,7 @@ public class HomeController extends Controller {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get latest random post views from database with limit 10
-		var postViews = postService.getRandomPostViews(30);
+		var postViews = postService.getRandomPostViews((int) getLoginUser(req).getId(), 30);
 		
 		for(var pv : postViews) {
 			var postImageList = pv.getPostImageList();

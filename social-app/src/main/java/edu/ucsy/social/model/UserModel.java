@@ -13,8 +13,10 @@ import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.model.entity.CoverImage;
 import edu.ucsy.social.model.entity.Friend;
+import edu.ucsy.social.model.entity.FriendRequest;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.ProfileImage;
+import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.social.model.entity.User.Status;
@@ -364,6 +366,13 @@ public class UserModel extends AbstractModel<User>
 			var posts = getManyPosts(id, limit);
 			return posts.stream().map(post -> (T) post).toList();
 		}
+
+		if(e.equals(SavedPost.class)) {
+			var savedPosts = getManySavedPosts(id, limit);
+			if(null != savedPosts) {
+				return savedPosts.stream().map(sp -> (T) sp).toList();
+			}
+		}
 		
 //		if(e.equals(FriendRequest.class)) {
 //			var friendRequests = getManyFriendRequests(id, limit);
@@ -372,7 +381,34 @@ public class UserModel extends AbstractModel<User>
 		
 		return null;
 	}
-//
+
+	private List<SavedPost> getManySavedPosts(long id, long limit) {
+		var sql = "select * from saved_posts where user_id = ? order by saved_at desc";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rs = stmt.executeQuery();
+			var savedPosts = new ArrayList<SavedPost>();
+			while(rs.next()) {
+				var savedPost = savedPostFrom(rs);
+				savedPosts.add(savedPost);
+			}
+			return savedPosts;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private SavedPost savedPostFrom(ResultSet rs) throws SQLException {
+		var savedpost = new SavedPost(
+				rs.getLong("id"), 
+				rs.getLong("post_id"), 
+				rs.getLong("user_id"),
+				rs.getTimestamp("saved_at").toLocalDateTime());
+		return savedpost;
+	}
+	
+	//
 //	private List<FriendRequest> getManyFriendRequests(long id, long limit) {
 //		
 //		var sql = """
@@ -455,12 +491,46 @@ public class UserModel extends AbstractModel<User>
 	@Override
 	public <T> long countMany(Class<T> e, long userId) {
 		if(e.equals(Friend.class)) {
-			return countManyFriend(userId);
+			return countManyFriends(userId);
+		}
+		if(e.equals(SavedPost.class)) {
+			return countManySavedPosts(userId);
+		}
+		if(e.equals(FriendRequest.class)) {
+			return countManyFriendRequest(userId);
 		}
 		return 0;
 	}
 
-	private long countManyFriend(long userId) {
+	private long countManyFriendRequest(long userId) {
+		var sql = "select count(*) as friend_request_count from friend_requests where request_to = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("friend_request_count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	private long countManySavedPosts(long userId) {
+		var sql = "select count(*) as saved_post_count from saved_posts where user_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("saved_post_count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	private long countManyFriends(long userId) {
 		var sql = "select count(*) as friend_count from friends where user_id = ?";
 		try(var stmt = connection.prepareStatement(sql)) {
 			stmt.setLong(1, userId);

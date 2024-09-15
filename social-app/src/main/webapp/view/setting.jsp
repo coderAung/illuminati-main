@@ -53,7 +53,25 @@
 
 			<!-- main content start -->
 			<div class="col-6 px-0 txt-white">
-				<h4 class="mb-3">Setting</h4>
+				<div class="mb-3">
+					<span class="h4">Setting</span>
+					<c:if test="${not empty alert}">
+						<c:choose>
+							<c:when test="${'DANGER' eq alert.alertType.name()}">
+								<div class="alert w-auto ms-3 alert-danger text-center d-inline-block">
+									${alert.message}
+								</div>
+							</c:when>
+							<c:when test="${'INFO' eq alert.alertType.name()}">
+								<div class="alert w-auto ms-3 alert-info text-center d-inline-block">
+									${alert.message}
+								</div>
+							</c:when>
+						</c:choose>
+					
+						<c:remove var="alert" scope="session"/>
+					</c:if>
+				</div>
 
 				<!-- Profile Detail -->
 				<div class="bg-card setting-div rounded p-3 mb-3">

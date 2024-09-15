@@ -18,6 +18,7 @@ public class PostView implements Serializable {
 	private String profileImage;
 	private long commentCount;
 	private long shareCount;
+	private boolean isSaved;
 
 	private List<String> postImageList;
 
@@ -34,6 +35,14 @@ public class PostView implements Serializable {
 
 	public String getProfileImage() {
 		return profileImage;
+	}
+
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
 	}
 
 	public void setProfileImage(String profileImage) {

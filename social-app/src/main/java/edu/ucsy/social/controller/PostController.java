@@ -112,7 +112,7 @@ public class PostController extends Controller {
 		// get 30 comment views
 		// set comment views
 		// comment views are in postDetailView
-		var postDetailView = postService.getPostDetailView(postId);
+		var postDetailView = postService.getPostDetailView((int) getLoginUser(req).getId(), postId);
 		if (postDetailView != null) {
 
 			var postView = postDetailView.getPostView();

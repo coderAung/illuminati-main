@@ -8,13 +8,11 @@ $("document").ready(() => {
 	
 	const postDeleteBtn = document.querySelector(".post-delete")
 	if(postDeleteBtn) {
-		console.log("exist")
 		postDeleteBtn.addEventListener("click", event => deleteInPostDetail(event))
 	}
 })
 
 function deleteInPostDetail(event) {
-	console.log("clicked")
 	let target = event.target
 	if(target instanceof HTMLElement) {
 		if(!target.classList.contains("post-delete")) {

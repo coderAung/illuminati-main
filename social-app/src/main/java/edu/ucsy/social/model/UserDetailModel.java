@@ -147,26 +147,38 @@ public class UserDetailModel extends AbstractModel<UserDetail>{
 				
 				if(null != ud.address() && !ud.address().equals(userDetail.address())) {
 					rs.updateString("address", ud.address());
+				} else if(null == ud.address()) {
+					rs.updateString("address", null);
 				}
 				
 				if(null != ud.bio() && !ud.bio().equals(userDetail.bio())) {
 					rs.updateString("bio", ud.bio());
+				} else if (null == ud.bio()) {
+					rs.updateString("bio", null);
 				}
 				
 				if(null != ud.phoneNumber() && !ud.phoneNumber().equals(userDetail.phoneNumber())) {
 					rs.updateString("phone_number", ud.phoneNumber());
+				} else if(null == ud.phoneNumber()) {
+					rs.updateString("phone_number", null);
 				}
 				
 				if(null != ud.gender() && !ud.gender().equals(userDetail.gender())) {
 					rs.updateString("gender", ud.gender().name());
+				} else if(null == ud.gender()) {
+					rs.updateString("gender", null);
 				}
 				
 				if(null != ud.relationship() && !ud.relationship().equals(userDetail.relationship())) {
 					rs.updateString("relationship", ud.relationship().name());
+				} else if(null == ud.relationship()) {
+					rs.updateString("relationship", null);
 				}
 				
 				if(null != ud.occupation() && !ud.occupation().equals(userDetail.occupation())) {
 					rs.updateString("occupation", ud.occupation().name());
+				} else if(null == ud.occupation()) {
+					rs.updateString("occupation", null);
 				}
 				
 				rs.updateRow();

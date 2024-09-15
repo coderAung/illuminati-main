@@ -13,6 +13,7 @@ import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
+import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.utils.StringTool;
 
 public class PostModel extends AbstractModel<Post>
@@ -217,6 +218,7 @@ public class PostModel extends AbstractModel<Post>
 		return null;
 	}
 
+
 	private List<Comment> getManyComments(long id, long limit) {
 		
 		var sql = """
@@ -291,7 +293,25 @@ public class PostModel extends AbstractModel<Post>
 		if(e.equals(Comment.class)) {
 			return deleteManyComments(id);
 		}
+		
+		if(e.equals(SavedPost.class)) {
+			return deleteManySavedPosts(id);
+		}
 
+		return false;
+	}
+
+	private boolean deleteManySavedPosts(long id) {
+		var sql = "delete from saved_posts where post_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rows = stmt.executeUpdate();
+			if(rows > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

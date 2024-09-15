@@ -36,11 +36,11 @@
 					<c:when test="${not empty friendViews}">
 						<div class="mb-3 d-flex justify-content-between">
 							<c:choose>
-								<c:when test="${friendViews.size() eq 1}">
+								<c:when test="${friendCount eq 1}">
 									<small class="txt-grey">1 friend</small>
 								</c:when>
-								<c:when test="${friendViews.size() gt 1}">
-									<small class="txt-grey">${friendViews.size()} friends</small>
+								<c:when test="${friendCount gt 1}">
+									<small class="txt-grey">${friendCount} friends</small>
 								</c:when>
 							</c:choose>
 							<div class="d-flex search-bar py-2 px-3 bg-card-2 w-50 rounded">

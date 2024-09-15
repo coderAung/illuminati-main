@@ -51,7 +51,7 @@
 							<option value="Empty" class="txt-grey">Gender</option>
 							<option value="Male" ${maleSelected}>Male</option>
 							<option value="Female" ${femaleSelected}>Female</option>
-							<option value="Other" ${otherSelected}>Other</option>
+							<option value="Others" ${otherSelected}>Others</option>
 						</select>
 					</div>
 

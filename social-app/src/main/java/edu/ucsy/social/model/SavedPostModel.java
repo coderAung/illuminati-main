@@ -46,7 +46,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 			stmt.setLong(1, id);
 			var rs = stmt.executeQuery();
 			if(rs.next()) {
-				return savedpostFrom(rs);
+				return savedPostFrom(rs);
 			}
 			
 		} catch (SQLException e) {
@@ -82,7 +82,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 			var savedposts = new ArrayList<SavedPost>();
 
 			while (rs.next()) {
-				var savedpost = savedpostFrom(rs);
+				var savedpost = savedPostFrom(rs);
 				savedposts.add(savedpost);
 			}
 			return savedposts;
@@ -102,7 +102,7 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 			var rs = stmt.executeQuery();
 			var savedposts = new ArrayList<SavedPost>();
 			while (rs.next()) {
-				var savedpost = savedpostFrom(rs);
+				var savedpost = savedPostFrom(rs);
 				savedposts.add(savedpost);
 			}
 			return savedposts;
@@ -140,11 +140,10 @@ public class SavedPostModel extends AbstractModel<SavedPost> {
 		return false;
 	}
 
-	private SavedPost savedpostFrom(ResultSet rs) throws SQLException {
+	private SavedPost savedPostFrom(ResultSet rs) throws SQLException {
 		var savedpost = new SavedPost(
 				rs.getLong("id"), 
-				rs.getLong("postid"), 
-				rs.getString("content"),
+				rs.getLong("post_id"), 
 				rs.getLong("user_id"),
 				rs.getTimestamp("saved_at").toLocalDateTime());
 		return savedpost;

@@ -58,6 +58,10 @@ public class FriendRequestController extends Controller {
 				}
 			}
 			
+			var friendRequestViewCount = friendRequestService.getFriendRequestCount(userId);
+			
+			req.setAttribute("friendRequestCount", friendRequestViewCount);
+			
 			// set friend request views to request scope
 			req.setAttribute("friendRequestViews", friendRequestViews);
 			// forward to friend-request page

@@ -6,7 +6,7 @@
 <c:url var="profile" value="/profile"></c:url>
 <c:url var="friends" value="/profile/friends"></c:url>
 <c:url var="friendRequests" value="/profile/friend-requests"></c:url>
-<c:url var="saved" value="/saved"></c:url>
+<c:url var="saved" value="/profile/saved"></c:url>
 <c:url var="notifications" value="/notifications"></c:url>
 <c:url var="setting" value="/setting"></c:url>
 
@@ -53,4 +53,4 @@
 			class="menu-item ${param.settingActive} py-2 px-4 pointer d-block text-decoration-none">
 			Setting </a>
 	</div>
-	<!--  =====================side bar end  -->
+	<!-- ==========================side bar end ======================================-->

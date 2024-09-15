@@ -30,7 +30,7 @@
 			<!-- side bar end -->
 
 			<div class="col-6 bg-card mb-2 p-3 rounded">
-				<h4 class="txt-text">Friends</h4>
+				<h4 class="txt-text">${userName}'s Friends</h4>
 
 				<c:choose>
 					<c:when test="${not empty friendViews}">

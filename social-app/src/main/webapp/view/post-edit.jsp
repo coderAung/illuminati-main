@@ -68,7 +68,7 @@
 							post</small>
 					</div>
 					<div class="d-flex flex-fill py-1 flex-row-reverse">
-						<button id="post-create-btn" class="btn-app w-50 rounded">Save</button>
+						<button id="post-create-btn" class="btn btn-app w-50 rounded">Save</button>
 					</div>
 				</div>
 				<!-- user info end -->

@@ -35,11 +35,11 @@
 					<c:when test="${not empty friendRequestViews}">
 						<div class="mb-3 d-flex justify-content-between">
 							<c:choose>
-								<c:when test="${friendRequestViews.size() eq 1}">
+								<c:when test="${friendRequestCount eq 1}">
 									<small class="txt-grey">1 friend request</small>
 								</c:when>
-								<c:when test="${friendRequestViews.size() gt 1}">
-									<small class="txt-grey">${friendViews.size()} friend
+								<c:when test="${friendRequestCount gt 1}">
+									<small class="txt-grey">${friendRequestCount} friend
 										requests</small>
 								</c:when>
 							</c:choose>

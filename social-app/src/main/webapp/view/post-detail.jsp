@@ -40,7 +40,7 @@
 					<c:set var="pv" value="${postDetailView.postView}"></c:set>
 				</c:if>
 
-				<div
+				<div id="post-container"
 					class="post-content bg-card position-relative txt-text p-2 rounded mb-5 post-card">
 					<span class="float-end pointer" id="control-btn"> <i
 						class="bi bi-three-dots-vertical"></i>
@@ -48,10 +48,25 @@
 
 					<div
 						class="bg-card shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
-						<div id="save-btn" postId="${pv.id}"
-							class="px-2 py-2 pointer rounded">
-							<span class="txt-text">Save</span>
-						</div>
+
+						<c:url var="savePostUrl" value="/api/post/save"></c:url>
+						<span class="d-none" id="savePostUrl" url="${savePostUrl}"></span>
+						
+						<c:url var="unsavePostUrl" value="/api/post/unsave"></c:url>
+						<span class="d-none" id="unsavePostUrl" url="${unsavePostUrl}"></span>
+
+						<c:choose>
+							<c:when test="${!pv.isSaved()}">
+								<div postId="${pv.id}" class="px-2 py-2 pointer rounded save-post-btn">
+									<span class="txt-text">Save</span>
+								</div>
+							</c:when>
+							<c:when test="${pv.isSaved()}">
+								<div postId="${pv.id}" class="px-2 py-2 pointer rounded unsave-post-btn">
+									<span class="txt-text">Unsave</span>
+								</div>
+							</c:when>
+						</c:choose>
 						<div id="share-btn" postId="${pv.id}"
 							class="px-2 py-2 pointer rounded">
 							<span class="txt-text">Share</span>
@@ -150,7 +165,7 @@
 					<!-- Post Images end -->
 					<!-- comment and share section -->
 					<div class=" d-flex align-items-center py-1 text-center">
-						<a
+						<a href="#comments"
 							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 							Comment <i class="bi bi-dot"></i> <c:choose>
 								<c:when test="${empty postDetailView.commentViews}">
@@ -275,6 +290,8 @@
 	<script type="text/javascript" src="${jquery}"></script>
 	<c:url var="comment" value="/resource/ajax/comment.js"></c:url>
 	<script type="text/javascript" src="${comment}"></script>
+	<c:url var="savePost" value="/resource/ajax/save-post.js"></c:url>
+	<script type="text/javascript" src="${savePost}"></script>
 
 	<!-- JavaScript for Scroll Effect -->
 	<c:url var="commentForm" value="/resource/js/comment-form.js"></c:url>

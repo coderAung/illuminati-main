@@ -14,7 +14,7 @@ public interface UserService extends Service {
 
 	ProfileDetailView getProfileDetailView(long userId);
 
-	boolean changePassword(String newPassword, long userId);
+	boolean changePassword(String oldPassword, String newPassword, long userId);
 
 	LoginUser login(LoginForm loginForm);
 
@@ -23,4 +23,6 @@ public interface UserService extends Service {
 	boolean isEmailExist(String email);
 
 	boolean editProfileDetail(ProfileDetailForm profileDetailForm);
+
+	String getUserName(long userId);
 }

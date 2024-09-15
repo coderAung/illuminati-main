@@ -7,25 +7,32 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import edu.ucsy.social.controller.Controller.ImageType;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
 import edu.ucsy.social.data.Searchable;
 import edu.ucsy.social.data.criteria.Criteria;
+import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.data.db.DatabaseConnector;
+import edu.ucsy.social.model.dto.LoginUser;
 import edu.ucsy.social.model.dto.form.PostForm;
+import edu.ucsy.social.model.dto.form.SavePostForm;
 import edu.ucsy.social.model.dto.view.CommentView;
 import edu.ucsy.social.model.dto.view.PostDetailView;
 import edu.ucsy.social.model.dto.view.PostEditView;
 import edu.ucsy.social.model.dto.view.PostView;
+import edu.ucsy.social.model.dto.view.SavedPostView;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.ProfileImage;
+import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.model.entity.SharedPost;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.service.PostService;
+import edu.ucsy.social.utils.DefaultPicture;
 
 public class PostServiceImpl implements PostService {
 
@@ -35,8 +42,10 @@ public class PostServiceImpl implements PostService {
 	private Model<User> userModel;
 	private Model<PostImage> postImageModel;
 	private Model<Comment> commentModel;
+	private Model<SavedPost> savedPostModel;
 	
 	private Searchable<Post> postSearchModel;
+	private Searchable<SavedPost> savedPostSearchModel;
 
 	public PostServiceImpl(DatabaseConnector connector) {
 
@@ -47,6 +56,8 @@ public class PostServiceImpl implements PostService {
 		this.postImageModel = ModelFactory.getModel(PostImage.class);
 		this.commentModel = ModelFactory.getModel(Comment.class);
 		this.postSearchModel = ModelFactory.getSearchModel(Post.class);
+		this.savedPostModel = ModelFactory.getModel(SavedPost.class);
+		this.savedPostSearchModel = ModelFactory.getSearchModel(SavedPost.class);
 	}
 
 	@Override
@@ -56,6 +67,8 @@ public class PostServiceImpl implements PostService {
 		postImageModel.setConnection(connection);
 		commentModel.setConnection(connection);
 		postSearchModel.setConnection(connection);
+		savedPostModel.setConnection(connection);
+		savedPostSearchModel.setConnection(connection);
 	}
 
 	@Override
@@ -65,6 +78,8 @@ public class PostServiceImpl implements PostService {
 		postImageModel.setConnection(null);
 		commentModel.setConnection(null);
 		postSearchModel.setConnection(null);
+		savedPostModel.setConnection(null);
+		savedPostSearchModel.setConnection(null);
 	}
 
 	@Override
@@ -94,6 +109,15 @@ public class PostServiceImpl implements PostService {
 				var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, post.id());
 				postView.setCommentCount(commentCount);
 				
+				// checking if the post is already saved
+				var criteria = new Criteria().where("post_id", Type.EQ, post.id()).where("user_id", Type.EQ, userId);
+				var savedPost = savedPostSearchModel.searchOne(criteria);
+
+				if(null != savedPost) {
+					postView.setSaved(true);
+				} else {
+					postView.setSaved(false);
+				}
 				postViews.add(postView);
 			}
 			return postViews;
@@ -108,7 +132,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostView> getRandomPostViews(int limit) {
+	public List<PostView> getRandomPostViews(int userId, int limit) {
 		
 		try(var connection = connector.getConnection()) {
 			initConnection(connection);
@@ -139,6 +163,15 @@ public class PostServiceImpl implements PostService {
 					var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, pv.getId());
 					pv.setCommentCount(commentCount);
 
+					// checking if the post is already saved
+					var criteria = new Criteria().where("post_id", Type.EQ, pv.getId()).where("user_id", Type.EQ, userId);
+					var savedPost = savedPostSearchModel.searchOne(criteria);
+
+					if(null != savedPost) {
+						pv.setSaved(true);
+					} else {
+						pv.setSaved(false);
+					}
 				}
 				
 				return postViews;
@@ -188,7 +221,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostDetailView getPostDetailView(int postId) {
+	public PostDetailView getPostDetailView(int loginUserId, int postId) {
 		
 		try(var connection = connector.getConnection()) {
 			initConnection(connection);
@@ -210,6 +243,15 @@ public class PostServiceImpl implements PostService {
 			var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, post.userId());
 			if(null != profileImage) {
 				postView.setProfileImage(profileImage.name());
+			}
+			
+			// checking if the post is already saved
+			var criteria = new Criteria().where("post_id", Type.EQ, postView.getId()).where("user_id", Type.EQ, loginUserId);
+			var savedPost = savedPostSearchModel.searchOne(criteria);
+			if(null != savedPost) {
+				postView.setSaved(true);
+			} else {
+				postView.setSaved(false);
 			}
 			
 			postDetailView.setPostView(postView);
@@ -258,6 +300,9 @@ public class PostServiceImpl implements PostService {
 				// delete shares
 				postModel.getRelational(OneToMany.class).deleteMany(SharedPost.class, postId);
 
+				// delete saved posts
+				postModel.getRelational(OneToMany.class).deleteMany(SavedPost.class, postId);
+				
 				// delete the post
 				postModel.delete(postId);
 
@@ -395,6 +440,133 @@ public class PostServiceImpl implements PostService {
 			destroyConnection();
 		}
 		return false;
+	}
+
+	@Override
+	public boolean saveThePost(SavePostForm savePostForm) {
+		
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var savedPost = new SavedPost(savePostForm.getPostId(), savePostForm.getUserId());
+			savedPost = savedPostModel.save(savedPost);
+			if(null != savedPost) {
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean unsaveThePost(SavePostForm savePostForm) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var savedPost = savedPostSearchModel.searchOne(new Criteria()
+								.where("post_id", Type.EQ, savePostForm.getPostId())
+								.where("user_id", Type.EQ, savePostForm.getUserId()));
+			if(null != savedPost) {
+				var result = savedPostModel.delete(savedPost.id());
+				return result;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean isSaved(PostView pv, int loginUserId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+
+			// checking if the post is already saved
+			var criteria = new Criteria().where("post_id", Type.EQ, pv.getId()).where("user_id", Type.EQ, loginUserId);
+			var savedPost = savedPostSearchModel.searchOne(criteria);
+			
+			if(null != savedPost) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public List<SavedPostView> getSavedPostViews(LoginUser loginUser, int stardardLimit) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var savedPosts = userModel.getRelational(OneToMany.class).getMany(SavedPost.class, loginUser.getId(), stardardLimit);
+			var savedPostViews = new ArrayList<SavedPostView>();
+			
+			if(null != savedPosts) {
+				for(var savedPost : savedPosts) {
+					var savedPostView = new SavedPostView(savedPost);
+	//				savedPostView.setId(savedPost.id());
+	//				savedPostView.setPostId(savedPost.postId());
+	//				savedPostView.setSavedBy(savedPost.userId());
+	//				savedPostView.setSavedAt(savedPost.savedAt());
+					
+					var post = postModel.findOne(savedPost.postId());
+					if(null != post) {
+						savedPostView.setPostContent(post.content());
+						savedPostView.setPostOwnerName(post.userName());
+						var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, post.id());
+						if(null != postImages && 0 < postImages.size()) {
+							savedPostView.setDisplayImage(postImages.get(0).name());
+							savedPostView.setDisplayImageType(ImageType.POST);
+						} else {
+							var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, post.userId());
+							if(null != profileImage) {
+								savedPostView.setDisplayImage(profileImage.name());
+								savedPostView.setDisplayImageType(ImageType.PROFILE);
+							} else {
+								savedPostView.setDisplayImage(DefaultPicture.defaultCoverImage);
+								savedPostView.setDisplayImageType(ImageType.COVER);
+							}
+						}
+					}
+					savedPostViews.add(savedPostView);
+				}
+				
+				return savedPostViews;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public long countSavedPost(LoginUser loginUser) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var savedPostCount = userModel.getRelational(OneToMany.class).countMany(SavedPost.class, loginUser.getId());
+			return savedPostCount;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return 0;
 	}
 
 }

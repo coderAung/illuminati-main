@@ -22,14 +22,14 @@
 	<main>
 		<div class="container-fluid row">
 
-			<!-- sidebar start -->
+			<!-- side bar start -->
 			<div class="col-3 left-side mx-3">
 				<jsp:include page="/component/sidebar.jsp">
 					<jsp:param name="homeActive" value="menu-item-active" />
 				</jsp:include>
 			</div>
-			<!-- sidebar end -->
-			<div class="col-6 px-0">
+			<!-- side bar end -->
+			<div class="col-6 px-0" id="post-container">
 
 				<!-- post form start -->
 				<jsp:include page="/component/create-post-link.jsp"></jsp:include>
@@ -39,6 +39,12 @@
 				<!-- real data -->
 				<c:choose>
 					<c:when test="${not empty postViews}">
+						<c:url var="savePostUrl" value="/api/post/save"></c:url>
+						<span class="d-none" id="savePostUrl" url="${savePostUrl}"></span>
+						
+						<c:url var="unsavePostUrl" value="/api/post/unsave"></c:url>
+						<span class="d-none" id="unsavePostUrl" url="${unsavePostUrl}"></span>
+						
 						<c:forEach var="pv" items="${postViews}">
 							<!-- new feed start -->
 							<div class="p-2 rounded position-relative mb-2 post-card" id="post-${pv.id}">
@@ -48,9 +54,19 @@
 
 								<div
 									class="bg-card control-panel shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
-									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
-										<span class="txt-text">Save</span>
-									</div>
+
+										<c:choose>
+											<c:when test="${!pv.isSaved()}">
+												<div postId="${pv.id}" class="px-2 py-2 pointer rounded save-post-btn">
+													<span class="txt-text">Save</span>
+												</div>
+											</c:when>
+											<c:when test="${pv.isSaved()}">
+												<div postId="${pv.id}" class="px-2 py-2 pointer rounded unsave-post-btn">
+													<span class="txt-text">Unsave</span>
+												</div>
+											</c:when>
+										</c:choose>
 
 									<div postId="${pv.id}"
 										class="post-detail-btn px-2 py-2 pointer rounded">
@@ -210,6 +226,9 @@
 
 	<c:url var="editPost" value="/resource/js/edit-post.js"></c:url>
 	<script type="text/javascript" src="${editPost}"></script>
+
+	<c:url var="savePost" value="/resource/ajax/save-post.js"></c:url>
+	<script type="text/javascript" src="${savePost}"></script>
 
 	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
 	<script type="text/javascript" src="${postDelete}"></script>

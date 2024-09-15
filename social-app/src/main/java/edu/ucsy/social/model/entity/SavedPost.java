@@ -8,15 +8,14 @@ import edu.ucsy.social.data.annotation.Entity;
 public record SavedPost(
 		long id, 
 		long postId,
-		String postContent, 
 		long userId,
 		LocalDateTime savedAt) {
 
-	public SavedPost(long postId, String postContent, long userId) {
-		this(0, postId, postContent, userId, null);
+	public SavedPost(long postId, long userId) {
+		this(0, postId, userId, null);
 	}
-
+	
 	public SavedPost perfectClone(long id, LocalDateTime savedAt) {
-		return new SavedPost(id, postId, postContent, userId, savedAt);
+		return new SavedPost(id, postId, userId, savedAt);
 	}
 }

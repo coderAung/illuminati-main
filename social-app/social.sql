@@ -22,8 +22,8 @@ address varchar(255) null,
 bio longtext null,
 phone_number varchar(255) null,
 gender enum('Male', 'Female', 'Others') null,
-relationship enum('Single', 'Married', 'Divorced', 'InARelaionship', 'IsComplicated'),
-occupation enum('Student', 'Actor', 'Singer', 'Dancer', 'Influencer', 'DigialCreator'),
+relationship enum('Single', 'Married', 'Divorced', 'InARelationship', 'IsComplicated'),
+occupation enum('Student', 'Actor', 'Singer', 'Dancer', 'Influencer', 'DigitalCreator'),
 foreign key (user_id) references users (id)
 );
 

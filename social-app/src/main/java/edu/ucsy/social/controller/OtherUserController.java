@@ -9,6 +9,7 @@ import edu.ucsy.social.service.FriendService;
 import edu.ucsy.social.service.OtherUserService;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
+import edu.ucsy.social.service.UserService;
 import edu.ucsy.social.utils.DefaultPicture;
 import edu.ucsy.social.utils.Limit;
 import edu.ucsy.social.utils.StringTool;
@@ -28,6 +29,7 @@ public class OtherUserController extends Controller {
 	private OtherUserService otherUserService;
 	private FriendService friendService;
 	private PostService postService;
+	private UserService userService;
 
 	@Override
 	public void init() throws ServletException {
@@ -35,6 +37,7 @@ public class OtherUserController extends Controller {
 		otherUserService = ServiceFactory.getService(OtherUserService.class, dataSource);
 		friendService = ServiceFactory.getService(FriendService.class, dataSource);
 		postService = ServiceFactory.getService(PostService.class, dataSource);
+		userService = ServiceFactory.getService(UserService.class, dataSource);
 	}
 
 	@Override
@@ -54,8 +57,30 @@ public class OtherUserController extends Controller {
 	}
 
 	private void forwardToOtherFriendsPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if(!StringTool.isEmpty(req.getParameter("userId"))) {
+			var userId = Integer.parseInt(req.getParameter("userId"));
+			var friendCount = friendService.getFriendCount(userId);
+			req.setAttribute("friendCount", friendCount);
+			
+			var friendViews = friendService.getFriendViews(userId, Limit.STARDARD_LIMIT);
+			if(null != friendViews) {
 
-		view(req, resp, "other-friends");
+				for (var fv : friendViews) {
+					if (null == fv.getProfileImage()) {
+						fv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+					} else {
+						fv.setProfileImage(getImagePath(fv.getProfileImage(), ImageType.PROFILE));
+					}
+				}
+				
+				var userName = userService.getUserName(userId);
+				req.setAttribute("userName", userName);
+				req.setAttribute("friendViews", friendViews);
+
+				view(req, resp, "other-friends");
+			}
+			
+		}
 	}
 
 	private void forwardToOtherProfilePage(HttpServletRequest req, HttpServletResponse resp)
@@ -113,7 +138,7 @@ public class OtherUserController extends Controller {
 
 				// get 30 post view from other user service
 				var postViews = postService.getPostViews(otherUserId, Limit.POST);
-
+				
 				for (var pv : postViews) {
 					var postImageList = pv.getPostImageList();
 					if (null != postImageList && 0 < postImageList.size()) {
@@ -127,6 +152,10 @@ public class OtherUserController extends Controller {
 					} else {
 						pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
 					}
+					
+					// checking is the post is saved by login user
+					var isSaved = postService.isSaved(pv, (int) getLoginUser(req).getId());
+					pv.setSaved(isSaved);
 				}
 
 				// set profile view to request scope

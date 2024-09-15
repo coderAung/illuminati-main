@@ -82,11 +82,13 @@ public class SettingController extends Controller {
 		//get user id from login user
 		var userId = getLoginUser(req).getId();
 		
+		var oldPassword = req.getParameter("oldPassword");
+		
 		// get new password from request parameter
 		var newPassword = req.getParameter("newPassword");
 		
 		// change password using user service
-		var result = userService.changePassword(newPassword, userId);
+		var result = userService.changePassword(oldPassword, newPassword, userId);
 		
 		// redirect to profile page with alert message for changing password
 		if(result) {
@@ -96,6 +98,6 @@ public class SettingController extends Controller {
 			var alert = new Alert("Password changing is failed!", AlertType.DANGER);
 			req.getSession(true).setAttribute("alert", alert);
 		}
-		redirect(req, resp, "/profile");
+		redirect(req, resp, "/setting");
 	}
 }

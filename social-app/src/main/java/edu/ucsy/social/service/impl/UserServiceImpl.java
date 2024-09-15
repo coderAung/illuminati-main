@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean changePassword(String newPassword, long userId) {
+	public boolean changePassword(String oldPassword, String newPassword, long userId) {
 
 		try (var connection = connector.getConnection()) {
 			initConnection(connection);
@@ -115,7 +115,24 @@ public class UserServiceImpl implements UserService {
 			if (null == user) {
 				return false;
 			}
-			user = new User(user.email(), user.name(), newPassword);
+			
+			if(!user.password().equals(oldPassword)) {
+				return false;
+			}
+			
+			if(user.password().equals(newPassword)) {
+				return false;
+			}
+			
+			user = new User(
+					userId, 
+					user.email(), 
+					user.name(), 
+					newPassword,
+					user.role(), 
+					user.status(), 
+					user.createdAt(),
+					user.updatedAt());
 			var result = userModel.update(user);
 			if (null != result) {
 				return true;
@@ -292,6 +309,24 @@ public class UserServiceImpl implements UserService {
 				profileDetailForm.getGender(), 
 				profileDetailForm.getRelationship(), 
 				profileDetailForm.getOccupation());
+	}
+
+	@Override
+	public String getUserName(long userId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var user = userModel.findOne(userId);
+			if(null != user) {
+				return user.name();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
 	}
 
 }

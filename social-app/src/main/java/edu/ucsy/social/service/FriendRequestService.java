@@ -13,4 +13,6 @@ public interface FriendRequestService extends Service {
 
 	boolean deleteFriendRequest(long userId, long requestTo);
 
+	long getFriendRequestCount(long userId);
+
 }

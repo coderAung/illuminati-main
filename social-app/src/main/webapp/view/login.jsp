@@ -51,6 +51,20 @@
 		<div class="row justify-content-center">
 			<div class="bg-card rounded login-form col-4 txt-text text-center py-3 px-4">
 				<h1 class="pointer h2">Login</h1>
+				
+				<c:if test="${not empty alert}">
+					<c:choose>
+						<c:when test="${alert.alertType.name() eq 'DANGER'}">
+							<div class="alert alert-danger text-center">
+								${alert.message}
+							</div>
+						</c:when>
+					</c:choose>
+					
+					<c:remove var="alert" scope="session"/>
+				</c:if>
+					
+								
 				<c:url var="login" value="/login"></c:url>
 				<form action="${login}" method="post">
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
