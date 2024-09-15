@@ -53,6 +53,11 @@
 	background-color: var(--secondary);
 }
 
+.bg-app {
+	background-color: var(--app);
+}
+
+
 .nav-link {
 	position: relative;
 	display: inline-block;

@@ -18,9 +18,10 @@
 	</div>
 
 	<!-- Search Bar start -->
+	<c:url var="search" value="/search"></c:url>
 	<div class="d-flex search-bar py-2 px-3 bg-card-2 w-25 rounded">
-		<form action="#" class="w-100" method="get">
-			<input type="text" name="" class="w-100 rounded txt-white"
+		<form action="${search}" class="w-100" method="get">
+			<input type="text" name="word" class="w-100 rounded txt-white"
 				placeholder="Type a word...">
 		</form>
 	</div>

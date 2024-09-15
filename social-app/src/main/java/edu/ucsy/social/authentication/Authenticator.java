@@ -20,7 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 				"/notifications/*",
 				"/setting/*",
 				"/other/*",
-				"/api/*"
+				"/api/*",
+				"/search/*"
 				}
 		)
 public class Authenticator extends HttpFilter {

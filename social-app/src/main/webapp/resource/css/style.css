@@ -41,6 +41,9 @@
 	background-color: var(--card2);
 }
 
+.bg-app {
+	background-color: var(--app);
+}
 
 .txt-white {
 	color: var(--text);

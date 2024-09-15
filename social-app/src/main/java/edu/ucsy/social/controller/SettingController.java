@@ -9,6 +9,7 @@ import edu.ucsy.social.model.dto.Alert.AlertType;
 import edu.ucsy.social.model.dto.LoginUser.Theme;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.service.UserService;
+import edu.ucsy.social.utils.StringTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -82,22 +83,28 @@ public class SettingController extends Controller {
 		//get user id from login user
 		var userId = getLoginUser(req).getId();
 		
-		var oldPassword = req.getParameter("oldPassword");
-		
-		// get new password from request parameter
-		var newPassword = req.getParameter("newPassword");
-		
-		// change password using user service
-		var result = userService.changePassword(oldPassword, newPassword, userId);
-		
-		// redirect to profile page with alert message for changing password
-		if(result) {
-			var alert = new Alert("Password is successfully changed!", AlertType.INFO);
-			req.getSession(true).setAttribute("alert", alert);
+		if(!StringTool.isEmpty(req.getParameter("oldPassword")) &&
+				!StringTool.isEmpty(req.getParameter("newPassword"))) {
+			var oldPassword = req.getParameter("oldPassword");
+			// get new password from request parameter
+			var newPassword = req.getParameter("newPassword");
+			
+			// change password using user service
+			var result = userService.changePassword(oldPassword, newPassword, userId);
+			
+			// redirect to profile page with alert message for changing password
+			if(result) {
+				var alert = new Alert("Password is successfully changed!", AlertType.INFO);
+				req.getSession(true).setAttribute("alert", alert);
+			} else {
+				var alert = new Alert("Password changing is failed!", AlertType.DANGER);
+				req.getSession(true).setAttribute("alert", alert);
+			}
 		} else {
 			var alert = new Alert("Password changing is failed!", AlertType.DANGER);
 			req.getSession(true).setAttribute("alert", alert);
 		}
 		redirect(req, resp, "/setting");
+		
 	}
 }

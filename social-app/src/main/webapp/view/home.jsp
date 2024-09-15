@@ -58,7 +58,7 @@
 										<c:choose>
 											<c:when test="${!pv.isSaved()}">
 												<div postId="${pv.id}" class="px-2 py-2 pointer rounded save-post-btn">
-													<span class="txt-text">Save</span>
+													<i class="fa-solid fa-bookmark txt-app me-3"></i><span class="txt-text">Save</span>
 												</div>
 											</c:when>
 											<c:when test="${pv.isSaved()}">
@@ -91,13 +91,15 @@
 											<a href="${edit}" class="d-none edit-post-link"></a>
 										</div>
 
+									</c:if>
+
+									<c:if test="${(pv.userId eq loginUser.id) or ('ADMIN' eq loginUser.role)}">
 										<c:url var="postDeleteUrl" value="/api/post/delete"></c:url>
 										<div postId="${pv.id}" url="${postDeleteUrl}"
 											class="post-delete-btn px-2 py-2 pointer rounded text-danger">
-											<span class="text-decoration-none">Delete</span>
+											<i class="fa-regular fa-trash-can text-danger me-3"></i><span class="text-decoration-none">Delete</span>
 										</div>
 									</c:if>
-
 								</div>
 								<!-- user info start -->
 								<div class="d-flex px-2">
@@ -208,6 +210,13 @@
 				</c:choose>
 				<!-- post end -->
 			</div>
+		
+			<c:if test="${loginUser.role.name() eq 'ADMIN'}">
+				<div class="col-2 mx-auto px-0">
+					<jsp:include page="/component/modal/admin-panel.jsp"></jsp:include>
+				</div>
+			</c:if>
+		
 		</div>
 	</main>
 	<!-- main content end -->
