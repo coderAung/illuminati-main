@@ -531,3 +531,23 @@
 .search-key:hover {
 	background-color: var(--hover);
 }
+
+.right-side {
+	position: sticky;
+	top: 60px; /* Distance from the top to avoid the navbar */
+	height: calc(100vh - 60px);
+	/* Adjust height to account for the navbar */
+	overflow-y: auto;
+	/* Allows scrolling within the sidebar if necessary */
+	padding-right: 15px;
+	/* Space between the sidebar and the right column */
+}
+
+.hover-item:hover {
+	background-color: var(--hover);
+}
+
+.hover-item-danger:hover {
+	background-color: hsl(0deg, 100%, 80%);
+	color: var(--text);
+}

@@ -142,6 +142,12 @@
 				</div>
 			</div>
 			<!-- main content end -->
+		
+			<c:if test="${loginUser.role.name() eq 'ADMIN'}">
+				<div class="col-2 mx-auto right-side px-0">
+					<jsp:include page="/component/modal/admin-panel.jsp"></jsp:include>
+				</div>
+			</c:if>
 		</div>
 
 		<jsp:include page="/component/modal/change-password.jsp"></jsp:include>

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Post Creation</title>
+<title>Illuminati | Post</title>
 <jsp:include page="/resource/style.jsp"></jsp:include>
 <style type="text/css">
 .photo {
@@ -41,7 +41,7 @@
 <body class="main-bg">
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
-		<jsp:param value="nav-link-active" name="profileActive" />
+		<jsp:param value="nav-link-active" name="" />
 	</jsp:include>
 	<!-- nav bar end -->
 
@@ -51,7 +51,7 @@
 			<!-- sidebar start -->
 			<div class="col-3 left-side mx-3">
 				<jsp:include page="/component/sidebar.jsp">
-					<jsp:param name="profileActive" value="menu-item-active" />
+					<jsp:param name="profileActive" value="" />
 				</jsp:include>
 			</div>
 			<!-- sidebar end -->

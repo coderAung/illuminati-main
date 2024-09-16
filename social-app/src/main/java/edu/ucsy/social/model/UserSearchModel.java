@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsy.social.data.Countable;
 import edu.ucsy.social.data.SearchModel;
 import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.data.criteria.Criteria.Type;
@@ -13,7 +14,7 @@ import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.social.model.entity.User.Status;
 
-public class UserSearchModel extends SearchModel<User> {
+public class UserSearchModel extends SearchModel<User> implements Countable {
 
 	@Override
 	public User searchOne(Criteria c) {
@@ -84,6 +85,32 @@ public class UserSearchModel extends SearchModel<User> {
 		}
 		return null;
 	}
-
+	@Override
+	public long count(Criteria criteria) {
+		
+		var sql = "select count(*) as userCount from users";
+		
+		if(null != criteria) {
+			sql = criteria.generateStatement(sql);
+		}
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			if(null != criteria) {
+				var values = criteria.getValues();
+				for(int i = 0; i < values.size(); i ++) {
+					stmt.setObject(i + 1, values.get(i));
+				}
+			}
+			
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("userCount");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
 
 }

@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsy.social.data.Countable;
 import edu.ucsy.social.data.SearchModel;
 import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.model.entity.Post;
 
-public class PostSearchModel extends SearchModel<Post> {
+public class PostSearchModel extends SearchModel<Post> implements Countable {
 
 	@Override
 	public Post searchOne(Criteria c) {
@@ -66,6 +67,34 @@ public class PostSearchModel extends SearchModel<Post> {
 	public List<Post> searchLatest(Criteria c) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public long count(Criteria criteria) {
+		
+		var sql = "select count(*) as postCount from posts";
+		
+		if(null != criteria) {
+			sql = criteria.generateStatement(sql);
+		}
+		
+		try(var stmt = connection.prepareStatement(sql)) {
+			if(null != criteria) {
+				var values = criteria.getValues();
+				for(int i = 0; i < values.size(); i ++) {
+					stmt.setObject(i + 1, values.get(i));
+				}
+			}
+			
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("postCount");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 
 }

@@ -45,6 +45,7 @@
 	background-color: var(--app);
 }
 
+
 .txt-white {
 	color: var(--text);
 }
@@ -415,10 +416,9 @@
 	font-size: 1.3rem;
 }
 
-.btn-app, .btn-app:hover {
+.btn-app, .btn-app:hover, .btn-app:active {
 	background-color: var(--app);
 	color: var(--text-reverse);
-	border: none;
 }
 
 .remove-photo-btn, .remove-original-photo-btn {
@@ -530,4 +530,24 @@
 
 .search-key:hover {
 	background-color: var(--hover);
+}
+
+.right-side {
+	position: sticky;
+	top: 60px; /* Distance from the top to avoid the navbar */
+	height: calc(100vh - 60px);
+	/* Adjust height to account for the navbar */
+	overflow-y: auto;
+	/* Allows scrolling within the sidebar if necessary */
+	padding-right: 15px;
+	/* Space between the sidebar and the right column */
+}
+
+.hover-item:hover {
+	background-color: var(--hover);
+}
+
+.hover-item-danger:hover {
+	background-color: hsl(0deg, 100%, 80%);
+	color: var(--text);
 }

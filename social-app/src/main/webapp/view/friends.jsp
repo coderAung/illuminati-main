@@ -14,7 +14,7 @@
 
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
-		<jsp:param value="nav-link-active" name="profileActive" />
+		<jsp:param value="nav-link-active" name="" />
 	</jsp:include>
 	<!-- nav bar end -->
 
@@ -75,13 +75,12 @@
 					</c:when>
 
 					<c:otherwise>
-
-						<div class="mb-3 d-flex justify-content-between">
-							<span class="txt-grey">No Friend</span>
-						</div>
-						<div class="text-center my-auto">
-							<span><i
-								class="fa-regular fa-face-smile-wink txt-grey fa-8x"></i></span>
+						<div class="bg-card-2 py-4 px-3 rounded">
+							<div class="text-center">
+								<span class="txt-grey d-block mb-2">No Friend</span>
+								<span><i
+									class="fa-regular fa-face-smile-wink txt-grey fa-8x"></i></span>
+							</div>
 						</div>
 					</c:otherwise>
 				</c:choose>

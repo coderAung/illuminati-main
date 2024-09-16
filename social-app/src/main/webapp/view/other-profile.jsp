@@ -108,10 +108,10 @@
 						<c:when test="${not empty postViews}">
 							<c:url var="savePostUrl" value="/api/post/save"></c:url>
 							<span class="d-none" id="savePostUrl" url="${savePostUrl}"></span>
-							
+
 							<c:url var="unsavePostUrl" value="/api/post/unsave"></c:url>
 							<span class="d-none" id="unsavePostUrl" url="${unsavePostUrl}"></span>
-	
+
 							<c:forEach var="pv" items="${postViews}">
 								<!-- new feed start -->
 								<div class="p-2 rounded mb-2 position-relative post-card"
@@ -119,23 +119,25 @@
 									<span class="float-end pointer control-btn"> <i
 										class="bi bi-three-dots-vertical"></i>
 									</span>
-	
+
 									<div
 										class="bg-card control-panel shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
 
 										<c:choose>
 											<c:when test="${!pv.isSaved()}">
-												<div postId="${pv.id}" class="px-2 py-2 pointer rounded save-post-btn">
+												<div postId="${pv.id}"
+													class="px-2 py-2 pointer rounded save-post-btn">
 													<span class="txt-text">Save</span>
 												</div>
 											</c:when>
 											<c:when test="${pv.isSaved()}">
-												<div postId="${pv.id}" class="px-2 py-2 pointer rounded unsave-post-btn">
+												<div postId="${pv.id}"
+													class="px-2 py-2 pointer rounded unsave-post-btn">
 													<span class="txt-text">Unsave</span>
 												</div>
 											</c:when>
 										</c:choose>
-	
+
 										<div postId="${pv.id}"
 											class="post-detail-btn px-2 py-2 pointer rounded">
 											<span class="txt-text">Detail</span>
@@ -144,11 +146,11 @@
 											</c:url>
 											<a href="${post}" class="d-none post-detail-link"></a>
 										</div>
-	
+
 										<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
 											<span class="txt-text">Share</span>
 										</div>
-	
+
 										<c:if test="${pv.userId eq loginUser.id}">
 											<div postId="${pv.id}"
 												class="edit-post-btn px-2 py-2 pointer rounded">
@@ -158,14 +160,19 @@
 												</c:url>
 												<a href="${edit}" class="d-none edit-post-link"></a>
 											</div>
-	
+
+										</c:if>
+
+										<c:if
+											test="${(pv.userId eq loginUser.id) or ('ADMIN' eq loginUser.role)}">
 											<c:url var="postDeleteUrl" value="/api/post/delete"></c:url>
 											<div postId="${pv.id}" url="${postDeleteUrl}"
 												class="post-delete-btn px-2 py-2 pointer rounded text-danger">
-												<span class="text-decoration-none">Delete</span>
+												<i class="fa-regular fa-trash-can text-danger me-3"></i><span
+													class="text-decoration-none">Delete</span>
 											</div>
 										</c:if>
-	
+
 									</div>
 									<!-- user info start -->
 									<div class="d-flex px-2">
@@ -179,11 +186,11 @@
 												class="text-decoration-none post-detail-link"> <small
 												class="txt-grey pointer">${pv.updatedAt}</small>
 											</a>
-	
+
 										</div>
 									</div>
 									<!-- user info end -->
-	
+
 									<!-- caption start -->
 									<div class="mt-2 px-2">
 										<p>
@@ -191,15 +198,15 @@
 										</p>
 									</div>
 									<!-- caption start -->
-	
+
 									<!-- Post Images start -->
 									<c:if test="${not empty pv.postImageList}">
-	
+
 										<c:choose>
 											<c:when test="${pv.postImageList.size() eq 0}">
-	
+
 											</c:when>
-	
+
 											<c:when test="${pv.postImageList.size() eq 1}">
 												<div class="post-image-container pointer rounded">
 													<div class="inner-image-container rounded">
@@ -207,7 +214,7 @@
 													</div>
 												</div>
 											</c:when>
-	
+
 											<c:when test="${pv.postImageList.size() gt 1}">
 												<div id="carousel-${pv.id}" class="carousel slide"
 													data-bs-ride="carousel">
@@ -215,7 +222,8 @@
 														class="carousel-inner post-image-container rounded main-bg">
 														<c:forEach var="pi" items="${pv.postImageList}"
 															varStatus="status">
-															<div class="carousel-item ${status.first ? 'active' : ''}">
+															<div
+																class="carousel-item ${status.first ? 'active' : ''}">
 																<img class="d-block w-100 rounded" src="${pi}">
 															</div>
 														</c:forEach>
@@ -238,15 +246,15 @@
 													</button>
 												</div>
 											</c:when>
-	
+
 										</c:choose>
-	
+
 									</c:if>
 									<!-- Post Images end -->
-	
+
 									<!-- comment and share section -->
 									<div class=" d-flex align-items-center pt-1 text-center">
-	
+
 										<a href="${post}#comments"
 											class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 											Comment <i class="bi bi-dot"></i> <c:choose>
@@ -263,15 +271,16 @@
 												shares</small>
 										</a>
 									</div>
-	
+
 								</div>
 								<!-- new feed end -->
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
-							<div class="text-center txt-grey bg-card-2 p-2 fs-5 shadow-sm rounded">
-								<span>No post available</span>
-								<i class="fa-solid fa-circle-exclamation"></i>
+							<div
+								class="text-center txt-grey bg-card-2 p-2 fs-5 shadow-sm rounded">
+								<span>No post available</span> <i
+									class="fa-solid fa-circle-exclamation"></i>
 							</div>
 						</c:otherwise>
 					</c:choose>
@@ -296,6 +305,8 @@
 	<script type="text/javascript" src="${editPost}"></script>
 	<c:url var="friendPreview" value="/resource/js/friend-preview.js"></c:url>
 	<script type="text/javascript" src="${friendPreview}"></script>
+	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
+	<script type="text/javascript" src="${postDelete}"></script>
 
 </body>
 </html>

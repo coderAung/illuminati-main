@@ -121,7 +121,7 @@ public class SearchingServiceImpl implements SearchingService {
 	public List<UserView> searchUsers(String word, long loginUserId) {
 		try (var connection = connector.getConnection()) {
 			initConnection(connection);
-			var searchCriteria = new Criteria().where("name", Type.LIKE, "%".concat(word.toLowerCase()).concat("%"));
+			var searchCriteria = new Criteria().where("name", Type.LIKE, "%".concat(word.toLowerCase()).concat("%")).where("id", Type.NE, loginUserId);
 			var users = userSearchModel.search(searchCriteria);
 
 			if (null != users) {

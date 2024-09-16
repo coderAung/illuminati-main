@@ -10,11 +10,15 @@ $("document").ready(() => {
 	$("#search-result").on("click", ".cancel-friend-btn", function(event) {
 		cancelFriendRequest(event)
 	})
+	
+	$("#search-result").on("click", ".delete-friend-btn", function(event) {
+		deleteFriendRequest(event)
+	})
 })
 
-function deleteFriendRequest() {
+function deleteFriendRequest(event) {
 	const url = $("#friendRequestUrl").attr("url").concat("/delete")
-	const otherUserId = $("#userData").attr("otherUserId")
+	const otherUserId = event.target.getAttribute("otherUserId");
 
 	$.post(url,
 		{
@@ -22,13 +26,16 @@ function deleteFriendRequest() {
 		},
 		(data) => {
 			if (data.result === "success") {
-				const btn = $("#friend-btn")
-				btn.attr("status", "NOT_FRIEND")
-				btn.text("Add Friend")
+				const target = event.target
+				if (target instanceof HTMLElement) {
+					const addFriendBtn = document.createElement("button")
+					addFriendBtn.setAttribute("otherUserId", otherUserId)
+					addFriendBtn.classList.add("add-friend-btn", "btn", "btn-app", "w-auto", "me-3")
+					addFriendBtn.innerText = "Add Friend"
+					target.previousElementSibling.remove()
+					target.replaceWith(addFriendBtn)
+				}
 
-				btn.removeClass("btn-light")
-				btn.addClass("btn-app")
-				$("#delete-friend-btn").remove()
 			}
 		},
 		"json")

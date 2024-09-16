@@ -38,4 +38,6 @@ public interface PostService extends Service {
 	List<SavedPostView> getSavedPostViews(LoginUser loginUser, int stardardLimit);
 
 	long countSavedPost(LoginUser loginUser);
+
+	long getTotalPostCount();
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import edu.ucsy.social.controller.Controller.ImageType;
+import edu.ucsy.social.data.Countable;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToMany;
@@ -561,6 +562,26 @@ public class PostServiceImpl implements PostService {
 			
 			var savedPostCount = userModel.getRelational(OneToMany.class).countMany(SavedPost.class, loginUser.getId());
 			return savedPostCount;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return 0;
+	}
+
+	@Override
+	public long getTotalPostCount() {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			try {
+				var postCount = Countable.getCountable(postSearchModel).count(null);
+				return postCount;
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

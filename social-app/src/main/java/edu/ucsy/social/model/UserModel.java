@@ -499,6 +499,23 @@ public class UserModel extends AbstractModel<User>
 		if(e.equals(FriendRequest.class)) {
 			return countManyFriendRequest(userId);
 		}
+		if(e.equals(Post.class)) {
+			return countManyPosts(userId);
+		}
+		return 0;
+	}
+
+	private long countManyPosts(long userId) {
+		var sql = "select count(*) as postCount from posts where user_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			var rs = stmt.executeQuery();
+			if(rs.next()) {
+				return rs.getLong("postCount");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
@@ -543,5 +560,5 @@ public class UserModel extends AbstractModel<User>
 		}
 		return 0;
 	}
-	
+
 }
