@@ -21,9 +21,9 @@
 			</div>
 			<!-- side bar end -->
 
-			<div class="px-0 col-6">
+			<div class="px-0 col-6" id="search-result">
 				<jsp:include page="/component/search-tab.jsp">
-					<jsp:param value="${activeTab}" name="active"/>
+					<jsp:param value="${activeTab}" name="active" />
 				</jsp:include>
 				<c:choose>
 					<c:when test="${not empty postViews}">
@@ -197,6 +197,64 @@
 							<!-- new feed end -->
 						</c:forEach>
 					</c:when>
+					<c:when test="${not empty userViews}">
+						<c:forEach var="uv" items="${userViews}">
+							<div
+								class="mb-3 rounded d-flex justify-content-between align-items-center px-3 py-2 txt-text bg-card">
+								<div class="d-flex align-items-center">
+									<div class="profile-photo pointer other-profile-trigger">
+										<img src="${uv.profileImage}">
+									</div>
+									<div class="ms-3 d-flex flex-column">
+										<c:url var="otherProfile" value="/other/profile">
+											<c:param name="userId" value="${uv.userId}"></c:param>
+										</c:url>
+										<a class="text-decoration-none pointer txt-text fw-bold"
+											href="${otherProfile}">${uv.userName}</a> <small
+											class="txt-grey">3 mutual friends</small>
+									</div>
+								</div>
+								<div>
+									<c:url var="friendRequestUrl" value="/api/friend-request"></c:url>
+									<span id="friendRequestUrl" class="d-none"
+										url="${friendRequestUrl}"></span>
+									<c:url var="friendUrl" value="/api/friend"></c:url>
+									<span id="friendUrl" class="d-none" url="${friendUrl}"></span>
+	
+									<c:set var="otherUserData" value="${uv.data}"></c:set>
+	
+									<c:choose>
+										<c:when
+											test="${'IS_FRIEND' eq otherUserData.friendStatus.name()}">
+											<div id="is-friend-status" class="btn btn-app w-auto me-3">Friend</div>
+										</c:when>
+										<c:when
+											test="${'NEED_TO_CONFIRM' eq otherUserData.friendStatus.name()}">
+											<button
+												status="${otherUserData.friendStatus.name()}" type="button" otherUserId="${uv.userId}"
+												class="confirm-friend-btn btn btn-app w-auto me-3">Confirm</button>
+											<button status="DELETE_FRIEND_REQUEST" otherUserId="${uv.userId}"
+												type="button" class="delete-friend-btn btn btn-danger w-auto me-3">Delete</button>
+										</c:when>
+										<c:when
+											test="${'REQUESTED' eq otherUserData.friendStatus.name()}">
+											<button
+												status="${otherUserData.friendStatus.name()}" type="button" otherUserId="${uv.userId}"
+												class="cancel-friend-btn btn btn-danger w-auto me-3">Cancel Request</button>
+										</c:when>
+										<c:otherwise>
+											<button status="NOT_FRIEND" type="button" otherUserId="${uv.userId}"
+												class="add-friend-btn btn btn-app w-auto me-3">Add Friend</button>
+										</c:otherwise>
+									</c:choose>
+
+									<button type="button"
+										class="btn btn-normal w-auto shadow other-profile-trigger">View
+										Profile</button>
+								</div>
+							</div>
+						</c:forEach>
+					</c:when>
 				</c:choose>
 
 			</div>
@@ -229,5 +287,10 @@
 	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
 	<script type="text/javascript" src="${postDelete}"></script>
 
+	<c:url var="friends" value="/resource/js/friends.js"></c:url>
+	<script type="text/javascript" src="${friends}"></script>
+
+	<c:url var="friend" value="/resource/ajax/search-user.js"></c:url>
+	<script type="text/javascript" src="${friend}"></script>
 </body>
 </html>

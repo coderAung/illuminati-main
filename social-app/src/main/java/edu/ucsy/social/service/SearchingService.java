@@ -10,6 +10,6 @@ public interface SearchingService extends Service {
 
 	List<PostView> searchPosts(String word, long loginUserId);
 
-	List<UserView> searchUsers(String word);
+	List<UserView> searchUsers(String word, long loginUserId);
 
 }

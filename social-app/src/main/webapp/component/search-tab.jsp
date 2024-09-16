@@ -17,9 +17,14 @@
 			</div>
 		</c:when>
 		<c:otherwise>
-			<div class="w-50 text-center py-1 rounded pointer search-key">Posts</div>
+			<c:url var="searchPost" value="/search/post">
+				<c:param name="word" value="${word}"></c:param>
+			</c:url>
+			<div id="search-post-btn" class="w-50 text-center py-1 rounded pointer search-key">
+				Posts<a href="${searchPost}" class="d-none"></a>
+			</div>
 			<span class="mx-2 bg-app rounded" style="padding: 0px 2px;"></span>
-			<div class="bg-app txt-white w-50 text-center py-1 rounded pointer">User</div>
+			<div class="bg-app text-white w-50 text-center py-1 rounded pointer">User</div>
 		</c:otherwise>
 	</c:choose>
 

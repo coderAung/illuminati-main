@@ -2,6 +2,7 @@ package edu.ucsy.social.model.dto.view;
 
 import java.io.Serializable;
 
+import edu.ucsy.social.model.dto.OtherUserData;
 import edu.ucsy.social.model.entity.User;
 
 public class UserView implements Serializable {
@@ -13,8 +14,17 @@ public class UserView implements Serializable {
 	private String profileImage;
 	private boolean isFriend;
 	private int mutualFriendCount;
+	private OtherUserData data;
 
 	public UserView() {
+	}
+
+	public OtherUserData getData() {
+		return data;
+	}
+
+	public void setData(OtherUserData data) {
+		this.data = data;
 	}
 
 	public UserView(User user) {
@@ -61,5 +71,5 @@ public class UserView implements Serializable {
 	public void setFriend(boolean isFriend) {
 		this.isFriend = isFriend;
 	}
-
+	
 }

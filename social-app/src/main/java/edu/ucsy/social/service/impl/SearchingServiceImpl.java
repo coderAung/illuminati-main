@@ -28,14 +28,14 @@ import edu.ucsy.social.utils.DefaultPicture;
 public class SearchingServiceImpl implements SearchingService {
 
 	private DatabaseConnector connector;
-	
+
 	private Searchable<Post> postSearchModel;
 	private Model<Post> postModel;
 	private Searchable<SavedPost> savedPostSearchModel;
 	private Model<User> userModel;
 	private Searchable<User> userSearchModel;
 	private Searchable<Friend> friendSearchModel;
-	
+
 	public SearchingServiceImpl(DatabaseConnector connector) {
 		super();
 		this.connector = connector;
@@ -69,10 +69,10 @@ public class SearchingServiceImpl implements SearchingService {
 
 	@Override
 	public List<PostView> searchPosts(String word, long loginUserId) {
-		try(var connection = connector.getConnection()) {
+		try (var connection = connector.getConnection()) {
 			initConnection(connection);
 			var searchCriteria = new Criteria().where("content", Type.LIKE, word.toLowerCase().concat("%"))
-												.orderBy("updated_at", Type.DESC);
+					.orderBy("updated_at", Type.DESC);
 			var posts = postSearchModel.search(searchCriteria);
 			var postViews = new ArrayList<PostView>();
 			for (var post : posts) {
@@ -84,21 +84,23 @@ public class SearchingServiceImpl implements SearchingService {
 					var postImageList = postImages.stream().map(pi -> pi.name()).toList();
 					postView.setPostImageList(postImageList);
 				}
-				
-				var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, postView.getUserId());
-				
-				if(null != profileImage) {
+
+				var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class,
+						postView.getUserId());
+
+				if (null != profileImage) {
 					postView.setProfileImage(profileImage.name());
 				}
-				
+
 				var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, post.id());
 				postView.setCommentCount(commentCount);
-				
+
 				// checking if the post is already saved
-				var criteria = new Criteria().where("post_id", Type.EQ, post.id()).where("user_id", Type.EQ, loginUserId);
+				var criteria = new Criteria().where("post_id", Type.EQ, post.id()).where("user_id", Type.EQ,
+						loginUserId);
 				var savedPost = savedPostSearchModel.searchOne(criteria);
 
-				if(null != savedPost) {
+				if (null != savedPost) {
 					postView.setSaved(true);
 				} else {
 					postView.setSaved(false);
@@ -106,7 +108,7 @@ public class SearchingServiceImpl implements SearchingService {
 				postViews.add(postView);
 			}
 			return postViews;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -116,35 +118,49 @@ public class SearchingServiceImpl implements SearchingService {
 	}
 
 	@Override
-	public List<UserView> searchUsers(String word) {
-		try(var connection = connector.getConnection()) {
+	public List<UserView> searchUsers(String word, long loginUserId) {
+		try (var connection = connector.getConnection()) {
 			initConnection(connection);
 			var searchCriteria = new Criteria().where("name", Type.LIKE, "%".concat(word.toLowerCase()).concat("%"));
 			var users = userSearchModel.search(searchCriteria);
-			
-			if(null != users) {
+
+			if (null != users) {
 				var userViews = new ArrayList<UserView>();
-				for(var user : users) {
+				for (var user : users) {
 					var uv = new UserView(user);
 					var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, user.id());
-					if(null != profileImage) {
+					if (null != profileImage) {
 						uv.setProfileImage(profileImage.name());
 					} else {
 						uv.setProfileImage(DefaultPicture.defaultProfilePicture);
 					}
 					// checking is friend
-					
+					var isFriend = isFriend(loginUserId, uv.getUserId());
+					uv.setFriend(isFriend);
+
+					// calculating mutual friends
 					
 					userViews.add(uv);
 				}
+
+				return userViews;
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			destroyConnection();
 		}
 		return null;
+	}
+
+	private boolean isFriend(long loginUserId, long otherUserId) {
+		var friend = friendSearchModel.searchOne(
+				new Criteria().where("user_id", Type.EQ, loginUserId).where("friend_id", Type.EQ, otherUserId));
+		if (null != friend) {
+			return true;
+		}
+		return false;
 	}
 
 }

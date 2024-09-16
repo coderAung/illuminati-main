@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.model.dto.OtherUserData;
+import edu.ucsy.social.service.FriendService;
 import edu.ucsy.social.service.SearchingService;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.utils.DefaultPicture;
@@ -30,10 +32,12 @@ public class SearchController extends Controller {
 	private DataSource dataSource;
 	
 	private SearchingService searchingService;
+	private FriendService friendService;
 	
 	@Override
 	public void init() throws ServletException {
 		searchingService = ServiceFactory.getService(SearchingService.class, dataSource);
+		friendService = ServiceFactory.getService(FriendService.class, dataSource);
 	}
 	
 	
@@ -57,11 +61,18 @@ public class SearchController extends Controller {
 	private void searchUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if(!StringTool.isEmpty(req.getParameter("word"))) {
 			var word = req.getParameter("word");
-			var userViews = searchingService.searchUsers(word);
+			var loginUser = getLoginUser(req);
+			var userViews = searchingService.searchUsers(word, loginUser.getId());
 			
 			for(var uv : userViews) {
-				
+				uv.setProfileImage(getImagePath(uv.getProfileImage(), ImageType.PROFILE));
+				var otherUserData = new OtherUserData();
+				var status = friendService.checkFriendStatus(loginUser.getId(), (int) uv.getUserId());
+				otherUserData.setFriendStatus(status);
+				uv.setData(otherUserData);
 			}
+			req.setAttribute("word", word);
+			req.setAttribute("activeTab", "user");
 			
 			req.setAttribute("userViews", userViews);
 			view(req, resp, "search-result");
