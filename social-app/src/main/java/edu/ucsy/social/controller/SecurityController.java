@@ -102,8 +102,6 @@ public class SecurityController extends Controller {
 			// 1. set login user in session
 			// 2. redirect to home
 			req.getSession(true).setAttribute("loginUser", loginUser);
-			
-			
 			redirect(req, resp, "/home");
 		} else {
 			// login fail -> redirect to login page with alert message

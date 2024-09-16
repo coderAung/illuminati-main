@@ -39,5 +39,7 @@
 			class="nav-link ${param.settingActive}">Setting</a>
 	</div>
 	<!-- nav-links end -->
+	<c:url var="auth" value="/api/authenticate"></c:url>
+	<span class="d-none" url="${auth}" id="authenticator"></span>
 </div>
 

@@ -12,8 +12,8 @@ public class LoaderTest {
 	@Test
 	void test() {
 		var di = new DatabaseInitializer(CustomConnectorFactory.getConnectorWithPassword("admin"));
-		di.loadUser();
+//		di.loadUser();
 		di.loadPost();
-		di.truncate("post_images");
+//		di.truncate("post_images");
 	}
 }

@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
 import edu.ucsy.social.utils.DefaultPicture;
+import edu.ucsy.social.utils.Limit;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,25 +33,27 @@ public class HomeController extends Controller {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// get latest random post views from database with limit 10
-		var postViews = postService.getRandomPostViews((int) getLoginUser(req).getId(), 30);
+		var postViews = postService.getRandomPostViews((int) getLoginUser(req).getId(), Limit.STARDARD_LIMIT);
 		
-		for(var pv : postViews) {
-			var postImageList = pv.getPostImageList();
-			if(null != postImageList && 0 < postImageList.size()) {
-				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+		if(null != postViews) {
+			for(var pv : postViews) {
+				var postImageList = pv.getPostImageList();
+				if(null != postImageList && 0 < postImageList.size()) {
+					postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+				}
+				pv.setPostImageList(postImageList);
+				
+				var pi = pv.getProfileImage();
+				if(null != pi) {
+					pv.setProfileImage(getImagePath(pi, ImageType.PROFILE));
+				} else {
+					pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
+				}
 			}
-			pv.setPostImageList(postImageList);
 			
-			var pi = pv.getProfileImage();
-			if(null != pi) {
-				pv.setProfileImage(getImagePath(pi, ImageType.PROFILE));
-			} else {
-				pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
-			}
+			// set the post views to request scope
+			req.setAttribute("postViews", postViews);
 		}
-		
-		// set the post views to request scope
-		req.setAttribute("postViews", postViews);
 		view(req,resp,"home");
 	}
 

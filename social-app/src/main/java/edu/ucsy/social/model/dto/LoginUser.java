@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
+import edu.ucsy.social.model.entity.User.Status;
 
 public class LoginUser implements Serializable {
 
@@ -13,18 +14,28 @@ public class LoginUser implements Serializable {
 	private String email;
 	private String name;
 	private Role role;
+	private Status status;
 	private Theme theme;
 
 	private String profileImage;
 	private String coverImage;
 
-	public LoginUser(long id, String email, String name, Role role) {
+	public LoginUser(long id, String email, String name, Role role, Status status) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.name = name;
 		this.role = role;
+		this.status = status;
 		this.theme = Theme.LIGHT;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public String getCoverImage() {
@@ -49,6 +60,7 @@ public class LoginUser implements Serializable {
 		this.email = user.email();
 		this.name = user.name();
 		this.role = user.role();
+		this.status = user.status();
 	}
 
 	public Role getRole() {

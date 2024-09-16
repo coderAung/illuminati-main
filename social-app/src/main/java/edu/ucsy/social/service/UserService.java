@@ -41,4 +41,6 @@ public interface UserService extends Service {
 	boolean suspendUser(int userId);
 
 	boolean activateUser(int userId);
+
+	Status checkStatus(long id);
 }

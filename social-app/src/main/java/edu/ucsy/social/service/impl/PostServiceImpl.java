@@ -26,6 +26,7 @@ import edu.ucsy.social.model.dto.view.PostEditView;
 import edu.ucsy.social.model.dto.view.PostView;
 import edu.ucsy.social.model.dto.view.SavedPostView;
 import edu.ucsy.social.model.entity.Comment;
+import edu.ucsy.social.model.entity.Friend;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.ProfileImage;
@@ -47,6 +48,7 @@ public class PostServiceImpl implements PostService {
 	
 	private Searchable<Post> postSearchModel;
 	private Searchable<SavedPost> savedPostSearchModel;
+	private Searchable<Friend> friendSearchModel;
 
 	public PostServiceImpl(DatabaseConnector connector) {
 
@@ -59,6 +61,7 @@ public class PostServiceImpl implements PostService {
 		this.postSearchModel = ModelFactory.getSearchModel(Post.class);
 		this.savedPostModel = ModelFactory.getModel(SavedPost.class);
 		this.savedPostSearchModel = ModelFactory.getSearchModel(SavedPost.class);
+		this.friendSearchModel = ModelFactory.getSearchModel(Friend.class);
 	}
 
 	@Override
@@ -70,6 +73,7 @@ public class PostServiceImpl implements PostService {
 		postSearchModel.setConnection(connection);
 		savedPostModel.setConnection(connection);
 		savedPostSearchModel.setConnection(connection);
+		friendSearchModel.setConnection(connection);
 	}
 
 	@Override
@@ -81,6 +85,7 @@ public class PostServiceImpl implements PostService {
 		postSearchModel.setConnection(null);
 		savedPostModel.setConnection(null);
 		savedPostSearchModel.setConnection(null);
+		friendSearchModel.setConnection(null);
 	}
 
 	@Override
@@ -135,50 +140,61 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<PostView> getRandomPostViews(int userId, int limit) {
 		
+		var requiredLimit = 0;
+		
 		try(var connection = connector.getConnection()) {
 			initConnection(connection);
 			
-			var posts = postSearchModel.search(
-					new Criteria().limit(limit).orderBy("updated_at")
-					);
-			if(null != posts) {
-				Collections.shuffle(posts, new Random());
-			
-				var postViews = posts.stream()
-										.map(post -> {
-											var postView = new PostView(post);
-											return postView;
-										}).toList();
-				for(var pv : postViews) {
-					var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, pv.getId());
-					
-					if(null != postImages && 0 != postImages.size()) {
-						pv.setPostImageList(postImages.stream().map(pi -> pi.name()).toList());
-					}
-
-					var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, pv.getUserId());
-					
-					if(null != profileImage) {
-						pv.setProfileImage(profileImage.name());
-					}
-					var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, pv.getId());
-					pv.setCommentCount(commentCount);
-
-					// checking if the post is already saved
-					var criteria = new Criteria().where("post_id", Type.EQ, pv.getId()).where("user_id", Type.EQ, userId);
-					var savedPost = savedPostSearchModel.searchOne(criteria);
-
-					if(null != savedPost) {
-						pv.setSaved(true);
-					} else {
-						pv.setSaved(false);
-					}
-				}
-				
-				return postViews;
+			var friends = friendSearchModel.search(new Criteria().where("user_id", Type.EQ, userId));
+			if(null == friends || friends.size() == 0) {
+				return null;
 			}
 			
+			Collections.shuffle(friends, new Random());
 			
+			var postViewList = new ArrayList<PostView>();
+			for(var f : friends) {
+				
+				if(requiredLimit == limit) {
+					break;
+				}
+				
+				var criteria = new Criteria().where("user_id", Type.EQ, f.friendId()).limit(3).orderBy("updated_at", Type.DESC);
+				var posts = postSearchModel.search(criteria);
+				if(null != posts) {
+					var postViews = posts.stream().map(p -> new PostView(p)).toList();
+					for(var pv : postViews) {
+						var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, pv.getId());
+						
+						if(null != postImages && 0 != postImages.size()) {
+							pv.setPostImageList(postImages.stream().map(pi -> pi.name()).toList());
+						}
+
+						var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, pv.getUserId());
+						
+						if(null != profileImage) {
+							pv.setProfileImage(profileImage.name());
+						}
+						var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, pv.getId());
+						pv.setCommentCount(commentCount);
+
+						// checking if the post is already saved
+						var savedPost = savedPostSearchModel.searchOne(new Criteria().where("post_id", Type.EQ, pv.getId()).where("user_id", Type.EQ, userId));
+
+						if(null != savedPost) {
+							pv.setSaved(true);
+						} else {
+							pv.setSaved(false);
+						}
+					}
+					
+					requiredLimit = requiredLimit + postViews.size();
+					postViewList.addAll(postViews);
+				}
+			}
+			
+			Collections.shuffle(postViewList, new Random());
+			return postViewList;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

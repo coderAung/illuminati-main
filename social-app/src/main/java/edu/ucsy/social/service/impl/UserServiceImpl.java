@@ -497,4 +497,22 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
+	@Override
+	public Status checkStatus(long id) {
+		try (var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var user = userModel.findOne(id);
+			if(null != user) {
+				return user.status();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
 }
