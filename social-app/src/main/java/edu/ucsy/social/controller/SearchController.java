@@ -71,8 +71,9 @@ public class SearchController extends Controller {
 
 	private void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if(!StringTool.isEmpty(req.getParameter("word"))) {
+			var loginUser = getLoginUser(req);
 			var word = req.getParameter("word");
-			var postViews = searchingService.searchPosts(word);
+			var postViews = searchingService.searchPosts(word, loginUser.getId());
 			
 			req.setAttribute("word", word);
 			
@@ -90,6 +91,8 @@ public class SearchController extends Controller {
 					pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
 				}
 			}
+			req.setAttribute("activeTab", "post");
+			req.setAttribute("postViews", postViews);
 			view(req, resp, "search-result");
 		}
 	}

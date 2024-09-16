@@ -527,3 +527,7 @@
   transform: scale(1); /* Grow to its full size */
   opacity: 1; /* Fully visible */
 }
+
+.search-key:hover {
+	background-color: var(--hover);
+}

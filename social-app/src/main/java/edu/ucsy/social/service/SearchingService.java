@@ -8,7 +8,7 @@ import edu.ucsy.social.model.dto.view.UserView;
 
 public interface SearchingService extends Service {
 
-	List<PostView> searchPosts(String word);
+	List<PostView> searchPosts(String word, long loginUserId);
 
 	List<UserView> searchUsers(String word);
 
