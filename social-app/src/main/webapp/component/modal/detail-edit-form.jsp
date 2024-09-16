@@ -17,23 +17,23 @@
 						<input class="w-100 txt-text ps-4" type="text" name="name" placeholder="Name" value="${loginUser.name}">
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-phone txt-app"></i></span>
 						<input class="w-100 txt-text ps-4" type="text" name="phoneNumber" placeholder="Phone Number" value="${profileDetailView.phoneNumber}">
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-location-dot txt-app"></i></span>
 						<input class="w-100 txt-text ps-4" type="text" name="address" placeholder="Address" value="${profileDetailView.address}">
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-cake-candles txt-app"></i></span>
 						<input class="w-100 txt-text ps-4" type="date" name="birthDay" placeholder="Birthday" value="${profileDetailView.birthDate}">
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-note-sticky txt-app"></i></span>
 						<input class="w-100 txt-text ps-4" type="text" name="bio" placeholder="Bio" value="${profileDetailView.bio}">
 					</div>
 					<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-venus-mars txt-app"></i></span>
 						
 						<c:choose>
 							<c:when test="${'Male' eq profileDetailView.gender.name()}">
@@ -56,7 +56,7 @@
 					</div>
 
 				<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-heart txt-app"></i></span>
 						
 						<c:choose>
 							<c:when test="${'Single' eq profileDetailView.relationship.name()}">
@@ -87,7 +87,7 @@
 					</div>
 
 				<div class="mb-3 bg-card-2 rounded py-2 px-3 search-bar postion-relative">
-						<span class="position-absolute"><i class="fas fa-user txt-app"></i></span>
+						<span class="position-absolute"><i class="fas fa-briefcase txt-app"></i></span>
 
 						<c:choose>
 							<c:when test="${'Student' eq profileDetailView.occupation.name()}">

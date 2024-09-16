@@ -41,13 +41,14 @@
 					<c:when test="${not empty postViews}">
 						<c:url var="savePostUrl" value="/api/post/save"></c:url>
 						<span class="d-none" id="savePostUrl" url="${savePostUrl}"></span>
-						
+
 						<c:url var="unsavePostUrl" value="/api/post/unsave"></c:url>
 						<span class="d-none" id="unsavePostUrl" url="${unsavePostUrl}"></span>
-						
+
 						<c:forEach var="pv" items="${postViews}">
 							<!-- new feed start -->
-							<div class="p-2 rounded position-relative mb-2 post-card" id="post-${pv.id}">
+							<div class="p-2 rounded position-relative mb-2 post-card"
+								id="post-${pv.id}">
 								<span class="float-end pointer control-btn"> <i
 									class="bi bi-three-dots-vertical"></i>
 								</span>
@@ -55,18 +56,21 @@
 								<div
 									class="bg-card control-panel shadow w-25 p-2 rounded position-absolute control-panel float-end top-0 end-0 me-4 mt-3">
 
-										<c:choose>
-											<c:when test="${!pv.isSaved()}">
-												<div postId="${pv.id}" class="px-2 py-2 pointer rounded save-post-btn">
-													<i class="fa-solid fa-bookmark txt-app me-3"></i><span class="txt-text">Save</span>
-												</div>
-											</c:when>
-											<c:when test="${pv.isSaved()}">
-												<div postId="${pv.id}" class="px-2 py-2 pointer rounded unsave-post-btn">
-													<span class="txt-text">Unsave</span>
-												</div>
-											</c:when>
-										</c:choose>
+									<c:choose>
+										<c:when test="${!pv.isSaved()}">
+											<div postId="${pv.id}"
+												class="px-2 py-2 pointer rounded save-post-btn">
+												<i class="fa-solid fa-bookmark txt-app me-3"></i><span
+													class="txt-text">Save</span>
+											</div>
+										</c:when>
+										<c:when test="${pv.isSaved()}">
+											<div postId="${pv.id}"
+												class="px-2 py-2 pointer rounded unsave-post-btn">
+												<span class="txt-text">Unsave</span>
+											</div>
+										</c:when>
+									</c:choose>
 
 									<div postId="${pv.id}"
 										class="post-detail-btn px-2 py-2 pointer rounded">
@@ -75,10 +79,6 @@
 											<c:param name="postId" value="${pv.id}"></c:param>
 										</c:url>
 										<a href="${post}" class="d-none post-detail-link"></a>
-									</div>
-
-									<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
-										<span class="txt-text">Share</span>
 									</div>
 
 									<c:if test="${pv.userId eq loginUser.id}">
@@ -93,11 +93,13 @@
 
 									</c:if>
 
-									<c:if test="${(pv.userId eq loginUser.id) or ('ADMIN' eq loginUser.role)}">
+									<c:if
+										test="${(pv.userId eq loginUser.id) or ('ADMIN' eq loginUser.role)}">
 										<c:url var="postDeleteUrl" value="/api/post/delete"></c:url>
 										<div postId="${pv.id}" url="${postDeleteUrl}"
 											class="post-delete-btn px-2 py-2 pointer rounded text-danger">
-											<i class="fa-regular fa-trash-can text-danger me-3"></i><span class="text-decoration-none">Delete</span>
+											<i class="fa-regular fa-trash-can text-danger me-3"></i><span
+												class="text-decoration-none">Delete</span>
 										</div>
 									</c:if>
 								</div>
@@ -182,8 +184,18 @@
 								<!-- Post Images end -->
 
 								<!-- comment and share section -->
+
 								<div class=" d-flex align-items-center pt-1 text-center">
-									<a href="${post}#comments"
+
+									<a
+										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+										Like <i class="bi bi-dot"></i> <small class="txt-grey">20
+											reactions</small>
+									</a>
+									
+									<span class="mx-2">|</span>
+									
+									 <a href="${post}#comments"
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 										Comment <i class="bi bi-dot"></i> <c:choose>
 											<c:when test="${pv.commentCount gt 0}">
@@ -193,10 +205,6 @@
 												<small class="txt-grey">${pv.commentCount} comment</small>
 											</c:otherwise>
 										</c:choose>
-									</a> <span class="mx-2">|</span> <a
-										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-										Share <i class="bi bi-dot"></i> <small class="txt-grey">20
-											shares</small>
 									</a>
 								</div>
 
@@ -210,13 +218,13 @@
 				</c:choose>
 				<!-- post end -->
 			</div>
-		
+
 			<c:if test="${loginUser.role.name() eq 'ADMIN'}">
 				<div class="col-2 mx-auto right-side px-0">
 					<jsp:include page="/component/modal/admin-panel.jsp"></jsp:include>
 				</div>
 			</c:if>
-		
+
 		</div>
 	</main>
 	<!-- main content end -->

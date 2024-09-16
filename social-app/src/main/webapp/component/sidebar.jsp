@@ -38,9 +38,7 @@
 
 	<a href="${saved}"
 		class="menu-item ${param.savedActive} py-2 px-4 pointer d-block text-decoration-none">
-		Saved </a> <a href="${notifications}"
-		class="menu-item ${param.notificationActive} py-2 px-4 pointer d-block text-decoration-none">
-		Notifications </a> <a href="${setting}"
+		Saved </a> <a href="${setting}"
 		class="menu-item ${param.settingActive} py-2 px-4 pointer d-block text-decoration-none">
 		Setting </a>
 </div>

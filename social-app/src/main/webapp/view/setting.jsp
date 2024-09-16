@@ -74,8 +74,10 @@
 				</div>
 
 				<!-- Profile Detail -->
-				<div class="bg-card setting-div rounded p-3 mb-3">
+				<div class="bg-card setting-div rounded p-3 mb-3 d-flex align-items-center justify-content-between">
 					<span>Profile Detail</span>
+					<c:url var="profile" value="/profile/detail"></c:url>
+					<a href="${profile}" class="btn text-decoration-none btn-app shadow">View</a>
 				</div>
 
 				<!-- Change Password -->
@@ -129,16 +131,27 @@
 
 
 				<!-- About Us -->
-				<div class="bg-card setting-div rounded p-3 mb-3">
-					<span>About Us</span>
+				<div
+					class="bg-card setting-div rounded p-3 mb-3 d-flex align-items-center justify-content-between">
+					<span>About us</span>
+					<button class="btn btn-normal shadow">Go</button>
 				</div>
 
 				<!-- Logout -->
 				<div
-					class="bg-card setting-div rounded p-3 d-flex align-items-center justify-content-between">
+					class="bg-card setting-div rounded p-3 mb-3 d-flex align-items-center justify-content-between">
 					<span>Logout</span>
 					<button class="btn logout-btn shadow" data-bs-toggle="modal"
 						data-bs-target="#logout">Logout</button>
+				</div>
+
+
+				<!-- Delete Account -->
+				<div
+					class="bg-card setting-div rounded p-3 d-flex align-items-center justify-content-between">
+					<span>Delete Account</span>
+					<c:url var="deleteAccount" value="/profile/delete"></c:url>
+					<a href="${deleteAccount}" class="btn logout-btn text-decoration-none">Delete Account</a>
 				</div>
 			</div>
 			<!-- main content end -->

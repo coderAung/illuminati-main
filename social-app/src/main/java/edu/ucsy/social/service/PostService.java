@@ -40,4 +40,8 @@ public interface PostService extends Service {
 	long countSavedPost(LoginUser loginUser);
 
 	long getTotalPostCount();
+
+	List<String> deletePostsByUserId(long id);
+
+	List<String> getPostImageListByUserId(long id);
 }

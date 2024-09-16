@@ -11,6 +11,7 @@ import java.util.List;
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.OneToMany;
 import edu.ucsy.social.data.OneToOne;
+import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.model.entity.CoverImage;
 import edu.ucsy.social.model.entity.Friend;
 import edu.ucsy.social.model.entity.FriendRequest;
@@ -24,7 +25,7 @@ import edu.ucsy.social.model.entity.type.ImageStatus;
 import edu.ucsy.social.utils.StringTool;
 
 public class UserModel extends AbstractModel<User> 
-				implements OneToOne, OneToMany {
+				implements OneToOne, OneToMany, UserDeleter {
 
 	@Override
 	public User save(User u) {
@@ -200,8 +201,11 @@ public class UserModel extends AbstractModel<User>
 	@Override
 	public boolean delete(long id) {
 		var sql = "delete from users where id = ?";
-		try(var stmt = connection.prepareStatement(sql)) {
+		try(var stmt = connection.prepareStatement(sql);
+				var stmt2 = connection.prepareStatement("set foreign_key_checks = ?")) {
 			stmt.setLong(1, id);
+			stmt2.setInt(1, 0);
+			stmt2.execute();
 			var row = stmt.executeUpdate();
 			if(0 == row) {
 				return false;
@@ -559,6 +563,27 @@ public class UserModel extends AbstractModel<User>
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean delete(Criteria criteria, String ...tableNames ) {
+		
+		var sql = "delete from %s";
+		var values = criteria.getValues();
+		for(var name : tableNames) {
+			sql = criteria.generateStatement(sql.formatted(name));
+			try(var stmt = connection.prepareStatement(sql)) {
+				for(int i = 0; i < values.size(); i ++) {
+					stmt.setObject(i + 1, values.get(i));
+				}
+				stmt.executeUpdate();
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return false;
 	}
 
 }

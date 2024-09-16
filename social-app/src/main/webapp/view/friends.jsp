@@ -14,7 +14,7 @@
 
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
-		<jsp:param value="nav-link-active" name="" />
+		<jsp:param value="nav-link-active" name="friendActive" />
 	</jsp:include>
 	<!-- nav bar end -->
 

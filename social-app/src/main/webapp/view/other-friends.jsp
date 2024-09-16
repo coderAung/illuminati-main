@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Illuminati | Other</title>
+<title>Illuminati | ${userName}</title>
 
 <jsp:include page="/resource/style.jsp"></jsp:include>
 </head>
@@ -14,7 +14,7 @@
 
 	<!-- nav bar start -->
 	<jsp:include page="/component/nav-bar.jsp">
-		<jsp:param value="nav-link-active" name="homeActive" />
+		<jsp:param value="nav-link-active" name="" />
 	</jsp:include>
 	<!-- nav bar end -->
 
@@ -24,7 +24,7 @@
 			<!-- side bar start -->
 			<div class="col-3 left-side mx-3">
 				<jsp:include page="/component/sidebar.jsp">
-					<jsp:param name="homeActive" value="menu-item-active" />
+					<jsp:param name="" value="menu-item-active" />
 				</jsp:include>
 			</div>
 			<!-- side bar end -->
@@ -43,10 +43,7 @@
 									<small class="txt-grey">${friendViews.size()} friends</small>
 								</c:when>
 							</c:choose>
-							<div class="d-flex search-bar py-2 px-3 bg-card-2 w-50 rounded">
-								<input type="text" class="w-100 rounded txt-white"
-									placeholder="Find friends">
-							</div>
+							
 						</div>
 						<c:forEach var="fv" items="${friendViews}">
 							<div

@@ -1,10 +1,14 @@
 package edu.ucsy.social.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 import javax.sql.DataSource;
 
+import edu.ucsy.social.model.dto.Alert;
+import edu.ucsy.social.model.dto.Alert.AlertType;
 import edu.ucsy.social.model.dto.form.ProfileDetailForm;
 import edu.ucsy.social.model.entity.UserDetail.Gender;
 import edu.ucsy.social.model.entity.UserDetail.Occupation;
@@ -23,8 +27,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/profile", "/profile/friends", "/profile/detail", "/profile/edit",
-		"/profile/saved" }, loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/profile", "/profile/friends", "/profile/detail", "/profile/edit", "/profile/saved",
+		"/profile/delete" }, loadOnStartup = 1)
 public class ProfileController extends Controller {
 
 	private static final long serialVersionUID = 1L;
@@ -33,6 +37,7 @@ public class ProfileController extends Controller {
 	private static final String PROFILE_DETAIL = "/profile/detail";
 	private static final String PROFILE_EDIT = "/profile/edit";
 	private static final String PROFILE_SAVED = "/profile/saved";
+	private static final String PROFILE_DELETE = "/profile/delete";
 
 	@Resource(name = "social")
 	private DataSource dataSource;
@@ -66,25 +71,34 @@ public class ProfileController extends Controller {
 			break;
 		case PROFILE_SAVED:
 			forwardToSavedPostPage(req, resp);
+			break;
+		case PROFILE_DELETE:
+			forwardToDeleteAccountPage(req, resp);
+			break;
 		default:
 			break;
 		}
 
 	}
 
+	private void forwardToDeleteAccountPage(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		view(req, resp, "delete-account");
+	}
+
 	private void forwardToSavedPostPage(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		var loginUser = getLoginUser(req);
 		var savedPostViews = postService.getSavedPostViews(loginUser, Limit.STARDARD_LIMIT);
-		
+
 		savedPostViews.forEach(spv -> {
 			spv.setDisplayImage(getImagePath(spv.getDisplayImage(), spv.getDisplayImageType()));
 		});
-		
+
 		var savedPostCount = postService.countSavedPost(loginUser);
-		
+
 		req.setAttribute("savedPostCount", savedPostCount);
-		
+
 		req.setAttribute("savedPostViews", savedPostViews);
 		view(req, resp, "saved-posts");
 
@@ -128,9 +142,9 @@ public class ProfileController extends Controller {
 				fv.setProfileImage(getImagePath(fv.getProfileImage(), ImageType.PROFILE));
 			}
 		}
-		
+
 		var friendCount = friendService.getFriendCount(userId);
-		
+
 		req.setAttribute("friendCount", friendCount);
 
 		// set friend views request scope
@@ -224,10 +238,68 @@ public class ProfileController extends Controller {
 		case PROFILE_EDIT:
 			editProfile(req, resp);
 			break;
+		case PROFILE_DELETE:
+			deleteUser(req, resp);
+			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		var loginUser = getLoginUser(req);
+		var password = req.getParameter("password");
+		if (userService.getPassword(loginUser.getId()).equals(password)) {
+
+			var result = false;
+
+			var postImageList = postService.getPostImageListByUserId(loginUser.getId());
+
+			var coverImageList = userService.getCoverImages(loginUser.getId());
+
+			var profileImageList = userService.getProfileImages(loginUser.getId());
+
+			result = userService.deleteUserAccount(loginUser);
+			if (result) {
+				var imageFolder = getServletContext().getRealPath("/photo");
+
+				if (null != postImageList) {
+//				postImageList = postImageList.stream().map(pi -> getImagePath(pi, ImageType.POST)).toList();
+					for (var pi : postImageList) {
+						var path = Path.of(imageFolder, DefaultPicture.postFolder, pi);
+						Files.deleteIfExists(path);
+					}
+				}
+
+				if (null != coverImageList) {
+//				coverImageList = coverImageList.stream().map(ci -> getImagePath(ci, ImageType.COVER)).toList();
+					for (var ci : coverImageList) {
+						var path = Path.of(imageFolder, DefaultPicture.coverFolder, ci);
+						Files.deleteIfExists(path);
+					}
+				}
+
+				if (null != profileImageList) {
+//				profileImageList = profileImageList.stream().map(pi -> getImagePath(pi, ImageType.PROFILE)).toList();
+
+					for (var pfi : profileImageList) {
+						var path = Path.of(imageFolder, DefaultPicture.profileFolder, pfi);
+						Files.deleteIfExists(path);
+					}
+				}
+				userService.deleteUser(loginUser.getId());
+				redirect(req, resp, "/");
+			} else {
+				var alert = new Alert("Account Deleting Fails!", AlertType.INFO);
+				req.getSession(true).setAttribute("alert", alert);
+				redirect(req, resp, "/setting");
+			}
+		} else {
+			var alert = new Alert("Account Deleting Fails!", AlertType.INFO);
+			req.getSession(true).setAttribute("alert", alert);
+			redirect(req, resp, "/setting");
+		}
 	}
 
 	private void editProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException {

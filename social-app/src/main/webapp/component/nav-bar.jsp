@@ -6,6 +6,7 @@
 <c:url var="notifications" value="/notifications"></c:url>
 <c:url var="setting" value="/setting"></c:url>
 <c:url var="profile" value="/profile"></c:url>
+<c:url var="friends" value="/profile/friends"></c:url>
 
 <c:url var="logo" value="/img/circle-i-logo.png"></c:url>
 
@@ -33,8 +34,8 @@
 		<a href="${home}" class="nav-link ${param.homeActive}">Home</a>
 		<a href="${profile}"
 			class="nav-link ${param.profileActive}">Profile</a>
-		<a href="${notifications}"
-			class="nav-link ${param.noificationActive}">Notifications</a>
+		<a href="${friends}"
+			class="nav-link ${param.friendActive}">Friends</a>
 		<a href="${setting}"
 			class="nav-link ${param.settingActive}">Setting</a>
 	</div>

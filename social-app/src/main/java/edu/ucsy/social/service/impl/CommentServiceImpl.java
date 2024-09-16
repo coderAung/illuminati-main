@@ -120,4 +120,10 @@ public class CommentServiceImpl implements CommentService {
 		commentModel.setConnection(null);
 		userModel.setConnection(null);
 	}
+
+	@Override
+	public boolean deleteCommentsByUserId(long id) {
+		
+		return false;
+	}
 }

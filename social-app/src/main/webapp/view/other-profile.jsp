@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Illuminati | Other</title>
+<title>Illuminati | ${profileView.name}</title>
 
 <jsp:include page="/resource/style.jsp"></jsp:include>
 
@@ -84,7 +84,10 @@
 										class="btn btn-app w-auto me-3">Add Friend</button>
 								</c:otherwise>
 							</c:choose>
-							<a href="#" class="btn btn-normal w-auto">Detail</a>
+							<c:url var="profileDetail" value="/other/profile/detail">
+								<c:param name="userId" value="${profileView.userId}"></c:param>
+							</c:url>
+							<a href="${profileDetail}" class="btn btn-normal w-auto">Detail</a>
 						</div>
 
 						<div>
@@ -145,10 +148,6 @@
 												<c:param name="postId" value="${pv.id}"></c:param>
 											</c:url>
 											<a href="${post}" class="d-none post-detail-link"></a>
-										</div>
-
-										<div postId="${pv.id}" class="px-2 py-2 pointer rounded">
-											<span class="txt-text">Share</span>
 										</div>
 
 										<c:if test="${pv.userId eq loginUser.id}">
@@ -255,6 +254,14 @@
 									<!-- comment and share section -->
 									<div class=" d-flex align-items-center pt-1 text-center">
 
+										<a
+											class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+											Like <i class="bi bi-dot"></i> <small class="txt-grey">20
+												reactions</small>
+										</a>
+										
+										<span class="mx-2">|</span>
+										
 										<a href="${post}#comments"
 											class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 											Comment <i class="bi bi-dot"></i> <c:choose>
@@ -265,10 +272,6 @@
 													<small class="txt-grey">${pv.commentCount} comment</small>
 												</c:otherwise>
 											</c:choose>
-										</a> <span class="mx-2">|</span> <a
-											class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-											Share <i class="bi bi-dot"></i> <small class="txt-grey">20
-												shares</small>
 										</a>
 									</div>
 

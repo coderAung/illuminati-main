@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
+import edu.ucsy.social.data.Deletable;
 import edu.ucsy.social.data.OneToMany;
+import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
@@ -17,7 +19,7 @@ import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.utils.StringTool;
 
 public class PostModel extends AbstractModel<Post>
-			implements OneToMany {
+			implements OneToMany, Deletable {
 
 	@Override
 	public Post save(Post p) {
@@ -365,6 +367,12 @@ public class PostModel extends AbstractModel<Post>
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public boolean delete(Criteria criteria, String... tableName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

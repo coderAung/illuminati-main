@@ -43,10 +43,7 @@
 										requests</small>
 								</c:when>
 							</c:choose>
-							<div class="d-flex search-bar py-2 px-3 bg-card-2 w-50 rounded">
-								<input type="text" class="w-100 rounded txt-white"
-									placeholder="Find friends">
-							</div>
+
 						</div>
 						<c:url var="friendUrl" value="/api/friend"></c:url>
 						<c:url var="friendRequestUrl" value="/api/friend-request"></c:url>

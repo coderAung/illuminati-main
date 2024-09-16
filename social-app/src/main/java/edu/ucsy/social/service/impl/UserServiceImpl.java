@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.Countable;
+import edu.ucsy.social.data.Deletable;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.OneToMany;
@@ -36,12 +37,16 @@ public class UserServiceImpl implements UserService {
 	private Model<User> userModel;
 	private Searchable<User> userSearchModel;
 	private Model<UserDetail> userDetailModel;
+	private Searchable<Post> postSearchModel;
+	private Model<Post> postModel;
 
 	public UserServiceImpl(DatabaseConnector connector) {
 		this.connector = connector;
 		userModel = ModelFactory.getModel(User.class);
 		userSearchModel = ModelFactory.getSearchModel(User.class);
 		userDetailModel = ModelFactory.getModel(UserDetail.class);
+		postSearchModel = ModelFactory.getSearchModel(Post.class);
+		postModel = ModelFactory.getModel(Post.class);
 	}
 
 	@Override
@@ -151,6 +156,8 @@ public class UserServiceImpl implements UserService {
 		userModel.setConnection(connection);
 		userSearchModel.setConnection(connection);
 		userDetailModel.setConnection(connection);
+		postSearchModel.setConnection(connection);
+		postModel.setConnection(connection);
 	}
 
 	@Override
@@ -158,6 +165,8 @@ public class UserServiceImpl implements UserService {
 		userModel.setConnection(null);
 		userSearchModel.setConnection(null);
 		userDetailModel.setConnection(null);
+		postSearchModel.setConnection(null);
+		postModel.setConnection(null);
 	}
 
 	@Override
@@ -456,14 +465,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private User updateStatus(User user, Status status) {
-		return new User(
-				user.id(),
-				user.email(),
-				user.name(),
-				user.password(),
-				user.role(),
-				status,
-				user.createdAt(),
+		return new User(user.id(), user.email(), user.name(), user.password(), user.role(), status, user.createdAt(),
 				user.updatedAt());
 	}
 
@@ -501,18 +503,126 @@ public class UserServiceImpl implements UserService {
 	public Status checkStatus(long id) {
 		try (var connection = connector.getConnection()) {
 			initConnection(connection);
-			
+
 			var user = userModel.findOne(id);
-			if(null != user) {
+			if (null != user) {
 				return user.status();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			destroyConnection();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean deleteUserAccount(LoginUser loginUser) {
+		try (var connection = connector.getConnection()) {
+			try {
+				initConnection(connection);
+				connection.setAutoCommit(false);
+
+				var c1 = new Criteria().where("user_id", Type.EQ, loginUser.getId());
+				Deletable.getDeletable(userModel).delete(c1, "comments", "saved_posts", "user_details", "cover_images", "profile_images");
+
+				var c2 = new Criteria().where("request_to", Type.EQ, loginUser.getId()).orWhere("request_by", Type.EQ,
+						loginUser.getId());
+				Deletable.getDeletable(userModel).delete(c2, "friend_requests");
+
+				var c3 = new Criteria().where("user_id", Type.EQ, loginUser.getId()).orWhere("friend_id", Type.EQ,
+						loginUser.getId());
+				Deletable.getDeletable(userModel).delete(c3, "friends");
+				
+				var posts = postSearchModel.search(new Criteria().where("user_id", Type.EQ, loginUser.getId()));
+
+				if (null != posts) {
+					for (var post : posts) {
+						Deletable.getDeletable(userModel).delete(new Criteria().where("post_id", Type.EQ, post.id()), "post_images");
+					}
+				}
+				
+				Deletable.getDeletable(userModel).delete(c1, "posts");
+				
+				connection.commit();
+				return true;
+			} catch (Exception e) {
+				connection.rollback();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return false;
+	}
+
+	@Override
+	public List<String> getCoverImages(long id) {
+		try (var connection = connector.getConnection()) {
+			initConnection(connection);
+
+			var coverImages = userModel.getRelational(OneToMany.class).getMany(CoverImage.class, id);
+			if (null != coverImages && coverImages.size() > 0) {
+				return coverImages.stream().map(cv -> cv.name()).toList();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public List<String> getProfileImages(long id) {
+		try (var connection = connector.getConnection()) {
+			initConnection(connection);
+
+			var profileImages = userModel.getRelational(OneToMany.class).getMany(ProfileImage.class, id);
+			if (null != profileImages && profileImages.size() > 0) {
+				return profileImages.stream().map(pi -> pi.name()).toList();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public String getPassword(long id) {
+		try (var connection = connector.getConnection()) {
+			initConnection(connection);
+
+			var user = userModel.findOne(id);
+			if (null != user) {
+				return user.password();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public void deleteUser(long id) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			userModel.delete(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
 	}
 
 }

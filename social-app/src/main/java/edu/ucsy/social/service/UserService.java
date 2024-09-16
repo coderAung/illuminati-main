@@ -43,4 +43,14 @@ public interface UserService extends Service {
 	boolean activateUser(int userId);
 
 	Status checkStatus(long id);
+
+	boolean deleteUserAccount(LoginUser loginUser);
+
+	List<String> getCoverImages(long id);
+
+	List<String> getProfileImages(long id);
+
+	String getPassword(long id);
+
+	void deleteUser(long id);
 }

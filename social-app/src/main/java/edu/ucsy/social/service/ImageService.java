@@ -8,4 +8,8 @@ public interface ImageService extends Service {
 
 	long saveCoverImage(long userId, String imageName);
 
+	String getProfileImage(int userId);
+
+	String getImageService(int userId);
+
 }

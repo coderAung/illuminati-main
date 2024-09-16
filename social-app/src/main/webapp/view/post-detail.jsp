@@ -67,10 +67,7 @@
 								</div>
 							</c:when>
 						</c:choose>
-						<div id="share-btn" postId="${pv.id}"
-							class="px-2 py-2 pointer rounded">
-							<span class="txt-text">Share</span>
-						</div>
+
 						<c:if test="${pv.userId eq loginUser.id}">
 							<div postId="${pv.id}"
 								class="edit-post-btn px-2 py-2 pointer rounded">
@@ -165,6 +162,15 @@
 					<!-- Post Images end -->
 					<!-- comment and share section -->
 					<div class=" d-flex align-items-center py-1 text-center">
+						
+						<a
+							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+							Like <i class="bi bi-dot"></i> <small class="txt-grey">20
+								reactions</small>
+						</a>
+						
+						<span class="mx-2">|</span>
+						
 						<a href="#comments"
 							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 							Comment <i class="bi bi-dot"></i> <c:choose>
@@ -178,10 +184,6 @@
 										comments</small>
 								</c:otherwise>
 							</c:choose>
-						</a> <span class="mx-2">|</span> <a
-							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-							Share <i class="bi bi-dot"></i> <small class="txt-grey">20
-								shares</small>
 						</a>
 					</div>
 

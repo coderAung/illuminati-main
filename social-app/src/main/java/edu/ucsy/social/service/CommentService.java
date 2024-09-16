@@ -16,4 +16,6 @@ public interface CommentService extends Service {
 
 	List<CommentView> getCommentViews(int postId, int lastCommentId, int i);
 
+	boolean deleteCommentsByUserId(long id);
+
 }

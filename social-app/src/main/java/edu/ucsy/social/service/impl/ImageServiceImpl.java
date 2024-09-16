@@ -13,6 +13,7 @@ import edu.ucsy.social.model.entity.CoverImage;
 import edu.ucsy.social.model.entity.ProfileImage;
 import edu.ucsy.social.model.entity.type.ImageStatus;
 import edu.ucsy.social.service.ImageService;
+import edu.ucsy.social.utils.DefaultPicture;
 
 public class ImageServiceImpl implements ImageService {
 
@@ -121,6 +122,48 @@ public class ImageServiceImpl implements ImageService {
 			destroyConnection();
 		}
 		return 0;
+	}
+
+	@Override
+	public String getProfileImage(int userId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			var criteria = new Criteria()
+					.where("status", Type.EQ, ImageStatus.ACTIVE.name())
+					.where("user_id", Type.EQ, userId);
+			var profileImage = profileImageSearchModel.searchOne(criteria);
+			if(null != profileImage) {
+				return profileImage.name();
+			} else {
+				return DefaultPicture.defaultProfilePicture;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public String getImageService(int userId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			var criteria = new Criteria()
+					.where("status", Type.EQ, ImageStatus.ACTIVE.name())
+					.where("user_id", Type.EQ, userId);
+			var coverImage = coverImageSearchModel.searchOne(criteria);
+			if(null != coverImage) {
+				return coverImage.name();
+			} else {
+				return DefaultPicture.defaultCoverImage;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
 	}
 
 }

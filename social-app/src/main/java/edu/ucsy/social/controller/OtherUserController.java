@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import edu.ucsy.social.model.dto.OtherUserData;
 import edu.ucsy.social.service.FriendService;
+import edu.ucsy.social.service.ImageService;
 import edu.ucsy.social.service.OtherUserService;
 import edu.ucsy.social.service.PostService;
 import edu.ucsy.social.service.ServiceFactory;
@@ -19,7 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/other/profile", "/other/friends" }, loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/other/profile", "/other/friends", "/other/profile/detail" }, loadOnStartup = 1)
 public class OtherUserController extends Controller {
 
 	private static final long serialVersionUID = 1L;
@@ -30,6 +31,7 @@ public class OtherUserController extends Controller {
 	private FriendService friendService;
 	private PostService postService;
 	private UserService userService;
+	private ImageService imageService;
 
 	@Override
 	public void init() throws ServletException {
@@ -38,6 +40,7 @@ public class OtherUserController extends Controller {
 		friendService = ServiceFactory.getService(FriendService.class, dataSource);
 		postService = ServiceFactory.getService(PostService.class, dataSource);
 		userService = ServiceFactory.getService(UserService.class, dataSource);
+		imageService = ServiceFactory.getService(ImageService.class, dataSource);
 	}
 
 	@Override
@@ -51,19 +54,39 @@ public class OtherUserController extends Controller {
 		case "/other/friends":
 			forwardToOtherFriendsPage(req, resp);
 			break;
+		case "/other/profile/detail":
+			forwardToOtherDetailPage(req, resp);
+			break;
 		default:
 			break;
 		}
 	}
 
-	private void forwardToOtherFriendsPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		if(!StringTool.isEmpty(req.getParameter("userId"))) {
+	private void forwardToOtherDetailPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (!StringTool.isEmpty(req.getParameter("userId"))) {
+			var userId = Integer.parseInt(req.getParameter("userId"));
+			var profileDetailView = userService.getProfileDetailView(userId);
+			
+			var profileImage = imageService.getProfileImage(userId);
+			var coverImage = imageService.getImageService(userId);
+			
+			req.setAttribute("profileImage", getImagePath(profileImage, ImageType.PROFILE));
+			req.setAttribute("coverImage", getImagePath(coverImage, ImageType.COVER));
+			
+			req.setAttribute("profileDetailView", profileDetailView);
+			view(req, resp, "other-detail");
+		}
+	}
+
+	private void forwardToOtherFriendsPage(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		if (!StringTool.isEmpty(req.getParameter("userId"))) {
 			var userId = Integer.parseInt(req.getParameter("userId"));
 			var friendCount = friendService.getFriendCount(userId);
 			req.setAttribute("friendCount", friendCount);
-			
+
 			var friendViews = friendService.getFriendViews(userId, Limit.STARDARD_LIMIT);
-			if(null != friendViews) {
+			if (null != friendViews) {
 
 				for (var fv : friendViews) {
 					if (null == fv.getProfileImage()) {
@@ -72,14 +95,14 @@ public class OtherUserController extends Controller {
 						fv.setProfileImage(getImagePath(fv.getProfileImage(), ImageType.PROFILE));
 					}
 				}
-				
+
 				var userName = userService.getUserName(userId);
 				req.setAttribute("userName", userName);
 				req.setAttribute("friendViews", friendViews);
 
 				view(req, resp, "other-friends");
 			}
-			
+
 		}
 	}
 
@@ -138,7 +161,7 @@ public class OtherUserController extends Controller {
 
 				// get 30 post view from other user service
 				var postViews = postService.getPostViews(otherUserId, Limit.POST);
-				
+
 				for (var pv : postViews) {
 					var postImageList = pv.getPostImageList();
 					if (null != postImageList && 0 < postImageList.size()) {
@@ -152,7 +175,7 @@ public class OtherUserController extends Controller {
 					} else {
 						pv.setProfileImage(getImagePath(DefaultPicture.defaultProfilePicture, ImageType.PROFILE));
 					}
-					
+
 					// checking is the post is saved by login user
 					var isSaved = postService.isSaved(pv, (int) getLoginUser(req).getId());
 					pv.setSaved(isSaved);
