@@ -186,10 +186,10 @@
 								<!-- comment and share section -->
 
 								<div class=" d-flex align-items-center pt-1 text-center">
-
-									<a
-										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-										Like <i class="bi bi-dot"></i> <small class="txt-grey">20
+									<c:url var="reactionLink" value="/api/reaction"></c:url>
+									<a status="" url="${reactionLink}" postId="${pv.id}"
+										class="reaction-btn py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+										Like <i class="bi bi-dot"></i> <small count="" class="reaction-count txt-grey">${pv.reactionCount}
 											reactions</small>
 									</a>
 									
@@ -249,5 +249,8 @@
 
 	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
 	<script type="text/javascript" src="${postDelete}"></script>
+
+	<c:url var="reaction" value="/resource/ajax/reaction.js"></c:url>
+	<script type="text/javascript" src="${reaction}"></script>
 </body>
 </html>

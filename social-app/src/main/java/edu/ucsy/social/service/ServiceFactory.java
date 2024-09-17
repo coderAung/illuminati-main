@@ -11,6 +11,7 @@ import edu.ucsy.social.service.impl.ImageServiceImpl;
 import edu.ucsy.social.service.impl.OtherUserServiceImpl;
 import edu.ucsy.social.service.impl.PostImageServiceImpl;
 import edu.ucsy.social.service.impl.PostServiceImpl;
+import edu.ucsy.social.service.impl.ReactionServiceImpl;
 import edu.ucsy.social.service.impl.SearchingServiceImpl;
 import edu.ucsy.social.service.impl.UserServiceImpl;
 
@@ -52,6 +53,10 @@ public abstract class ServiceFactory {
 		
 		if(t.equals(SearchingService.class)) {
 			return (T) new SearchingServiceImpl(ConnectorFactory.getConnector(dataSource));
+		}
+		
+		if(t.equals(ReactionService.class)) {
+			return (T) new ReactionServiceImpl(ConnectorFactory.getConnector(dataSource));
 		}
 
 		return null;

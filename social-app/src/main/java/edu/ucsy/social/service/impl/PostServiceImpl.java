@@ -30,6 +30,7 @@ import edu.ucsy.social.model.entity.Friend;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
 import edu.ucsy.social.model.entity.ProfileImage;
+import edu.ucsy.social.model.entity.Reaction;
 import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.model.entity.SharedPost;
 import edu.ucsy.social.model.entity.User;
@@ -49,10 +50,14 @@ public class PostServiceImpl implements PostService {
 	private Searchable<Post> postSearchModel;
 	private Searchable<SavedPost> savedPostSearchModel;
 	private Searchable<Friend> friendSearchModel;
+	
+	private Model<Reaction> reactionModel;
 
 	public PostServiceImpl(DatabaseConnector connector) {
 
 		this.connector = connector;
+		
+		this.reactionModel = ModelFactory.getModel(Reaction.class);
 
 		this.postModel = ModelFactory.getModel(Post.class);
 		this.userModel = ModelFactory.getModel(User.class);
@@ -66,6 +71,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void initConnection(Connection connection) {
+		reactionModel.setConnection(connection);
+		
 		postModel.setConnection(connection);
 		userModel.setConnection(connection);
 		postImageModel.setConnection(connection);
@@ -78,6 +85,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void destroyConnection() {
+		reactionModel.setConnection(null);
+		
 		postModel.setConnection(null);
 		userModel.setConnection(null);
 		postImageModel.setConnection(null);
@@ -191,6 +200,10 @@ public class PostServiceImpl implements PostService {
 						} else {
 							pv.setSaved(false);
 						}
+						
+						// get reaction count
+						var reactionCount = Countable.getCountable(reactionModel).count(new Criteria().where("post_id", Type.EQ, pv.getId()));
+						pv.setReactionCount(reactionCount);
 					}
 
 					requiredLimit = requiredLimit + postViews.size();

@@ -142,3 +142,11 @@ user_id bigint not null,
 target_id bigint not null,
 foreign key (user_id) references users (id)
 );
+
+create table reactions(
+id bigint primary key auto_increment,
+user_id bigint not null,
+post_id bigint not null,
+foreign key (user_id) references users (id),
+foreign key (post_id) references posts (id)
+);

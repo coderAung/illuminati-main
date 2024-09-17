@@ -51,18 +51,20 @@
 
 						<c:url var="savePostUrl" value="/api/post/save"></c:url>
 						<span class="d-none" id="savePostUrl" url="${savePostUrl}"></span>
-						
+
 						<c:url var="unsavePostUrl" value="/api/post/unsave"></c:url>
 						<span class="d-none" id="unsavePostUrl" url="${unsavePostUrl}"></span>
 
 						<c:choose>
 							<c:when test="${!pv.isSaved()}">
-								<div postId="${pv.id}" class="px-2 py-2 pointer rounded save-post-btn">
+								<div postId="${pv.id}"
+									class="px-2 py-2 pointer rounded save-post-btn">
 									<span class="txt-text">Save</span>
 								</div>
 							</c:when>
 							<c:when test="${pv.isSaved()}">
-								<div postId="${pv.id}" class="px-2 py-2 pointer rounded unsave-post-btn">
+								<div postId="${pv.id}"
+									class="px-2 py-2 pointer rounded unsave-post-btn">
 									<span class="txt-text">Unsave</span>
 								</div>
 							</c:when>
@@ -162,16 +164,13 @@
 					<!-- Post Images end -->
 					<!-- comment and share section -->
 					<div class=" d-flex align-items-center py-1 text-center">
-						
-						<a
-							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-							Like <i class="bi bi-dot"></i> <small class="txt-grey">20
+						<c:url var="reactionLink" value="/api/reaction"></c:url>
+						<a status="" url="${reactionLink}" postId="${pv.id}"
+							class="reaction-btn py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+							Like <i class="bi bi-dot"></i> <small count=""
+							class="reaction-count txt-grey">${pv.reactionCount}
 								reactions</small>
-						</a>
-						
-						<span class="mx-2">|</span>
-						
-						<a href="#comments"
+						</a> <span class="mx-2">|</span> <a href="#comments"
 							class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 							Comment <i class="bi bi-dot"></i> <c:choose>
 								<c:when test="${empty postDetailView.commentViews}">
@@ -308,5 +307,7 @@
 
 	<c:url var="postDelete" value="/resource/ajax/post-delete.js"></c:url>
 	<script type="text/javascript" src="${postDelete}"></script>
+	<c:url var="reaction" value="/resource/ajax/reaction.js"></c:url>
+	<script type="text/javascript" src="${reaction}"></script>
 </body>
 </html>
