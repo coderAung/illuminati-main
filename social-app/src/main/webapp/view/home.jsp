@@ -189,13 +189,10 @@
 									<c:url var="reactionLink" value="/api/reaction"></c:url>
 									<a status="" url="${reactionLink}" postId="${pv.id}"
 										class="reaction-btn py-2 pointer link w-100 txt-white w-50 text-decoration-none">
-										Like <i class="bi bi-dot"></i> <small count="" class="reaction-count txt-grey">${pv.reactionCount}
+										Like <i class="bi bi-dot"></i> <small count=""
+										class="reaction-count txt-grey">${pv.reactionCount}
 											reactions</small>
-									</a>
-									
-									<span class="mx-2">|</span>
-									
-									 <a href="${post}#comments"
+									</a> <span class="mx-2">|</span> <a href="${post}#comments"
 										class="py-2 pointer link w-100 txt-white w-50 text-decoration-none">
 										Comment <i class="bi bi-dot"></i> <c:choose>
 											<c:when test="${pv.commentCount gt 0}">
@@ -213,7 +210,10 @@
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
-						<h2 class="bg-danger text-white">THERE IS NO POSTS</h2>
+						<div class="text-center txt-grey bg-card-2 p-2 fs-5 rounded">
+							<span>No post available</span> <i
+								class="fa-solid fa-circle-exclamation"></i>
+						</div>
 					</c:otherwise>
 				</c:choose>
 				<!-- post end -->
