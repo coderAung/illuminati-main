@@ -54,10 +54,4 @@ public class SavedPostSearchModel extends SearchModel<SavedPost> {
 		this.connection = connection;
 	}
 
-	@Override
-	public List<SavedPost> searchLatest(Criteria c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

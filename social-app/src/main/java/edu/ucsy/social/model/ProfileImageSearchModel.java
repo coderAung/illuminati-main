@@ -58,10 +58,4 @@ public class ProfileImageSearchModel extends SearchModel<ProfileImage> {
 	}
 
 
-	@Override
-	public List<ProfileImage> searchLatest(Criteria c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

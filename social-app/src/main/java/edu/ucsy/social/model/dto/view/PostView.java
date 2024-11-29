@@ -17,10 +17,9 @@ public class PostView implements Serializable {
 	private String userName;
 	private String profileImage;
 	private long commentCount;
-	private long shareCount;
 	private boolean isSaved;
 	private long reactionCount;
-	private boolean isReacted;
+	private boolean reacted;
 
 	private List<String> postImageList;
 
@@ -43,12 +42,12 @@ public class PostView implements Serializable {
 		this.reactionCount = reactionCount;
 	}
 
-	public boolean isReacted() {
-		return isReacted;
+	public boolean getReacted() {
+		return reacted;
 	}
 
-	public void setReacted(boolean isReacted) {
-		this.isReacted = isReacted;
+	public void setReacted(boolean reacted) {
+		this.reacted = reacted;
 	}
 
 	public String getProfileImage() {
@@ -97,14 +96,6 @@ public class PostView implements Serializable {
 
 	public void setCommentCount(long commentCount) {
 		this.commentCount = commentCount;
-	}
-
-	public long getShareCount() {
-		return shareCount;
-	}
-
-	public void setShareCount(long shareCount) {
-		this.shareCount = shareCount;
 	}
 
 	public String getContent() {

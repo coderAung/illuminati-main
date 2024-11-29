@@ -50,6 +50,7 @@ public class PostServiceImpl implements PostService {
 	private Searchable<Post> postSearchModel;
 	private Searchable<SavedPost> savedPostSearchModel;
 	private Searchable<Friend> friendSearchModel;
+	private Searchable<Reaction> reactionSearchModel;
 	
 	private Model<Reaction> reactionModel;
 
@@ -67,11 +68,13 @@ public class PostServiceImpl implements PostService {
 		this.savedPostModel = ModelFactory.getModel(SavedPost.class);
 		this.savedPostSearchModel = ModelFactory.getSearchModel(SavedPost.class);
 		this.friendSearchModel = ModelFactory.getSearchModel(Friend.class);
+		this.reactionSearchModel = ModelFactory.getSearchModel(Reaction.class);
 	}
 
 	@Override
 	public void initConnection(Connection connection) {
 		reactionModel.setConnection(connection);
+		reactionSearchModel.setConnection(connection);
 		
 		postModel.setConnection(connection);
 		userModel.setConnection(connection);
@@ -86,6 +89,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void destroyConnection() {
 		reactionModel.setConnection(null);
+		reactionSearchModel.setConnection(null);
 		
 		postModel.setConnection(null);
 		userModel.setConnection(null);
@@ -134,6 +138,19 @@ public class PostServiceImpl implements PostService {
 				} else {
 					postView.setSaved(false);
 				}
+
+				criteria = new Criteria().where("post_id", Type.EQ, postView.getId()).where("user_id", Type.EQ, userId);
+				
+				var reacted = reactionSearchModel.searchOne(criteria);
+				if(null != reacted) {
+					postView.setReacted(true);
+				} else {
+					postView.setReacted(false);
+				}
+				// get reaction count
+				var reactionCount = Countable.getCountable(reactionModel).count(new Criteria().where("post_id", Type.EQ, postView.getId()));
+				postView.setReactionCount(reactionCount);
+				
 				postViews.add(postView);
 			}
 			return postViews;
@@ -199,6 +216,15 @@ public class PostServiceImpl implements PostService {
 							pv.setSaved(true);
 						} else {
 							pv.setSaved(false);
+						}
+
+						criteria = new Criteria().where("post_id", Type.EQ, pv.getId()).where("user_id", Type.EQ, userId);
+						
+						var reacted = reactionSearchModel.searchOne(criteria);
+						if(null != reacted) {
+							pv.setReacted(true);
+						} else {
+							pv.setReacted(false);
 						}
 						
 						// get reaction count
@@ -284,13 +310,28 @@ public class PostServiceImpl implements PostService {
 			// checking if the post is already saved
 			var criteria = new Criteria().where("post_id", Type.EQ, postView.getId()).where("user_id", Type.EQ,
 					loginUserId);
+			
 			var savedPost = savedPostSearchModel.searchOne(criteria);
 			if (null != savedPost) {
 				postView.setSaved(true);
 			} else {
 				postView.setSaved(false);
 			}
+			
+			criteria = new Criteria().where("post_id", Type.EQ, postView.getId()).where("user_id", Type.EQ, loginUserId);
+			
+			var reacted = reactionSearchModel.searchOne(criteria);
+			if(null != reacted) {
+				postView.setReacted(true);
+			} else {
+				postView.setReacted(false);
+			}
 
+			// get reaction count
+			var reactionCount = Countable.getCountable(reactionModel).count(new Criteria().where("post_id", Type.EQ, postView.getId()));
+			postView.setReactionCount(reactionCount);
+
+			
 			postDetailView.setPostView(postView);
 
 			var comments = postModel.getRelational(OneToMany.class).getMany(Comment.class, postId, 30);
@@ -340,6 +381,8 @@ public class PostServiceImpl implements PostService {
 				// delete saved posts
 				postModel.getRelational(OneToMany.class).deleteMany(SavedPost.class, postId);
 
+				// delete reactions
+				postModel.getRelational(OneToMany.class).deleteMany(Reaction.class, postId);
 				// delete the post
 				postModel.delete(postId);
 
@@ -663,6 +706,68 @@ public class PostServiceImpl implements PostService {
 			}
 
 			return postImageList.stream().map(pi -> pi.name()).toList();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return null;
+	}
+
+	@Override
+	public List<PostView> getPostViews(int loginUserId, int otherUserId, int limit) {
+
+		try (var connection = connector.getConnection()) {
+			initConnection(connection);
+
+			var posts = userModel.getRelational(OneToMany.class).getMany(Post.class, otherUserId, limit);
+			var postViews = new ArrayList<PostView>();
+			for (var post : posts) {
+				var postView = new PostView(post);
+
+				var postImages = postModel.getRelational(OneToMany.class).getMany(PostImage.class, post.id());
+
+				if (null != postImages) {
+					var postImageList = postImages.stream().map(pi -> pi.name()).toList();
+					postView.setPostImageList(postImageList);
+				}
+
+				var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class,
+						postView.getUserId());
+
+				if (null != profileImage) {
+					postView.setProfileImage(profileImage.name());
+				}
+
+				var commentCount = postModel.getRelational(OneToMany.class).countMany(Comment.class, post.id());
+				postView.setCommentCount(commentCount);
+
+				// checking if the post is already saved
+				var criteria = new Criteria().where("post_id", Type.EQ, post.id()).where("user_id", Type.EQ, loginUserId);
+				var savedPost = savedPostSearchModel.searchOne(criteria);
+
+				if (null != savedPost) {
+					postView.setSaved(true);
+				} else {
+					postView.setSaved(false);
+				}
+
+				criteria = new Criteria().where("post_id", Type.EQ, postView.getId()).where("user_id", Type.EQ, loginUserId);
+				
+				var reacted = reactionSearchModel.searchOne(criteria);
+				if(null != reacted) {
+					postView.setReacted(true);
+				} else {
+					postView.setReacted(false);
+				}
+				// get reaction count
+				var reactionCount = Countable.getCountable(reactionModel).count(new Criteria().where("post_id", Type.EQ, postView.getId()));
+				postView.setReactionCount(reactionCount);
+				
+				postViews.add(postView);
+			}
+			return postViews;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

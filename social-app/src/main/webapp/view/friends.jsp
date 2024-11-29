@@ -43,10 +43,16 @@
 									<small class="txt-grey">${friendCount} friends</small>
 								</c:when>
 							</c:choose>
+							
 							<div class="d-flex search-bar py-2 px-3 bg-card-2 w-50 rounded">
-								<input type="text" class="w-100 rounded txt-white"
-									placeholder="Find friends">
+								<form action="${friends}">
+									<input
+										name="friendName" 
+										type="text" class="w-100 rounded txt-white"
+										placeholder="Find friends">
+								</form>
 							</div>
+
 						</div>
 						<c:forEach var="fv" items="${friendViews}">
 							<div
@@ -60,8 +66,7 @@
 											<c:param name="userId" value="${fv.friendId}"></c:param>
 										</c:url>
 										<a class="text-decoration-none pointer txt-text fw-bold"
-											href="${otherProfile}">${fv.name}</a> <small class="txt-grey">3
-											mutual friends</small>
+											href="${otherProfile}">${fv.name}</a>
 									</div>
 								</div>
 								<div>

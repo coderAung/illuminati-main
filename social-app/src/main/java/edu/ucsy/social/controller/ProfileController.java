@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import edu.ucsy.social.model.dto.Alert;
 import edu.ucsy.social.model.dto.Alert.AlertType;
 import edu.ucsy.social.model.dto.form.ProfileDetailForm;
+import edu.ucsy.social.model.dto.view.FriendView;
 import edu.ucsy.social.model.entity.UserDetail.Gender;
 import edu.ucsy.social.model.entity.UserDetail.Occupation;
 import edu.ucsy.social.model.entity.UserDetail.Relationship;
@@ -132,8 +135,15 @@ public class ProfileController extends Controller {
 			throws ServletException, IOException {
 		// get id from login user
 		var userId = getLoginUser(req).getId();
-		// get friend views of login user
-		var friendViews = friendService.getFriendViews(userId, Limit.STARDARD_LIMIT);
+		List<FriendView> friendViews = new ArrayList<>();
+		
+		var friendName = req.getParameter("friendName");
+		if(StringTool.isEmpty(friendName))  {
+			// get friend views of login user
+			friendViews = friendService.getFriendViews(userId, Limit.STARDARD_LIMIT);
+		} else {
+			friendViews = friendService.getFriendViews(userId, friendName);
+		}
 
 		for (var fv : friendViews) {
 			if (null == fv.getProfileImage()) {

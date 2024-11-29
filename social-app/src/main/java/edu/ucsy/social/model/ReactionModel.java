@@ -7,10 +7,11 @@ import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
 import edu.ucsy.social.data.Countable;
+import edu.ucsy.social.data.Deletable;
 import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.model.entity.Reaction;
 
-public class ReactionModel extends AbstractModel<Reaction> implements Countable {
+public class ReactionModel extends AbstractModel<Reaction> implements Countable, Deletable {
 
 	@Override
 	public Reaction save(Reaction t) {
@@ -18,13 +19,11 @@ public class ReactionModel extends AbstractModel<Reaction> implements Countable 
 		try(var stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			stmt.setLong(1, t.getUserId());
 			stmt.setLong(2, t.getPostId());
-			stmt.executeUpdate();
-			var keys = stmt.getGeneratedKeys();
-			if(keys.next()) {
-				var id = keys.getLong(1);
-				t.setId(id);
+			var rows = stmt.executeUpdate();
+			if(rows > 0) {
 				return t;
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -91,6 +90,26 @@ public class ReactionModel extends AbstractModel<Reaction> implements Countable 
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean delete(Criteria criteria, String... tableNames) {
+		var sql = "delete from %s";
+		var values = criteria.getValues();
+		for(var name : tableNames) {
+			sql = criteria.generateStatement(sql.formatted(name));
+			try(var stmt = connection.prepareStatement(sql)) {
+				for(int i = 0; i < values.size(); i ++) {
+					stmt.setObject(i + 1, values.get(i));
+				}
+				stmt.executeUpdate();
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return false;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import edu.ucsy.social.data.Countable;
+import edu.ucsy.social.data.Deletable;
 import edu.ucsy.social.data.Model;
 import edu.ucsy.social.data.ModelFactory;
 import edu.ucsy.social.data.criteria.Criteria;
@@ -40,7 +41,7 @@ public class ReactionServiceImpl implements ReactionService {
 			
 			var reaction = new Reaction(userId, postId);
 			reaction = reactionModel.save(reaction);
-			if(0 < reaction.getId()) {
+			if(null != reaction) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -64,6 +65,26 @@ public class ReactionServiceImpl implements ReactionService {
 			destroyConnection();
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean deleteReaction(long userId, int postId) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			
+			var result = Deletable.getDeletable(reactionModel)
+					.delete(
+							new Criteria()
+								.where("post_id", Type.EQ, postId)
+								.where("user_id", Type.EQ, userId), 
+							"reactions");
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		return false;
 	}
 
 }

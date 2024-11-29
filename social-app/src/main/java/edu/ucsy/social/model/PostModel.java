@@ -9,17 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsy.social.data.AbstractModel;
-import edu.ucsy.social.data.Deletable;
 import edu.ucsy.social.data.OneToMany;
-import edu.ucsy.social.data.criteria.Criteria;
 import edu.ucsy.social.model.entity.Comment;
 import edu.ucsy.social.model.entity.Post;
 import edu.ucsy.social.model.entity.PostImage;
+import edu.ucsy.social.model.entity.Reaction;
 import edu.ucsy.social.model.entity.SavedPost;
 import edu.ucsy.social.utils.StringTool;
 
 public class PostModel extends AbstractModel<Post>
-			implements OneToMany, Deletable {
+			implements OneToMany {
 
 	@Override
 	public Post save(Post p) {
@@ -299,7 +298,25 @@ public class PostModel extends AbstractModel<Post>
 		if(e.equals(SavedPost.class)) {
 			return deleteManySavedPosts(id);
 		}
+		
+		if(e.equals(Reaction.class)) {
+			return deleteManayReactions(id);
+		}
 
+		return false;
+	}
+
+	private boolean deleteManayReactions(long id) {
+		var sql = "delete from reactions where post_id = ?";
+		try(var stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, id);
+			var rows = stmt.executeUpdate();
+			if(rows > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -367,12 +384,6 @@ public class PostModel extends AbstractModel<Post>
 		}
 		
 		return 0;
-	}
-
-	@Override
-	public boolean delete(Criteria criteria, String... tableName) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

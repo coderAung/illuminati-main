@@ -14,7 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = {"/api/reaction/create", "/api/reation/delete"})
+@WebServlet(urlPatterns = {"/api/reaction/create", "/api/reaction/delete"})
 public class ReactionApi extends Api {
 
 	private static final long serialVersionUID = 1L;
@@ -34,7 +34,24 @@ public class ReactionApi extends Api {
 		if(path.equals("/api/reaction/create")) {
 			createReaction(req, resp);
 		} else if(path.equals("/api/reaction/delete")) {
-			
+			deleteReaction(req, resp);
+		}
+	}
+
+	private void deleteReaction(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		var loginUser = getLoginUser(req);
+		var userId = loginUser.getId();
+		var postId = Integer.parseInt(req.getParameter("postId"));
+		var result = reactionService.deleteReaction(userId, postId);
+		
+		if(result) {
+			var reactionCount = reactionService.getReactionCount(postId);
+			resp.setContentType("application/json");
+			var writer = resp.getWriter();
+			var data = JsonTool.jsonFromMap(Map.of("result", "success", "count", reactionCount));
+			writer.append(data);
+			writer.flush();
+
 		}
 	}
 

@@ -7,21 +7,12 @@ import edu.ucsy.social.data.annotation.Entity;
 @Entity
 public class Reaction {
 
-	private long id;
 	private long userId;
 	private long postId;
 	
 	public Reaction(long userId, long postId) {
 		this.userId = userId;
 		this.postId = postId;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public long getUserId() {
@@ -42,7 +33,7 @@ public class Reaction {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, postId, userId);
+		return Objects.hash(postId, userId);
 	}
 
 	@Override
@@ -54,7 +45,8 @@ public class Reaction {
 		if (getClass() != obj.getClass())
 			return false;
 		Reaction other = (Reaction) obj;
-		return id == other.id && postId == other.postId && userId == other.userId;
+		return postId == other.postId && userId == other.userId;
 	}
+
 
 }

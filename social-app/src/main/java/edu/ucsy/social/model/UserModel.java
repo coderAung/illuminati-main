@@ -566,7 +566,7 @@ public class UserModel extends AbstractModel<User>
 	}
 
 	@Override
-	public boolean delete(Criteria criteria, String ...tableNames ) {
+	public boolean delete(Criteria criteria, String ...tableNames) {
 		
 		var sql = "delete from %s";
 		var values = criteria.getValues();

@@ -85,10 +85,5 @@ public class FriendSearchModel extends SearchModel<Friend> {
 		this.connection = connection;
 	}
 
-	@Override
-	public List<Friend> searchLatest(Criteria c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

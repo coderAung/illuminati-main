@@ -64,12 +64,6 @@ public class PostSearchModel extends SearchModel<Post> implements Countable {
 	}
 
 	@Override
-	public List<Post> searchLatest(Criteria c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public long count(Criteria criteria) {
 		
 		var sql = "select count(*) as postCount from posts";

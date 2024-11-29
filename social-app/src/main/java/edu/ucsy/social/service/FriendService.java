@@ -20,4 +20,6 @@ public interface FriendService extends Service {
 
 	long getFriendCount(long userId);
 
+	List<FriendView> getFriendViews(long userId, String friendName);
+
 }

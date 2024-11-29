@@ -56,10 +56,4 @@ public class CoverImageSearchModel extends SearchModel<CoverImage> {
 	}
 
 
-	@Override
-	public List<CoverImage> searchLatest(Criteria c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

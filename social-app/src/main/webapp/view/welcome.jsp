@@ -412,8 +412,7 @@ translateY(
 	<!-- nav-links end -->
 </div>
 
-	</div>
-	<div>
+s	<div>
 		<div class="container">
 			<div class="logo">
 				<img src="${image}" alt="Logo">

@@ -44,4 +44,6 @@ public interface PostService extends Service {
 	List<String> deletePostsByUserId(long id);
 
 	List<String> getPostImageListByUserId(long id);
+
+	List<PostView> getPostViews(int id, int otherUserId, int post);
 }

@@ -165,8 +165,8 @@
 					<!-- comment and share section -->
 					<div class=" d-flex align-items-center py-1 text-center">
 						<c:url var="reactionLink" value="/api/reaction"></c:url>
-						<a status="" url="${reactionLink}" postId="${pv.id}"
-							class="reaction-btn py-2 pointer link w-100 txt-white w-50 text-decoration-none">
+						<a status="${pv.reacted}" url="${reactionLink}" postId="${pv.id}"
+							class="reaction-btn py-2 pointer link w-100 w-50 text-decoration-none ${pv.reacted ? 'txt-app' : 'txt-white'}">
 							Like <i class="bi bi-dot"></i> <small count=""
 							class="reaction-count txt-grey">${pv.reactionCount}
 								reactions</small>

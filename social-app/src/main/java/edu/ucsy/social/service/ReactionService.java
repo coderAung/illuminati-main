@@ -8,4 +8,6 @@ public interface ReactionService extends Service {
 
 	long getReactionCount(int postId);
 
+	boolean deleteReaction(long userId, int postId);
+
 }

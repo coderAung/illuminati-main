@@ -9,7 +9,6 @@ import java.util.List;
 import edu.ucsy.social.data.Countable;
 import edu.ucsy.social.data.SearchModel;
 import edu.ucsy.social.data.criteria.Criteria;
-import edu.ucsy.social.data.criteria.Criteria.Type;
 import edu.ucsy.social.model.entity.User;
 import edu.ucsy.social.model.entity.User.Role;
 import edu.ucsy.social.model.entity.User.Status;
@@ -38,6 +37,7 @@ public class UserSearchModel extends SearchModel<User> implements Countable {
 		}
 		return null;
 	}
+	
 	private User userFrom(ResultSet rs) throws SQLException {
 		var user = new User(
 				rs.getLong("id"),
@@ -51,12 +51,6 @@ public class UserSearchModel extends SearchModel<User> implements Countable {
 		return user;
 	}
 
-	@Override
-	public List<User> searchLatest(Criteria c) {
-		var criteria = c.orderBy("id", Type.DESC);
-		var list = search(criteria);
-		return list;
-	}
 
 	@Override
 	public void setConnection(Connection connection) {

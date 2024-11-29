@@ -160,7 +160,7 @@ public class OtherUserController extends Controller {
 				}
 
 				// get 30 post view from other user service
-				var postViews = postService.getPostViews(otherUserId, Limit.POST);
+				var postViews = postService.getPostViews((int) getLoginUser(req).getId(), otherUserId, Limit.POST);
 
 				for (var pv : postViews) {
 					var postImageList = pv.getPostImageList();

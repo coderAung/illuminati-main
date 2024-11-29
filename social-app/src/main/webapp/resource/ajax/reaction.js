@@ -10,7 +10,7 @@ $("document").ready(() => {
 		const postId = event.target.getAttribute("postId")
 		const status = event.target.getAttribute("status")
 		
-		if(status !== "reacted") {
+		if(status !== "true") {
 			
 			$.post(
 				`${url}/create`,
@@ -20,17 +20,41 @@ $("document").ready(() => {
 				response => {
 					if(response.result === "success") {
 						if(target instanceof HTMLElement) {
+							
+							event.target.setAttribute("status", true)
+							
 							const reactionCount = target.querySelector(".reaction-count")
 							reactionCount.setAttribute("count", response.count)
 							reactionCount.innerHTML = `${response.count} reactions`
 
-//							target.classList.add("bg-primary", "text-white")
+							target.classList.replace("txt-white", "txt-app")
 						}
 					}
 				},
 				"json"
 			)
 			
+		} else {
+			$.post(
+				`${url}/delete`,
+				{
+					"postId": postId
+				},
+				response => {
+					if(response.result === "success") {
+						if(target instanceof HTMLElement) {
+							event.target.setAttribute("status", false)
+
+							const reactionCount = target.querySelector(".reaction-count")
+							reactionCount.setAttribute("count", response.count)
+							reactionCount.innerHTML = `${response.count} reactions`
+
+							target.classList.replace("txt-app", "txt-white")
+						}
+					}
+				},
+				"json"
+			)
 		}
 	})
 })

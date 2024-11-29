@@ -246,4 +246,37 @@ public class FriendServiceImpl implements FriendService {
 		return 0;
 	}
 
+	@Override
+	public List<FriendView> getFriendViews(long userId, String friendName) {
+		try(var connection = connector.getConnection()) {
+			initConnection(connection);
+			var criteria = new Criteria()
+					.where("user_id", Type.EQ, userId)
+					.where("lower(u.name)", Type.LIKE, friendName.toLowerCase().concat("%"));
+			var friends = friendSearchModel.search(criteria);
+			
+			var friendViews = friends.stream().map(f -> {
+
+				var friendUser = userModel.findOne(f.friendId());
+
+				var friendView = new FriendView(f.id(), friendUser.id(), friendUser.name());
+
+				var profileImage = userModel.getRelational(OneToOne.class).getOne(ProfileImage.class, friendUser.id());
+
+				if (null != profileImage) {
+					friendView.setProfileImage(profileImage.name());
+				}
+
+				return friendView;
+			}).toList();
+			return friendViews;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			destroyConnection();
+		}
+		
+		return null;
+	}
+
 }
